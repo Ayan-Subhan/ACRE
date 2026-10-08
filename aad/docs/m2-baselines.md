@@ -7,6 +7,57 @@ Input: the processed dataset from M1 ([`m1-data-pipeline.md`](m1-data-pipeline.m
 Run date: 2026-10-07. Hardware: i5-12450H CPU only (see section 6 for why the RTX 3050
 is not used).
 
+> ## Update 2026-10-08: retrained on 38 features (no `IAT`), on the GPU (current state)
+>
+> Sections 1–7 describe the 39-feature CPU run of 2026-10-07, archived in
+> `artifacts/superseded/39features/`. After `IAT` was dropped
+> ([`ciciot2023-features.md`](ciciot2023-features.md)), the baselines were retrained
+> unchanged (same architectures, schedule, seed and binary class weights) on an NVIDIA RTX
+> 3050 Laptop GPU through WSL2 (`scripts/gpu.sh`). The current `artifacts/models/` and
+> `artifacts/reports/table3_nids.md` are from this run.
+>
+> | model | balanced acc. | FPR | epochs | GPU time | s/epoch (GPU / CPU before) | before (39 f., CPU) |
+> | --- | ---: | ---: | ---: | ---: | ---: | --- |
+> | MLP | **95.25%** | **1.87%** | 30 | 9.1 min | 18.2 / 14.5 | 95.29% / 2.21% |
+> | CNN | 95.11% | 2.21% | 27 | 8.4 min | 18.7 / 56.9 | 95.25% / 2.11% |
+> | LSTM | 94.82% | 2.37% | 30 | 10.5 min | 20.9 / 282.8 | 94.93% / 3.08% |
+>
+> Total 29.5 min on the GPU, against 2 h 54 min on the CPU. The GPU speeds up the LSTM
+> 13.5× (cuDNN kernel) and the CNN 3×; the tiny MLP is per-step-overhead bound and is
+> not faster. (GPU kernels are not bit-identical to CPU ones, so comparisons between the
+> two runs are approximate. Every comparison *within* this update is GPU vs GPU.)
+>
+> **Per category (MLP):** Benign 98.13 (was 97.79) · Recon 72.40 (73.67) · Spoofing 69.26
+> (71.23) · Web 66.69 (69.71) · BruteForce 61.68 (65.46) · floods ≥ 99.98. Same balanced
+> accuracy, slightly shifted operating point: fewer false alarms, a little less recall on
+> the quiet categories.
+>
+> **Feature reliance, redone with correlated features permuted together** (|r| > 0.95:
+> `Number + Weight`, `Rate + Srate`, `Std + Radius + Covariance`, …). The models rest on
+> `rst_count`, `urg_count`, `flow_duration`, `Header_Length` (15–25 points each), and on
+> `Number + Weight` (13–19 points). The ablation shows that dependence is not load-bearing:
+> retraining the MLP **without `Number` and `Weight`** gives 95.23% (−0.01 points), FPR
+> 1.73%. Full report: `artifacts/reports/feature_reliance.md`.
+>
+> **The reference forest changes the §4.3 conclusion.**
+>
+> | Random Forest (600k rows) | balanced acc. | FPR | Recon | Spoofing | Web | BruteForce |
+> | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+> | with `IAT` (39 f.) | 97.68% | 1.44% | 88.46 | 86.24 | 89.58 | 84.69 |
+> | **without `IAT` (38 f.)** | **95.40%** | **2.88%** | 76.99 | 73.42 | 79.83 | 70.92 |
+>
+> Without `IAT` the forest and the neural networks are level (95.40% vs MLP 95.25%), so the
+> §4.3 claim that "the ceiling is the networks, not the features" was wrong. The forest's
+> 2.4-point lead came almost entirely from `IAT`, which the networks never used (their
+> scores are the same with or without it).
+>
+> A plausible mechanism: at the `Number = 5.5` level `IAT` holds a real gap (~0.006 s), but
+> MinMax over a 1.7 × 10⁸ range squeezes those differences to ~10⁻¹¹. That is invisible to a
+> network, while a tree can still split on it. **Open question:** is that signal genuine packet
+> timing (worth recovering as a properly scaled feature) or a fingerprint of the capture
+> session (a leak)? It needs a diagnostic before anything is changed; see the plan's
+> status note.
+
 ---
 
 ## 1. What was run
@@ -94,6 +145,13 @@ Clean test set: 382,187 rows (217,460 attack, 164,727 benign). Full tables:
 ## 4. Experiments
 
 ### 4.1 Do the models lean on capture artefacts? (`02b_feature_reliance.py`)
+
+> *Corrected 2026-10-08.* `IAT` was described below as "timestamp-like" and credited with
+> 13–17 points of importance. Both overstate it. `IAT` is a 0.998-correlated copy of `Number`,
+> and its permutation drop is inflated: shuffling it alone, with `Number` fixed, creates impossible
+> rows. The ablation (−0.02 points) is the honest measure. `IAT` is dropped since 2026-10-08,
+> `02b_feature_reliance.py` now permutes correlated features together, and the update at the top
+> of this document has the 38-feature results. See [`ciciot2023-features.md`](ciciot2023-features.md).
 
 The M1 leakage probe flagged `IAT` (timestamp-like; 94% balanced accuracy alone) and
 `Number`/`Weight` (packet-window size) as possible capture artefacts. Two measurements:

@@ -9,6 +9,39 @@ from tensorflow import keras
 
 log = logging.getLogger(__name__)
 
+
+def _portable_keras_weights() -> None:
+    """Make .keras files load on both Windows and Linux (WSL GPU runs).
+
+    Keras 2.13 names the HDF5 weight groups with ``tf.io.gfile.join``, so a file
+    saved on Windows holds ``_layer_checkpoint_dependencies\\dense`` and Linux
+    cannot find it (and the reverse). Write with "/" from now on and accept
+    either separator on load, so existing Windows-saved models keep working.
+    """
+    from keras.src.saving import saving_lib
+
+    store = saving_lib.H5IOStore
+    if getattr(store, "_aad_portable", False):
+        return
+    make, get = store.make, store.get
+
+    def portable_make(self, path):
+        return make(self, path.replace("\\", "/") if path else path)
+
+    def portable_get(self, path):
+        if not path:
+            return get(self, path)
+        for p in (path, path.replace("\\", "/"), path.replace("/", "\\")):
+            found = get(self, p)
+            if len(found):
+                return found
+        return found
+
+    store.make, store.get, store._aad_portable = portable_make, portable_get, True
+
+
+_portable_keras_weights()
+
 # Every model in this project agrees on these two facts.
 N_CLASSES = 2
 OUTPUT_ACTIVATION = "softmax"

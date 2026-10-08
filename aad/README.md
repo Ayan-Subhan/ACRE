@@ -19,8 +19,8 @@ to the IoT dataset **CICIoT2023**, following the approved plan
 | --- | --- | --- |
 | M0 | environment + data | done |
 | **M1** | **CICIoT2023 data pipeline + leakage probe** | **done — see [`docs/m1-data-pipeline.md`](docs/m1-data-pipeline.md)** |
-| M2 | baseline NIDS (MLP, CNN, LSTM) on CICIoT2023 | done — balanced acc. 95.3 / 95.2 / 94.9% (99% target not met; Random Forest reference 97.7%) — see [`docs/m2-baselines.md`](docs/m2-baselines.md) |
-| M3 | validator redesign for window-mean features | done — benign FPR 0.97%; stops ≥ 99.98% of unconstrained attacks end to end; distribution family carries it — see [`docs/m3-validator.md`](docs/m3-validator.md) |
+| M2 | baseline NIDS (MLP, CNN, LSTM) on CICIoT2023 | done — re-trained 2026-10-08 on 38 features (no `IAT`) on the GPU: balanced acc. 95.25 / 95.11 / 94.82%, FPR 1.87–2.37% (99% target not met; Random Forest reference 95.40%) — see [`docs/m2-baselines.md`](docs/m2-baselines.md) |
+| M3 | validator redesign for window-mean features | done — re-run on 38 features: benign FPR 1.03%; ≤ 0.02% of any unconstrained attack set passes the gate and fools its model; distribution family carries it — see [`docs/m3-validator.md`](docs/m3-validator.md) |
 | M4 | realizable, defense-adaptive attack generator | next |
 | M5 | discriminator changes + arms race | planned |
 | M6 | adversarial training (fixed pool + in-loop Madry) | planned |
@@ -44,6 +44,37 @@ D:\Python310\python.exe -m venv ..\.venv
 
 TensorFlow 2.13 is CPU-only on native Windows.
 
+**1b. Optional: GPU training through WSL2** (set up 2026-10-08). The same TF 2.13.1
+stack runs on the NVIDIA RTX 3050 (4 GB) inside WSL2 Ubuntu-22.04. The venv lives on
+the Linux filesystem at `~/aad-venv`, because a venv on `/mnt/d` is slow. CUDA 11.8 and
+cuDNN 8.6 come from NVIDIA's pip wheels, so there is no system CUDA install. The only
+driver needed is the normal Windows NVIDIA driver.
+
+```bash
+# one-time, inside Ubuntu-22.04
+apt-get install -y python3.10-venv python3-pip
+python3 -m venv ~/aad-venv
+grep -vE "^(tensorflow|keras)" /mnt/d/base_imp/requirements.txt > /tmp/req.txt
+~/aad-venv/bin/pip install -r /tmp/req.txt tensorflow==2.13.1 \
+  nvidia-cudnn-cu11==8.6.0.163 nvidia-cublas-cu11==11.11.3.6 nvidia-cuda-runtime-cu11==11.8.89 \
+  nvidia-cufft-cu11==10.9.0.58 nvidia-curand-cu11==10.3.0.86 nvidia-cusolver-cu11==11.4.1.48 \
+  nvidia-cusparse-cu11==11.7.5.86 nvidia-cuda-nvcc-cu11==11.8.89 nvidia-cuda-cupti-cu11==11.8.87
+```
+
+Run any script on the GPU from Windows with `scripts/gpu.sh`. It sets the CUDA library
+path (including `/usr/lib/wsl/lib` for `libcuda.so`), turns on memory growth for the
+4 GB card, and runs from `aad/`:
+
+```powershell
+wsl -d Ubuntu-22.04 -- /mnt/d/base_imp/aad/scripts/gpu.sh scripts/02_train_baselines.py --models mlp
+```
+
+`.keras` files move freely between the two environments. Keras 2.13 names weight groups
+with the OS path separator, so a model saved on Windows would not load on Linux (and
+the reverse). `aad/models/base.py` patches this on import: it saves with `/` and loads
+either separator. Every script that loads a model imports it. Verified 2026-10-08: all
+four models in `artifacts/models/` load and predict on both Windows CPU and WSL GPU.
+
 **2. Data.** CICIoT2023, the single merged CSV (`ciciot23.csv`, 13,754,096,319 bytes,
 46,686,579 rows, 46 features + `label`), placed at:
 
@@ -62,12 +93,17 @@ published 46,686,579, so a truncated download fails immediately.
 python scripts\01_prepare.py --sample-frac 0.02   # smoke test -> data/smoke/  (needs the cache, see below)
 python scripts\01_prepare.py                      # full run   -> data/processed/
 python scripts\01b_probe_leakage.py               # leakage probe -> artifacts/reports/leakage_probe.md
-python -m pytest tests\ -q                        # 116 tests, synthetic data only
+python -m pytest tests\ -q                        # 118 tests, synthetic data only
 ```
 
 The first `01_prepare.py` run streams the 13.75 GB CSV twice (~10 min) and caches the
 sampled rows in `data/interim/ciciot_capped.parquet`; every later run, including smoke
 tests, reads the cache and takes about a minute. `--rescan` forces a fresh read.
+
+> **Feature set (2026-10-08):** 38 features. `IAT` is dropped at the scan (`config/data.yaml: drop_columns`)
+> because it is a copy of `Number`, not an inter-arrival time; see
+> [`docs/ciciot2023-features.md`](docs/ciciot2023-features.md) for how CICIoT2023's features were
+> produced. The 39-feature results are archived in `artifacts/superseded/39features/`.
 
 ## Phase 1 (M1) in one paragraph
 
@@ -78,7 +114,7 @@ rows** chosen uniformly at random (seed 42); benign traffic is kept whole. That 
 away any rare class. It is split 70/15/15 stratified on the 34 labels; 7 near-constant
 columns are dropped and 16 heavy-tailed columns get a signed log1p (both decided on
 train only); everything is MinMax scaled to [0,1] with the scaler fitted on train only.
-Result: **39 features**, 1,783,537 / 382,186 / 382,187 rows. The full walkthrough, every
+Result: **38 features** (after dropping `IAT`), 1,783,517 / 382,182 / 382,183 rows. The full walkthrough, every
 number the run produced, and the reasoning behind each choice are in
 [`docs/m1-data-pipeline.md`](docs/m1-data-pipeline.md).
 

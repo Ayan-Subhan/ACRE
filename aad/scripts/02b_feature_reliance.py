@@ -61,7 +61,12 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s %(m
                     datefmt="%H:%M:%S")
 log = logging.getLogger("reliance")
 
+# The window-size encoding: Number (5.5 / 9.5 / 13.5) and Weight (38.5 / 141.6 /
+# 244.6) move together and track the extractor's 10- vs 100-packet window, not
+# attack behaviour (docs/ciciot2023-features.md). IAT, the third copy, is dropped
+# at the scan since 2026-10-08; it is listed so older data can still be analysed.
 ARTEFACT_SUSPECTS = ["IAT", "Number", "Weight"]
+CORRELATED = 0.95  # |r| above which features are permuted together
 
 
 def load(data_dir: Path, name: str):
@@ -84,18 +89,47 @@ def predict(model, X: np.ndarray) -> np.ndarray:
     return model.predict(X, batch_size=8192, verbose=0).argmax(axis=1)
 
 
+def correlated_groups(X: np.ndarray, names: list[str], thr: float = CORRELATED) -> list[list[int]]:
+    """Connected components of the |corr| > thr graph; singletons for the rest.
+
+    Why: shuffling ONE of two near-identical columns creates rows where they
+    disagree - combinations that never occur in real traffic - and the model's
+    confusion on those impossible rows is then misread as reliance. This is
+    exactly how IAT (r = 0.998 with Number) earned a 13-17 point "importance"
+    while removing it cost 0.02 points. Permuting each correlated group with one
+    shared row permutation keeps every row internally consistent.
+    """
+    with np.errstate(invalid="ignore", divide="ignore"):
+        r = np.nan_to_num(np.corrcoef(X, rowvar=False))
+    parent = list(range(len(names)))
+    def find(i):
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+    for i in range(len(names)):
+        for j in range(i + 1, len(names)):
+            if abs(r[i, j]) > thr:
+                parent[find(i)] = find(j)
+    groups: dict[int, list[int]] = {}
+    for i in range(len(names)):
+        groups.setdefault(find(i), []).append(i)
+    return sorted(groups.values())
+
+
 def permutation_importance(model, X, y, names, repeats: int, seed: int) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
     base = balanced_accuracy_score(y, predict(model, X))
     rows = []
-    for j, name in enumerate(names):
+    for cols in correlated_groups(X, names):
         drops = []
         for _ in range(repeats):
             Xp = X.copy()
-            Xp[:, j] = Xp[rng.permutation(len(Xp)), j]
+            perm = rng.permutation(len(Xp))
+            Xp[:, cols] = Xp[perm][:, cols]
             drops.append(base - balanced_accuracy_score(y, predict(model, Xp)))
-        rows.append({"feature": name, "drop_mean": float(np.mean(drops)),
-                     "drop_std": float(np.std(drops))})
+        rows.append({"feature": " + ".join(names[j] for j in cols), "n_columns": len(cols),
+                     "drop_mean": float(np.mean(drops)), "drop_std": float(np.std(drops))})
     df = pd.DataFrame(rows).sort_values("drop_mean", ascending=False).reset_index(drop=True)
     df.attrs["baseline_balanced_acc"] = float(base)
     return df
@@ -169,7 +203,8 @@ def main() -> int:
         result["permutation"][name] = {
             "baseline_balanced_acc": df.attrs["baseline_balanced_acc"],
             "top10": df.head(10).to_dict(orient="records"),
-            "suspects": df[df["feature"].isin(ARTEFACT_SUSPECTS)].to_dict(orient="records"),
+            "suspects": df[df["feature"].str.contains("|".join(ARTEFACT_SUSPECTS))]
+                        .to_dict(orient="records"),
         }
         top = ", ".join(f"{r.feature} {100 * r.drop_mean:.2f}" for r in df.head(5).itertuples())
         log.info("permutation %s (%.0fs): top drops in balanced-acc points: %s",
@@ -189,8 +224,9 @@ def main() -> int:
     if not args.no_ablation:
         X_tr, y_tr, _, _ = load(data_dir, "train")
         X_va, y_va, _, _ = load(data_dir, "val")
-        variants = {"all 39 features": [], "without IAT": ["IAT"],
-                    "without IAT, Number, Weight": ARTEFACT_SUSPECTS}
+        present = [s for s in ARTEFACT_SUSPECTS if s in names]
+        variants = {f"all {len(names)} features": [],
+                    f"without {', '.join(present)}": present}
         for label, drop in variants.items():
             keep = [j for j, n in enumerate(names) if n not in drop]
             baseline_path = models_dir / "mlp.keras"
@@ -259,7 +295,10 @@ def main() -> int:
                    for n, r in result["permutation"].items()) + ".", "",
                wide.head(15).to_markdown(), "",
                "Artefact suspects: ", "",
-               wide.loc[[s for s in ARTEFACT_SUSPECTS if s in wide.index]].to_markdown(), ""]
+               wide.loc[[i for i in wide.index
+                         if any(s in i for s in ARTEFACT_SUSPECTS)]].to_markdown(), "",
+               f"Features correlated above |r| = {CORRELATED} are permuted together and shown "
+               "as one row (`A + B`): permuting one alone would create impossible rows.", ""]
     if abl_rows:
         md += ["## Ablation - MLP retrained without the suspect columns", "",
                pd.DataFrame(abl_rows).to_markdown(index=False), ""]

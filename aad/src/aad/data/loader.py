@@ -122,13 +122,26 @@ class ScanResult:
     extra: dict = field(default_factory=dict)
 
 
+def _check_drop_columns(header: list[str], drop_columns) -> list[str]:
+    drop = list(drop_columns or [])
+    missing = [c for c in drop if c not in header]
+    if missing:
+        raise ValueError(f"drop_columns {missing} are not in the CSV header")
+    return drop
+
+
 def scan(
     path: Path,
     label_column: str,
     label_map: dict[str, dict],
     block_size_mb: int = 64,
+    drop_columns: list[str] | None = None,
 ) -> ScanResult:
     """Pass 1: stream the whole file once and summarise every row.
+
+    ``drop_columns`` are excluded *here*, before hashing, so they play no part in
+    deciding what is a duplicate: two windows that differ only in a dropped
+    column are the same row to every model, and must be deduplicated as such.
 
     Raises if any label is missing from ``label_map``: an unmapped class would
     otherwise be silently dropped or mislabelled, and either changes every
@@ -139,7 +152,8 @@ def scan(
     header = read_header(path)
     if label_column not in header:
         raise ValueError(f"label column {label_column!r} not in header of {path.name}: {header}")
-    feature_columns = [c for c in header if c != label_column]
+    drop = _check_drop_columns(header, drop_columns)
+    feature_columns = [c for c in header if c != label_column and c not in drop]
     feature_idx = [header.index(c) for c in feature_columns]
     label_idx = header.index(label_column)
     slug_to_code = {slug: int(entry["code"]) for slug, entry in label_map.items()}
@@ -207,8 +221,10 @@ def scan(
         nan_by_column={c: int(v) for c, v in zip(feature_columns, nan_cols) if v},
         inf_by_column={c: int(v) for c, v in zip(feature_columns, inf_cols) if v},
         seconds=round(time.time() - t0, 1),
+        extra={"header_feature_count": len(header) - 1, "dropped_columns": drop},
     )
-    log.info("scan: %d rows x %d features in %.0fs", n_rows, len(feature_columns), result.seconds)
+    log.info("scan: %d rows x %d features in %.0fs (dropped: %s)",
+             n_rows, len(feature_columns), result.seconds, drop or "none")
     return result
 
 
@@ -297,6 +313,7 @@ def load_selected(
     positions: np.ndarray,
     label_column: str,
     block_size_mb: int = 64,
+    drop_columns: list[str] | None = None,
 ) -> pd.DataFrame:
     """Pass 2: stream the file again and keep exactly ``positions`` (sorted).
 
@@ -306,6 +323,8 @@ def load_selected(
     """
     t0 = time.time()
     header = read_header(path)
+    drop = _check_drop_columns(header, drop_columns)
+    keep = [c for c in header if c not in drop]
     frames: list[pd.DataFrame] = []
     offset = 0
     for batch in _stream(Path(path), header, label_column, block_size_mb):
@@ -313,7 +332,7 @@ def load_selected(
         lo, hi = np.searchsorted(positions, [offset, offset + n])
         if hi > lo:
             local = pa.array(positions[lo:hi] - offset, type=pa.int64())
-            frames.append(batch.take(local).to_pandas())
+            frames.append(batch.take(local).to_pandas()[keep])
         offset += n
 
     df = pd.concat(frames, ignore_index=True)

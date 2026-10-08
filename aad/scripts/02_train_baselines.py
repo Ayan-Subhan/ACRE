@@ -69,6 +69,18 @@ def load_split(data_dir: Path, name: str) -> tuple[np.ndarray, np.ndarray, np.nd
             d["y_category"].astype(np.int64))
 
 
+def hardware_label() -> str:
+    """'GPU: <name>' or 'CPU', recorded with the results: training times are
+    only comparable on the same hardware, and GPU kernels (cuDNN) are not
+    bit-identical to CPU ones."""
+    import tensorflow as tf
+    gpus = tf.config.list_physical_devices("GPU")
+    if not gpus:
+        return "CPU"
+    details = tf.config.experimental.get_device_details(gpus[0])
+    return f"GPU: {details.get('device_name', gpus[0].name)}"
+
+
 def group_table(results: dict, key: str) -> pd.DataFrame:
     """Rows = classes or categories, columns = support + one detection rate per model."""
     rows = []
@@ -236,6 +248,23 @@ def main() -> int:
             epochs_run if epochs_run is not None else "?",
         )
 
+    # ---- merge with earlier runs of the SAME feature set ---------------------
+    # Training one model at a time (e.g. --models lstm later, on another machine)
+    # must add to Table III, not replace it. Earlier results are reused only if
+    # they were measured on exactly this feature list; anything else is stale.
+    if prior_path.exists():
+        old = json.loads(prior_path.read_text(encoding="utf-8"))
+        if old.get("feature_names") == feature_names:
+            kept = {n: m for n, m in old.get("results", {}).items() if n not in results}
+            if kept:
+                log.info("merging earlier results for %s (same %d features)",
+                         sorted(kept), len(feature_names))
+            results = {n: ({**kept, **results})[n]
+                       for n in ["mlp", "cnn", "lstm"] if n in kept or n in results}
+        else:
+            log.info("earlier %s was measured on a different feature set; not merged",
+                     prior_path.name)
+
     # ---- Table III ---------------------------------------------------------
     rows = []
     for name, m in results.items():
@@ -260,8 +289,9 @@ def main() -> int:
     md = [
         "# Table III - NIDS accuracy and loss (clean test set)",
         "",
-        f"Data: `{args.data_dir}` | test rows: {len(y_test):,} "
-        f"({int(y_test.sum()):,} attack, {int((y_test == 0).sum()):,} benign)",
+        f"Data: `{args.data_dir}` | {len(feature_names)} features | test rows: {len(y_test):,} "
+        f"({int(y_test.sum()):,} attack, {int((y_test == 0).sum()):,} benign) | "
+        f"trained on {hardware_label()}",
         f"Seed {seed}, batch {tcfg['batch_size']}, Adam lr={tcfg['learning_rate']}, "
         f"early stopping on val_loss (patience {tcfg['early_stopping']['patience']}), "
         f"weighting: {mode}. `fpr_%` = benign flows flagged "
@@ -289,7 +319,8 @@ def main() -> int:
 
     (reports_dir / f"baseline_metrics{tag}.json").write_text(
         json.dumps({"data_dir": args.data_dir, "seed": seed, "weighting": mode,
-                    "class_weight": class_weight, "results": results}, indent=2),
+                    "class_weight": class_weight, "feature_names": feature_names,
+                    "hardware": hardware_label(), "results": results}, indent=2),
         encoding="utf-8",
     )
 

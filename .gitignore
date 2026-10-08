@@ -42,3 +42,8 @@ aad/archive/cicids2018/discriminator/*.joblib
 
 # keep the empty directory structure so a fresh clone has somewhere to write
 !**/.gitkeep
+
+# --- superseded runs (aad/artifacts/superseded/<run>/): reports + README tracked,
+# weights and adversarial examples ignored, exactly as for the live artifacts ---
+aad/artifacts/superseded/*/models/
+aad/artifacts/superseded/*/adversarial/

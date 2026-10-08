@@ -45,7 +45,6 @@
       "AVG",
       "Std",
       "Tot size",
-      "IAT",
       "Number",
       "Magnitue",
       "Radius",
@@ -53,7 +52,10 @@
       "Variance",
       "Weight"
     ],
-    "scan_seconds": 305.8,
+    "dropped_columns": [
+      "IAT"
+    ],
+    "scan_seconds": 484.0,
     "raw_label_counts": {
       "DDoS-ICMP_Flood": 7200504,
       "DDoS-UDP_Flood": 5412287,
@@ -92,21 +94,21 @@
     },
     "nan_cells_by_column": {},
     "inf_cells_by_column": {},
-    "distinct_rows": 28098546,
-    "exact_duplicate_rows": 18588033,
-    "exact_duplicate_rows_float64": 34,
-    "conflicting_feature_vectors": 0,
+    "distinct_rows": 27840572,
+    "exact_duplicate_rows": 18846007,
+    "exact_duplicate_rows_float64": 18804593,
+    "conflicting_feature_vectors": 48574,
     "per_class": {
       "BenignTraffic": {
         "rows": 1098195,
-        "exact_duplicates": 18,
+        "exact_duplicates": 40,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
-        "sampled": 1098177
+        "sampled": 1098155
       },
       "DDoS-ACK_Fragmentation": {
         "rows": 285104,
-        "exact_duplicates": 10171,
+        "exact_duplicates": 11852,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
@@ -120,28 +122,28 @@
       },
       "DDoS-ICMP_Flood": {
         "rows": 7200504,
-        "exact_duplicates": 5391331,
+        "exact_duplicates": 5448156,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "DDoS-ICMP_Fragmentation": {
         "rows": 452489,
-        "exact_duplicates": 8510,
+        "exact_duplicates": 10293,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "DDoS-PSHACK_Flood": {
         "rows": 4094755,
-        "exact_duplicates": 2447671,
-        "conflicting_rows": 0,
+        "exact_duplicates": 2473436,
+        "conflicting_rows": 3,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "DDoS-RSTFINFlood": {
         "rows": 4045285,
-        "exact_duplicates": 2973326,
+        "exact_duplicates": 2991663,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
@@ -155,22 +157,22 @@
       },
       "DDoS-SYN_Flood": {
         "rows": 4059190,
-        "exact_duplicates": 2125743,
-        "conflicting_rows": 0,
+        "exact_duplicates": 2172582,
+        "conflicting_rows": 29861,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "DDoS-SynonymousIP_Flood": {
         "rows": 3598138,
-        "exact_duplicates": 532172,
-        "conflicting_rows": 0,
+        "exact_duplicates": 542250,
+        "conflicting_rows": 19829,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "DDoS-TCP_Flood": {
         "rows": 4497667,
-        "exact_duplicates": 2928062,
-        "conflicting_rows": 0,
+        "exact_duplicates": 2971163,
+        "conflicting_rows": 14802,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
@@ -190,42 +192,42 @@
       },
       "DoS-HTTP_Flood": {
         "rows": 71864,
-        "exact_duplicates": 78,
-        "conflicting_rows": 0,
+        "exact_duplicates": 81,
+        "conflicting_rows": 1,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "DoS-SYN_Flood": {
         "rows": 2028834,
-        "exact_duplicates": 399238,
-        "conflicting_rows": 0,
+        "exact_duplicates": 406863,
+        "conflicting_rows": 20325,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "DoS-TCP_Flood": {
         "rows": 2671445,
-        "exact_duplicates": 892537,
-        "conflicting_rows": 0,
+        "exact_duplicates": 909384,
+        "conflicting_rows": 14802,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "DoS-UDP_Flood": {
         "rows": 3318595,
-        "exact_duplicates": 358862,
+        "exact_duplicates": 361970,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "Mirai-greeth_flood": {
         "rows": 991866,
-        "exact_duplicates": 318634,
+        "exact_duplicates": 335255,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "Mirai-greip_flood": {
         "rows": 751682,
-        "exact_duplicates": 201280,
+        "exact_duplicates": 210068,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
@@ -239,29 +241,29 @@
       },
       "Recon-HostDiscovery": {
         "rows": 134378,
-        "exact_duplicates": 33,
+        "exact_duplicates": 96,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "Recon-OSScan": {
         "rows": 98259,
-        "exact_duplicates": 147,
-        "conflicting_rows": 0,
+        "exact_duplicates": 341,
+        "conflicting_rows": 2,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "Recon-PingSweep": {
         "rows": 2262,
-        "exact_duplicates": 2,
+        "exact_duplicates": 8,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
-        "sampled": 2260
+        "sampled": 2254
       },
       "Recon-PortScan": {
         "rows": 82284,
-        "exact_duplicates": 160,
-        "conflicting_rows": 0,
+        "exact_duplicates": 371,
+        "conflicting_rows": 2,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
@@ -274,14 +276,14 @@
       },
       "DNS_Spoofing": {
         "rows": 178911,
-        "exact_duplicates": 38,
+        "exact_duplicates": 111,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
       },
       "MITM-ArpSpoofing": {
         "rows": 307593,
-        "exact_duplicates": 2,
+        "exact_duplicates": 6,
         "conflicting_rows": 0,
         "nan_or_inf_rows": 0,
         "sampled": 60000
@@ -336,16 +338,16 @@
         "sampled": 13064
       }
     },
-    "rows_sampled": 2547910
+    "rows_sampled": 2547882
   },
   "cap_per_class": 60000,
   "keep_all": [
     "benigntraffic"
   ],
-  "rows_after_cleaning": 2547910,
+  "rows_after_cleaning": 2547882,
   "label_counts_kept": {
     "Backdoor_Malware": 3218,
-    "BenignTraffic": 1098177,
+    "BenignTraffic": 1098155,
     "BrowserHijacking": 5859,
     "CommandInjection": 5409,
     "DDoS-ACK_Fragmentation": 60000,
@@ -372,7 +374,7 @@
     "MITM-ArpSpoofing": 60000,
     "Recon-HostDiscovery": 60000,
     "Recon-OSScan": 60000,
-    "Recon-PingSweep": 2260,
+    "Recon-PingSweep": 2254,
     "Recon-PortScan": 60000,
     "SqlInjection": 5245,
     "Uploading_Attack": 1252,
@@ -380,7 +382,7 @@
     "XSS": 3846
   },
   "clean": {
-    "rows_in": 2547910,
+    "rows_in": 2547882,
     "inf_cells": 0,
     "inf_by_column": {},
     "nan_cells": 0,
@@ -389,10 +391,13 @@
     "nan_rows_by_class": {},
     "rows_dropped_duplicate": 0,
     "duplicate_rows_by_class": {},
-    "rows_out": 2547910
+    "rows_out": 2547882
   },
-  "n_features_before_constant_drop": 46,
-  "n_features": 39,
+  "drop_columns": [
+    "IAT"
+  ],
+  "n_features_before_constant_drop": 45,
+  "n_features": 38,
   "constant_columns": [
     "Drate",
     "ece_flag_number",
@@ -403,13 +408,13 @@
     "DHCP"
   ],
   "constant_columns_non_mode_rows": {
-    "Drate": 38,
-    "ece_flag_number": 15,
-    "cwr_flag_number": 9,
-    "Telnet": 1,
+    "Drate": 46,
+    "ece_flag_number": 8,
+    "cwr_flag_number": 6,
+    "Telnet": 0,
     "SMTP": 1,
-    "IRC": 2,
-    "DHCP": 0
+    "IRC": 3,
+    "DHCP": 1
   },
   "min_non_mode_rows": 100,
   "log1p_columns": [
@@ -432,14 +437,14 @@
   ],
   "split_ratios": "0.7/0.15/0.15",
   "split_sizes": {
-    "train": 1783537,
-    "val": 382186,
-    "test": 382187
+    "train": 1783517,
+    "val": 382182,
+    "test": 382183
   },
   "attack_share": {
-    "train": 0.568989036952976,
-    "val": 0.5689899682353619,
-    "test": 0.5689884794616248
+    "train": 0.5689931747216315,
+    "val": 0.5689933068538027,
+    "test": 0.5689918180557482
   },
   "scaling": {
     "feature_range": [
@@ -448,22 +453,22 @@
     ],
     "per_split": {
       "train": {
-        "cells": 69557943,
+        "cells": 67773646,
         "cells_out_of_range_before_clip": 0,
         "fraction_clipped": 0.0
       },
       "val": {
-        "cells": 14905254,
-        "cells_out_of_range_before_clip": 4,
-        "fraction_clipped": 2.683617468041806e-07
+        "cells": 14522916,
+        "cells_out_of_range_before_clip": 1,
+        "fraction_clipped": 6.88566951705842e-08
       },
       "test": {
-        "cells": 14905293,
-        "cells_out_of_range_before_clip": 8,
-        "fraction_clipped": 5.367220892605063e-07
+        "cells": 14522954,
+        "cells_out_of_range_before_clip": 1,
+        "fraction_clipped": 6.885651500376576e-08
       }
     }
   },
   "sample_frac": null,
-  "elapsed_seconds": 43.2
+  "elapsed_seconds": 920.0
 }

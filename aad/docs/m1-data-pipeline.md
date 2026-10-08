@@ -6,6 +6,48 @@ that every number in `artifacts/reports/` can be traced back to a decision here.
 
 Run date: 2026-10-07. Machine: i5-12450H (8C/12T), 15.7 GB RAM, CPU-only.
 
+> ## Update 2026-10-08: `IAT` dropped, dataset rebuilt (current state)
+>
+> Sections 0–8 below describe the original 39-feature run of 2026-10-07. Its outputs are
+> archived in `artifacts/superseded/39features/`. Since 2026-10-08,
+> `config/data.yaml` has `drop_columns: [IAT]`, and the dataset in `data/processed/` was
+> rebuilt with it. Why: `IAT` is a 0.998-correlated copy of `Number` (the packet-window
+> size), not an inter-arrival time; see [`ciciot2023-features.md`](ciciot2023-features.md).
+>
+> **How the drop works.** `IAT` is removed inside the scan (`loader.scan(...,
+> drop_columns=...)`), before hashing, so it plays no part in deduplication. The header
+> check still counts the full 46 features first. `drop_columns` is part of the cache
+> fingerprint, so the old cache was rebuilt automatically (pass 1 484 s, pass 2 308 s,
+> total 920 s).
+>
+> | | 39 features (2026-10-07) | **38 features (current)** |
+> | --- | ---: | ---: |
+> | duplicates in the file (float32) | 18,588,033 (39.81%) | **18,846,007 (40.37%)** |
+> | … of which exact float64 copies | 34 | **18,804,593** |
+> | feature vectors under more than one label | 0 | **48,574** |
+> | rows kept | 2,547,910 | 2,547,882 |
+> | train / val / test | 1,783,537 / 382,186 / 382,187 | 1,783,517 / 382,182 / 382,183 |
+> | near-constant columns dropped | 7 | 7 (same columns) |
+> | log1p columns | 16 | 16 (same columns) |
+> | features | 39 | **38** |
+> | leakage probe: test rows identical to a train row | 2 | 24 |
+> | leakage probe: single features ≥ 99% | none | none |
+>
+> **What changed, and why:**
+> - **Exact duplicates went from 34 to 18.8 million.** That is direct confirmation that
+>   `IAT`'s jitter was the *only* difference between those windows. The float32
+>   deduplication of §6.2 had already caught almost all of them (40.37% vs 39.81%).
+> - **48,574 feature vectors now occur under two labels.** `IAT` was what told them apart.
+>   They are almost all **DDoS vs DoS versions of the same flood** (SYN 29,861 / 20,325;
+>   SynonymousIP 19,829; TCP 14,802 / 14,802), which differ in attacker count, a property
+>   one 100-packet window cannot see. Both are *attack*, so the binary task loses
+>   nothing; Benign has 0 conflicts. They only cap the 34-way multiclass score.
+> - **Test/train overlap rose from 2 rows to 24** (all same-label, out of 382,183).
+>   Collisions after log1p + MinMax rounding remain negligible.
+>
+> Reports for the current run: `artifacts/reports/class_stats.md`, `feature_stats.csv`,
+> `leakage_probe.md`, `prepare_meta.json`.
+
 ---
 
 ## Contents
@@ -100,7 +142,9 @@ Two things the first rows already showed, both important later:
 - **Values are window averages**, not per-flow counts: `Protocol Type` = 6.11, `Duration`
   (TTL) = 64.64. Count-like columns are not whole numbers, which is why the IDS2018
   validator's integrality rules will not transfer (M3).
-- **`IAT` looks like a timestamp** (~8.3 × 10⁷), not an inter-arrival time in seconds.
+- **`IAT` does not look like an inter-arrival time** (~8.3 × 10⁷). *Corrected 2026-10-08:* it
+  is not a timestamp either, as first written here. It is a near-copy of `Number`
+  (r = 0.998; see [`ciciot2023-features.md`](ciciot2023-features.md) §3), and it is now dropped.
 
 ---
 
@@ -304,7 +348,11 @@ test set (balanced accuracy, so the 57/43 class mix cannot flatter it). Flag thr
 
 **No feature is flagged**, so none is dropped. Three need to be stated in the write-up:
 
-- **`IAT`** alone gets 94% of the way. It behaves like a capture timestamp (~8.3 × 10⁷),
+- **`IAT`** alone gets 94% of the way. *Corrected 2026-10-08:* the original text called it a
+  capture timestamp whose power reflects *when* attacks were recorded. That was wrong. `IAT` is a
+  re-encoding of `Number` (the packet-window size, 10 vs 100), plus a real gap in about a third of
+  rows, so its 94% is mostly the window-size signal that `Number` already carries. It is dropped
+  since 2026-10-08 ([`ciciot2023-features.md`](ciciot2023-features.md)). Original text, superseded:
   so part of its power is probably *when* each attack was recorded, not *how* it
   behaves. A model leaning on it would not transfer to a new capture. M2 should report
   feature importance, and M4 must treat `IAT` as something an attacker can shift.

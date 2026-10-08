@@ -1,66 +1,68 @@
-﻿D:\base_imp\.venv\lib\site-packages\art\estimators\certification\__init__.py:29: UserWarning: PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality
+/root/aad-venv/lib/python3.10/site-packages/art/estimators/certification/__init__.py:29: UserWarning: PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality
   warnings.warn("PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality")
-09:30:41  INFO    5000 source rows from data/processed/test.npz | 39 features | attack classes present: {1: 193, 2: 96, 3: 193, 4: 200, 5: 198, 6: 207, 7: 83, 8: 232, 9: 192, 10: 223, 11: 208, 12: 193, 13: 216, 14: 209, 15: 219, 16: 216, 17: 192, 18: 211, 19: 212, 20: 211, 21: 232, 22: 11, 23: 185, 24: 122, 25: 207, 26: 203, 27: 17, 28: 23, 29: 20, 30: 16, 31: 1, 32: 16, 33: 43}
-09:30:41  INFO    loaded mlp (15522 params) from mlp.keras
-09:30:41  INFO    mlp: clean detection rate on the source rows 92.3600%
-09:30:41  INFO    fgsm     x mlp   {'eps': 0.1}
-09:30:41  INFO    Success rate of FGM attack: 0.00%
-09:30:41  INFO      -> 92.360% -> 87.280%  (evasion 8.19% of correct, Linf 0.1000, 16/39 feats, 0.1s)
-09:30:41  INFO    bim      x mlp   {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 10}
-09:30:41  INFO    Creating adversarial samples.
-09:30:42  INFO    Success rate of attack: 17.70%
-09:30:43  INFO      -> 92.360% -> 74.660%  (evasion 19.16% of correct, Linf 0.1000, 16/39 feats, 1.1s)
-09:30:43  INFO    pgd      x mlp   {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 40, 'num_random_init': 0}
-09:30:43  INFO    Creating adversarial samples.
-09:30:47  INFO    Success rate of attack: 23.70%
-09:30:47  INFO      -> 92.360% -> 68.660%  (evasion 25.66% of correct, Linf 0.1000, 17/39 feats, 4.4s)
-09:30:47  INFO    deepfool x mlp   {'max_iter': 50, 'epsilon': 1e-06, 'nb_grads': 2}
+2026-10-08 20:47:11.562287: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+20:47:13  INFO    5000 source rows from data/processed/test.npz | 38 features | attack classes present: {1: 178, 2: 103, 3: 207, 4: 186, 5: 211, 6: 224, 7: 94, 8: 195, 9: 205, 10: 199, 11: 191, 12: 200, 13: 191, 14: 226, 15: 216, 16: 191, 17: 208, 18: 213, 19: 202, 20: 232, 21: 202, 22: 10, 23: 181, 24: 145, 25: 226, 26: 212, 27: 9, 28: 23, 29: 19, 30: 28, 31: 6, 32: 18, 33: 49}
+2026-10-08 20:47:14.393147: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:47] Overriding orig_value setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+20:47:14  INFO    loaded mlp (15394 params) from mlp.keras
+20:47:14  INFO    mlp: clean detection rate on the source rows 92.3800%
+20:47:14  INFO    fgsm     x mlp   {'eps': 0.1}
+20:47:15  INFO    Success rate of FGM attack: 0.00%
+20:47:15  INFO      -> 92.380% -> 82.960%  (evasion 13.29% of correct, Linf 0.1000, 16/38 feats, 0.5s)
+20:47:15  INFO    bim      x mlp   {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 10}
+20:47:15  INFO    Creating adversarial samples.
+20:47:16  INFO    Success rate of attack: 18.98%
+20:47:16  INFO      -> 92.380% -> 73.380%  (evasion 20.57% of correct, Linf 0.1000, 17/38 feats, 1.5s)
+20:47:16  INFO    pgd      x mlp   {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 40, 'num_random_init': 0}
+20:47:16  INFO    Creating adversarial samples.
+20:47:21  INFO    Success rate of attack: 27.34%
+20:47:21  INFO      -> 92.380% -> 65.040%  (evasion 29.60% of correct, Linf 0.1000, 18/38 feats, 4.5s)
+20:47:21  INFO    deepfool x mlp   {'max_iter': 50, 'epsilon': 1e-06, 'nb_grads': 2}
 WARNING:tensorflow:Calling GradientTape.gradient on a persistent tape inside its context is significantly less efficient than calling it outside the context (it causes the gradient ops to be recorded on the tape, leading to increased CPU and memory usage). Only call GradientTape.gradient inside the context if you actually want to trace the gradient in order to compute higher order derivatives.
-09:30:47  WARNING Calling GradientTape.gradient on a persistent tape inside its context is significantly less efficient than calling it outside the context (it causes the gradient ops to be recorded on the tape, leading to increased CPU and memory usage). Only call GradientTape.gradient inside the context if you actually want to trace the gradient in order to compute higher order derivatives.
-09:31:00  INFO      -> 92.360% -> 29.960%  (evasion 74.95% of correct, Linf 1.0000, 32/39 feats, 12.6s)
-09:31:00  INFO    loaded cnn (33346 params) from cnn.keras
-09:31:00  INFO    cnn: clean detection rate on the source rows 92.2600%
-09:31:00  INFO    fgsm     x cnn   {'eps': 0.1}
-09:31:01  INFO    Success rate of FGM attack: 0.00%
-09:31:01  INFO      -> 92.260% -> 69.940%  (evasion 27.23% of correct, Linf 0.1000, 30/39 feats, 0.5s)
-09:31:01  INFO    bim      x cnn   {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 10}
-09:31:01  INFO    Creating adversarial samples.
-09:31:06  INFO    Success rate of attack: 78.72%
-09:31:06  INFO      -> 92.260% -> 13.540%  (evasion 85.32% of correct, Linf 0.1000, 32/39 feats, 5.5s)
-09:31:06  INFO    pgd      x cnn   {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 40, 'num_random_init': 0}
-09:31:06  INFO    Creating adversarial samples.
-09:31:28  INFO    Success rate of attack: 90.82%
-09:31:28  INFO      -> 92.260% -> 1.440%  (evasion 98.44% of correct, Linf 0.1000, 32/39 feats, 21.4s)
-09:31:28  INFO    deepfool x cnn   {'max_iter': 50, 'epsilon': 1e-06, 'nb_grads': 2}
-09:32:31  INFO      -> 92.260% -> 9.000%  (evasion 97.85% of correct, Linf 0.4768, 34/39 feats, 62.7s)
-09:32:31  INFO    loaded lstm (19042 params) from lstm.keras
-09:32:32  INFO    lstm: clean detection rate on the source rows 92.4600%
-09:32:32  INFO    fgsm     x lstm  {'eps': 0.1}
-09:32:34  INFO    Success rate of FGM attack: 0.00%
-09:32:34  INFO      -> 92.460% -> 80.060%  (evasion 17.02% of correct, Linf 0.1000, 30/39 feats, 2.1s)
-09:32:34  INFO    bim      x lstm  {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 10}
-09:32:34  INFO    Creating adversarial samples.
-09:33:03  INFO    Success rate of attack: 50.08%
-09:33:03  INFO      -> 92.460% -> 42.380%  (evasion 54.16% of correct, Linf 0.1000, 31/39 feats, 28.8s)
-09:33:03  INFO    pgd      x lstm  {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 40, 'num_random_init': 0}
-09:33:03  INFO    Creating adversarial samples.
-09:35:44  INFO    Success rate of attack: 61.82%
-09:35:45  INFO      -> 92.460% -> 30.640%  (evasion 66.86% of correct, Linf 0.1000, 31/39 feats, 160.5s)
-09:35:45  INFO    deepfool x lstm  {'max_iter': 50, 'epsilon': 1e-06, 'nb_grads': 2}
-09:53:06  INFO      -> 92.460% -> 14.040%  (evasion 92.19% of correct, Linf 1.0000, 33/39 feats, 1040.7s)
-09:53:06  INFO    wrote D:\base_imp\aad\artifacts\reports\figures\fig3_evasion.png
-09:53:06  INFO    generated 12 cells, 22.3 min of attack time
+20:47:21  WARNING Calling GradientTape.gradient on a persistent tape inside its context is significantly less efficient than calling it outside the context (it causes the gradient ops to be recorded on the tape, leading to increased CPU and memory usage). Only call GradientTape.gradient inside the context if you actually want to trace the gradient in order to compute higher order derivatives.
+20:47:34  INFO      -> 92.380% -> 50.880%  (evasion 50.73% of correct, Linf 0.9035, 32/38 feats, 13.1s)
+20:47:34  INFO    loaded cnn (33346 params) from cnn.keras
+20:47:35  INFO    cnn: clean detection rate on the source rows 92.4000%
+20:47:35  INFO    fgsm     x cnn   {'eps': 0.1}
+20:47:36  INFO    Success rate of FGM attack: 0.00%
+20:47:36  INFO      -> 92.400% -> 75.080%  (evasion 19.81% of correct, Linf 0.1000, 30/38 feats, 1.2s)
+20:47:36  INFO    bim      x cnn   {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 10}
+20:47:36  INFO    Creating adversarial samples.
+20:47:38  INFO    Success rate of attack: 44.20%
+20:47:38  INFO      -> 92.400% -> 48.200%  (evasion 47.84% of correct, Linf 0.1000, 31/38 feats, 1.7s)
+20:47:38  INFO    pgd      x cnn   {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 40, 'num_random_init': 0}
+20:47:38  INFO    Creating adversarial samples.
+20:47:45  INFO    Success rate of attack: 60.96%
+20:47:45  INFO      -> 92.400% -> 31.440%  (evasion 65.97% of correct, Linf 0.1000, 31/38 feats, 6.8s)
+20:47:45  INFO    deepfool x cnn   {'max_iter': 50, 'epsilon': 1e-06, 'nb_grads': 2}
+20:48:10  INFO      -> 92.400% -> 62.180%  (evasion 39.48% of correct, Linf 0.3764, 33/38 feats, 24.7s)
+20:48:10  INFO    loaded lstm (19042 params) from lstm.keras
+20:48:11  INFO    lstm: clean detection rate on the source rows 92.2600%
+20:48:11  INFO    fgsm     x lstm  {'eps': 0.1}
+20:48:11  INFO    Success rate of FGM attack: 0.00%
+20:48:11  INFO      -> 92.260% -> 82.860%  (evasion 13.92% of correct, Linf 0.1000, 29/38 feats, 0.3s)
+20:48:11  INFO    bim      x lstm  {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 10}
+20:48:11  INFO    Creating adversarial samples.
+20:48:13  INFO    Success rate of attack: 26.38%
+20:48:13  INFO      -> 92.260% -> 65.860%  (evasion 28.61% of correct, Linf 0.1000, 31/38 feats, 2.0s)
+20:48:13  INFO    pgd      x lstm  {'eps': 0.1, 'eps_step': 0.01, 'max_iter': 40, 'num_random_init': 0}
+20:48:13  INFO    Creating adversarial samples.
+20:48:22  INFO    Success rate of attack: 35.36%
+20:48:22  INFO      -> 92.260% -> 56.900%  (evasion 38.33% of correct, Linf 0.1000, 31/38 feats, 9.0s)
+20:48:22  INFO    deepfool x lstm  {'max_iter': 50, 'epsilon': 1e-06, 'nb_grads': 2}
+20:48:55  INFO      -> 92.260% -> 44.640%  (evasion 58.90% of correct, Linf 0.9670, 33/38 feats, 32.6s)
+20:48:55  INFO    wrote /mnt/d/base_imp/aad/artifacts/reports/figures/fig3_evasion.png
 
 model   attack  eps  clean_acc_%  adv_acc_%  evasion_%  linf_max  l2_mean  feats_changed  seconds
-  MLP     FGSM  0.1        92.36      87.28      8.185   0.10000   0.2906           16.2      0.1
-  MLP      BIM  0.1        92.36      74.66     19.164   0.10000   0.2088           16.4      1.1
-  MLP      PGD  0.1        92.36      68.66     25.660   0.10000   0.2458           16.7      4.4
-  MLP DEEPFOOL    -        92.36      29.96     74.946   1.00000   0.4962           32.2     12.6
-  CNN     FGSM  0.1        92.26      69.94     27.227   0.10000   0.5333           30.5      0.5
-  CNN      BIM  0.1        92.26      13.54     85.324   0.10000   0.3839           32.0      5.5
-  CNN      PGD  0.1        92.26       1.44     98.439   0.10000   0.4417           32.4     21.4
-  CNN DEEPFOOL    -        92.26       9.00     97.854   0.47682   0.2438           34.2     62.7
- LSTM     FGSM  0.1        92.46      80.06     17.024   0.10000   0.5234           29.5      2.1
- LSTM      BIM  0.1        92.46      42.38     54.164   0.10000   0.3966           30.9     28.8
- LSTM      PGD  0.1        92.46      30.64     66.861   0.10000   0.4478           30.6    160.5
- LSTM DEEPFOOL    -        92.46      14.04     92.191   1.00000   0.4560           33.3   1040.7
+  MLP     FGSM  0.1        92.38      82.96     13.293   0.10000   0.2992           16.4      0.5
+  MLP      BIM  0.1        92.38      73.38     20.567   0.10000   0.2112           17.3      1.5
+  MLP      PGD  0.1        92.38      65.04     29.595   0.10000   0.2486           17.6      4.5
+  MLP DEEPFOOL    -        92.38      50.88     50.725   0.90354   0.4760           32.5     13.1
+  CNN     FGSM  0.1        92.40      75.08     19.805   0.10000   0.5263           29.5      1.2
+  CNN      BIM  0.1        92.40      48.20     47.835   0.10000   0.3852           30.6      1.7
+  CNN      PGD  0.1        92.40      31.44     65.974   0.10000   0.4409           31.2      6.8
+  CNN DEEPFOOL    -        92.40      62.18     39.481   0.37636   0.3354           33.1     24.7
+ LSTM     FGSM  0.1        92.26      82.86     13.917   0.10000   0.5174           28.5      0.3
+ LSTM      BIM  0.1        92.26      65.86     28.615   0.10000   0.3923           31.0      2.0
+ LSTM      PGD  0.1        92.26      56.90     38.326   0.10000   0.4484           31.3      9.0
+ LSTM DEEPFOOL    -        92.26      44.64     58.899   0.96695   0.4962           33.4     32.6
+20:48:55  INFO    generated 12 cells, 1.6 min of attack time
