@@ -1,0 +1,56 @@
+# Phase 5 - the adversarial discriminator (gate 2).
+#
+# The paper specifies a Random Forest with the Gini criterion, trained to
+# separate clean flows from perturbed ones. It sits behind the validator: the
+# validator rejects rows that are arithmetically impossible, the discriminator
+# judges rows that are possible but look manufactured.
+#
+# The task is easy to score well on and hard to score *honestly* on. A random
+# train/test split reaches ~100% and means nothing, for two reasons this config
+# is built to defeat:
+#
+#   1. leakage through pairs - every adversarial row has a clean twin built
+#      from the same source flow. Split them randomly and the forest sees the
+#      twin of every test row during training. Hence grouped splitting.
+#   2. leakage through attack family - FGSM/BIM/PGD all take signed gradient
+#      steps and leave near-identical fingerprints. Training on all four and
+#      testing on all four measures memorisation of *these* attacks, not the
+#      ability to spot an unseen one. Hence the leave-one-out protocols.
+
+seed: 42
+
+random_forest:
+  n_estimators: 200
+  criterion: gini          # the paper's choice, and it is what makes the
+                           # per-feature importances below interpretable
+  max_depth: null
+  min_samples_leaf: 1
+  max_features: sqrt
+  class_weight: balanced_subsample
+  n_jobs: -1
+
+dataset:
+  # Negatives must include unperturbed *attack* flows, not benign traffic alone.
+  # Without them the forest can score perfectly by learning "malicious -> raw,
+  # benign -> clean" and never look at the perturbation at all. The 5,000 exact
+  # clean twins guarantee that shortcut is closed.
+  #
+  # extra_negatives: how many further clean rows to draw from the same split,
+  # disjoint from the source rows, to balance against the 60,000 positives.
+  # "auto" fills to a 1:1 clean/adversarial ratio.
+  extra_negatives: auto
+  # Drawn preserving the split's own benign/attack mix, so the false-positive
+  # rate is measured against realistic traffic rather than attack rows only.
+  stratify_extra: true
+
+protocols:
+  # Reported together. The first is the paper's number; the others are the ones
+  # that say whether the defense generalises.
+  random: {test_size: 0.30}
+  leave_one_attack_out: true
+  leave_one_model_out: true
+
+output:
+  discriminator_dir: artifacts/discriminator
+  reports_dir: artifacts/reports
+  figures_dir: artifacts/reports/figures

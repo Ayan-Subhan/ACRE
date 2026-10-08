@@ -1,0 +1,25 @@
+regime,attack,crafted_against,n,MLP_%,CNN_%,LSTM_%,ENSEMBLE_%,baseline_%
+transferred,bim,cnn (baseline),5000,100.0,100.0,98.98,100.0,0.0
+transferred,bim,lstm (baseline),5000,100.0,100.0,99.52,100.0,0.02
+transferred,bim,mlp (baseline),5000,100.0,100.0,99.48,100.0,0.0
+transferred,deepfool,cnn (baseline),5000,99.88,99.68,99.52,99.88,0.04
+transferred,deepfool,lstm (baseline),5000,99.98,99.82,99.48,99.98,0.58
+transferred,deepfool,mlp (baseline),5000,100.0,99.72,99.54,100.0,0.12
+transferred,fgsm,cnn (baseline),5000,100.0,100.0,99.36,100.0,0.0
+transferred,fgsm,lstm (baseline),5000,100.0,100.0,98.74,100.0,0.18
+transferred,fgsm,mlp (baseline),5000,100.0,100.0,99.46,100.0,0.0
+transferred,pgd,cnn (baseline),5000,100.0,100.0,98.48,100.0,0.0
+transferred,pgd,lstm (baseline),5000,100.0,100.0,99.38,100.0,0.02
+transferred,pgd,mlp (baseline),5000,100.0,100.0,99.46,100.0,0.0
+adaptive,fgsm,mlp (hardened),5000,0.0,72.26,6.14,73.36,
+adaptive,bim,mlp (hardened),5000,0.0,89.72,16.68,99.44,
+adaptive,pgd,mlp (hardened),5000,0.0,89.62,13.22,95.9,
+adaptive,deepfool,mlp (hardened),5000,5.94,99.78,99.36,99.8,
+adaptive,fgsm,cnn (hardened),5000,99.86,89.38,98.28,99.9,
+adaptive,bim,cnn (hardened),5000,30.48,81.84,84.72,99.36,
+adaptive,pgd,cnn (hardened),5000,22.92,72.44,90.98,98.24,
+adaptive,deepfool,cnn (hardened),5000,99.76,12.84,89.4,100.0,
+adaptive,fgsm,lstm (hardened),5000,100.0,96.84,0.0,100.0,
+adaptive,bim,lstm (hardened),5000,100.0,95.94,0.0,100.0,
+adaptive,pgd,lstm (hardened),5000,100.0,99.94,0.0,100.0,
+adaptive,deepfool,lstm (hardened),5000,100.0,99.82,4.16,100.0,

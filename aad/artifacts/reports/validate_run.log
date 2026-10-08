@@ -1,0 +1,56 @@
+﻿09:54:59  INFO    mining 768724 benign training rows x 39 features
+09:55:00  INFO    15/39 columns are integral and checkable: ['fin_flag_number', 'syn_flag_number', 'rst_flag_number', 'psh_flag_number', 'ack_flag_number', 'HTTP', 'HTTPS', 'DNS', 'SSH', 'TCP', 'UDP', 'ARP', 'ICMP', 'IPv', 'LLC']
+09:55:00  INFO    1 further integral-looking column(s) excluded as unverifiable: ['IAT']
+09:55:05  INFO    distribution groups (benign train rows): {'TCP': 661088, 'UDP': 52446, 'ICMP': 8, 'ARP': 175, 'other': 55007}
+09:55:05  INFO      Min <= AVG <= Max                            tol=1.00e-06  benign p50 0.00e+00 max 2.94e-07  kept
+09:55:05  INFO      Srate == Rate                                tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      IPv == LLC                                   tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      HTTP implies TCP                             tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      HTTPS implies TCP                            tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      SSH implies TCP                              tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      DNS implies UDP                              tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      FIN flag implies TCP                         tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      SYN flag implies TCP                         tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      RST flag implies TCP                         tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      PSH flag implies TCP                         tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      ACK flag implies TCP                         tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:05  INFO      TCP + UDP + ICMP <= 1                        tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:06  INFO      ARP + IPv <= 1                               tol=1.00e-06  benign p50 0.00e+00 max 0.00e+00  kept
+09:55:06  INFO      6 TCP + 17 UDP + ICMP <= Protocol Type       tol=4.89e+00  benign p50 2.13e-09 max 6.07e-01  PRUNED (loose)
+09:55:06  INFO      Tot sum ~= Number * AVG                      tol=5.10e+00  benign p50 1.37e-01 max 6.56e-01  PRUNED (loose)
+09:55:07  INFO    distribution thresholds at a 1.0% budget: {'TCP': 5.1747, 'UDP': 10.7894, 'ICMP': 6.8554, 'ARP': 10.3308, 'other': 9.8786}
+09:55:07  INFO    wrote D:\base_imp\aad\artifacts\rules.json
+09:55:08  INFO    ========================================================================
+09:55:08  INFO    false-positive rate on 164727 unseen benign test rows: 0.9683%
+09:55:08  INFO        range         0.0012%
+09:55:08  INFO        integrality   0.0000%
+09:55:08  INFO        dependency    0.0000%
+09:55:08  INFO        distribution  0.9677%
+09:55:09  INFO    bim_cnn                catch 100.00% (clean originals 39.32%, attributable 60.68%)  [range 79.2%, integrality 100.0%, dependency 99.9%, distribution 100.0%]
+09:55:09  INFO    bim_lstm               catch 100.00% (clean originals 39.32%, attributable 60.68%)  [range 63.4%, integrality 100.0%, dependency 99.8%, distribution 97.7%]
+09:55:09  INFO    bim_mlp                catch 86.42% (clean originals 39.32%, attributable 47.10%)  [range 21.9%, integrality 54.7%, dependency 54.6%, distribution 78.5%]
+09:55:09  INFO    deepfool_cnn           catch 100.00% (clean originals 39.32%, attributable 60.68%)  [range 77.0%, integrality 100.0%, dependency 100.0%, distribution 99.0%]
+09:55:09  INFO    deepfool_lstm          catch 100.00% (clean originals 39.32%, attributable 60.68%)  [range 68.6%, integrality 100.0%, dependency 100.0%, distribution 97.3%]
+09:55:09  INFO    deepfool_mlp           catch 99.98% (clean originals 39.32%, attributable 60.66%)  [range 25.1%, integrality 100.0%, dependency 100.0%, distribution 98.6%]
+09:55:09  INFO    fgsm_cnn               catch 100.00% (clean originals 39.32%, attributable 60.68%)  [range 68.7%, integrality 100.0%, dependency 96.5%, distribution 100.0%]
+09:55:09  INFO    fgsm_lstm              catch 100.00% (clean originals 39.32%, attributable 60.68%)  [range 53.3%, integrality 100.0%, dependency 97.2%, distribution 99.3%]
+09:55:09  INFO    fgsm_mlp               catch 86.42% (clean originals 39.32%, attributable 47.10%)  [range 13.0%, integrality 54.7%, dependency 52.3%, distribution 78.1%]
+09:55:09  INFO    pgd_cnn                catch 100.00% (clean originals 39.32%, attributable 60.68%)  [range 83.0%, integrality 100.0%, dependency 99.7%, distribution 100.0%]
+09:55:09  INFO    pgd_lstm               catch 100.00% (clean originals 39.32%, attributable 60.68%)  [range 67.9%, integrality 100.0%, dependency 99.5%, distribution 97.7%]
+09:55:09  INFO    pgd_mlp                catch 86.42% (clean originals 39.32%, attributable 47.10%)  [range 25.4%, integrality 54.7%, dependency 54.2%, distribution 78.5%]
+
+                set   kind      n  combined_%  range_%  integrality_%  dependency_%  distribution_%  clean_orig_%  attributable_%  evade_model_only_%  pass_and_evade_%
+clean benign (test)    FPR 164727       0.968    0.001           0.00          0.00           0.968           NaN             NaN                 NaN               NaN
+clean attack (test) reject 217460      39.814    9.095           0.00          0.00          30.851           NaN             NaN                 NaN               NaN
+          bim x cnn  catch   5000     100.000   79.160         100.00         99.94         100.000         39.32           60.68               86.46              0.00
+         bim x lstm  catch   5000     100.000   63.360         100.00         99.82          97.660         39.32           60.68               57.62              0.00
+          bim x mlp  catch   5000      86.420   21.920          54.74         54.62          78.540         39.32           47.10               25.34              0.02
+     deepfool x cnn  catch   5000     100.000   77.040         100.00        100.00          99.000         39.32           60.68               91.00              0.00
+    deepfool x lstm  catch   5000     100.000   68.620          99.98        100.00          97.260         39.32           60.68               85.96              0.00
+     deepfool x mlp  catch   5000      99.980   25.120          99.98         99.98          98.620         39.32           60.66               70.04              0.02
+         fgsm x cnn  catch   5000     100.000   68.660         100.00         96.48          99.980         39.32           60.68               30.06              0.00
+        fgsm x lstm  catch   5000     100.000   53.260          99.98         97.22          99.320         39.32           60.68               19.94              0.00
+         fgsm x mlp  catch   5000      86.420   12.980          54.74         52.26          78.120         39.32           47.10               12.72              0.02
+          pgd x cnn  catch   5000     100.000   82.980         100.00         99.74         100.000         39.32           60.68               98.56              0.00
+         pgd x lstm  catch   5000     100.000   67.860         100.00         99.50          97.700         39.32           60.68               69.36              0.00
+          pgd x mlp  catch   5000      86.420   25.360          54.74         54.16          78.540         39.32           47.10               31.34              0.02

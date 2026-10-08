@@ -1,0 +1,50 @@
+# Phase 6 - the EIDS: adversarially-trained models behind a logical OR.
+#
+# Architectures and the training schedule come from models.yaml; this file only
+# describes what is added on top. Retraining uses the identical builder, seed and
+# callbacks as phase 2, so any difference in the reported numbers is attributable
+# to the augmented data and nothing else.
+
+seed: 42
+
+adversarial_training:
+  # Written by: python scripts/03_generate_ae.py --split train
+  # NOT artifacts/adversarial/ -- those are built from test rows, and training on
+  # them then reporting robustness on them is training on the test set.
+  adv_dir: artifacts/adversarial_train
+
+  # Withheld from training entirely, so the report always contains one number
+  # measured against an attack the model has never seen. DeepFool is the right
+  # choice: FGSM, BIM and PGD are one signed-gradient method at three iteration
+  # counts, so holding any of them out leaves the other two to cover it. Phase 5
+  # measured exactly that -- 100% on a held-out PGD, 2.85% on a held-out DeepFool.
+  holdout_attacks: [deepfool]
+
+  # all - every model trains on every model's examples. Cross-model exposure is
+  #       what makes the ensemble members fail differently instead of together.
+  # own - each model sees only examples crafted against itself.
+  sources: all
+
+  # Share of the available pool to mix in. The augmentation ratio is a real knob:
+  # too little changes nothing, too much spends capacity on traffic the model will
+  # rarely see and costs clean accuracy. 1.0 is ~8.6% of the clean training set.
+  fraction: 1.0
+
+ensemble:
+  members: [mlp, cnn, lstm]
+  rule: or
+
+# Replaying phase 3's examples against a hardened model measures robustness to a
+# *stale* adversary -- one holding the old weights. A white-box attacker recomputes
+# gradients against whatever is deployed. Both are reported; only the second is
+# the honest number, and the gap between them is the point.
+adaptive_evaluation:
+  enabled: true
+  n_samples: 5000
+  attacks: [fgsm, bim, pgd, deepfool]
+
+output:
+  models_dir: artifacts/models
+  adversarial_dir: artifacts/adversarial        # phase 3's test-split examples
+  reports_dir: artifacts/reports
+  figures_dir: artifacts/reports/figures

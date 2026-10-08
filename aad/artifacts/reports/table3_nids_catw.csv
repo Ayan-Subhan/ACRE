@@ -1,0 +1,2 @@
+model,accuracy_%,balanced_acc_%,precision_%,recall_%,f1_%,test_loss,fpr_%,fn,fp,params,epochs,train_s,s_per_epoch
+MLP,93.7669,93.3603,92.9883,96.3074,94.6187,0.15014,9.5868,8030,15792,15522,25,345.1,13.8

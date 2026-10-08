@@ -1,0 +1,9 @@
+category,support,MLP
+Benign,164727,90.413
+DDoS,97830,99.998
+DoS,36000,100.0
+Mirai,27000,100.0
+Recon,32946,85.959
+Spoofing,18000,82.972
+Web,3724,96.133
+BruteForce,1960,90.153

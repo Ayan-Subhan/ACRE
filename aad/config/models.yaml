@@ -1,0 +1,70 @@
+# Phase 2 (M2) - baseline NIDS architectures and training schedule, CICIoT2023.
+# Walkthrough and results: docs/m2-baselines.md. The IDS2018 run used the same
+# architectures and schedule with class_weight off (archive/cicids2018/).
+#
+# All three models take a flat (n_features,) input and emit a 2-unit softmax.
+# The softmax is deliberate: ART's white-box attacks differentiate a probability
+# vector under CategoricalCrossentropy. A single sigmoid unit gives DeepFool
+# nothing to work with.
+#
+# CNN and LSTM reshape internally rather than taking (n_features, 1) from the
+# caller, so every model shares one input space. Phase 3 then perturbs all three
+# in the same 39-dim domain, and one validator/discriminator serves all of them.
+# n_features is read from the data, never set here.
+
+seed: 42
+
+training:
+  epochs: 30
+  batch_size: 1024
+  optimizer: adam
+  learning_rate: 0.001
+  loss: categorical_crossentropy   # paired with one-hot labels + 2-unit softmax
+  early_stopping:
+    monitor: val_loss
+    patience: 4
+    restore_best_weights: true
+  reduce_lr:
+    monitor: val_loss
+    factor: 0.5
+    patience: 2
+    min_lr: 1.0e-5
+  # Binary class weights, inversely proportional to class frequency (Keras
+  # class_weight). The processed CICIoT2023 train split is 56.9% attack / 43.1%
+  # benign, so this is a mild correction (weights ~0.88 attack, ~1.16 benign)
+  # that keeps the loss from favouring "attack" on ambiguous rows - which would
+  # raise benign FPR, the cost every later gate adds to. It does NOT help the
+  # rare attack *categories* (Web 1.0%, BruteForce 0.5% of train); per-category
+  # recall is reported separately so that gap stays visible.
+  #
+  # Modes:  false | binary (= true) | category
+  #   category: per-row sample weights so each of the 8 categories carries equal
+  #             total weight, raised to class_weight_power to temper it (power 0.5:
+  #             BruteForce rows weigh ~4.9x a DDoS row instead of ~24x). This is
+  #             the plan's fallback for weak rare-category recall; it is run as a
+  #             tagged experiment (--class-weight category --tag catw) and compared
+  #             against the binary-weighted baseline in docs/m2-baselines.md.
+  class_weight: binary
+  class_weight_power: 0.5
+
+models:
+  mlp:
+    hidden_units: [128, 64, 32]
+    activation: relu
+    dropout: 0.2
+
+  cnn:
+    conv_blocks:
+      - {filters: 64,  kernel_size: 3, pool: 2}
+      - {filters: 128, kernel_size: 3, pool: null}   # null -> GlobalMaxPooling
+    dense_units: 64
+    dropout: 0.2
+
+  lstm:
+    units: 64
+    dense_units: 32
+    dropout: 0.2
+
+output:
+  models_dir: artifacts/models
+  reports_dir: artifacts/reports

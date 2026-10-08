@@ -1,0 +1,210 @@
+{
+  "seed": 42,
+  "eids_generation": "eids",
+  "members": [
+    "mlp",
+    "cnn",
+    "lstm"
+  ],
+  "n_test_rows": 224469,
+  "n_excluded_discriminator_train": 42000,
+  "n_benign_evaluated": 167040,
+  "n_attack_evaluated": 15429,
+  "n_adversarial_evaluated": 17808,
+  "per_traffic": {
+    "clean benign": {
+      "n": 167040,
+      "stop_rate": 0.011590038314176244,
+      "stage_counts": {
+        "validator": 1590,
+        "discriminator": 0,
+        "eids": 346,
+        "allowed": 165104
+      }
+    },
+    "clean attack": {
+      "n": 15429,
+      "stop_rate": 0.9999351869855467,
+      "stage_counts": {
+        "validator": 15,
+        "discriminator": 0,
+        "eids": 15413,
+        "allowed": 1
+      }
+    },
+    "bim x cnn": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "bim x lstm": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "bim x mlp": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "deepfool x cnn": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "deepfool x lstm": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "deepfool x mlp": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "fgsm x cnn": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "fgsm x lstm": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "fgsm x mlp": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "pgd x cnn": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "pgd x lstm": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    },
+    "pgd x mlp": {
+      "n": 1484,
+      "stop_rate": 1.0,
+      "stage_counts": {
+        "validator": 1484,
+        "discriminator": 0,
+        "eids": 0,
+        "allowed": 0
+      }
+    }
+  },
+  "ablation": [
+    {
+      "stages": "validator",
+      "n_stages": 1,
+      "catch_%": 100.0,
+      "fpr_%": 0.952
+    },
+    {
+      "stages": "discriminator",
+      "n_stages": 1,
+      "catch_%": 100.0,
+      "fpr_%": 0.0
+    },
+    {
+      "stages": "eids",
+      "n_stages": 1,
+      "catch_%": 99.983,
+      "fpr_%": 0.219
+    },
+    {
+      "stages": "validator+discriminator",
+      "n_stages": 2,
+      "catch_%": 100.0,
+      "fpr_%": 0.952
+    },
+    {
+      "stages": "validator+eids",
+      "n_stages": 2,
+      "catch_%": 100.0,
+      "fpr_%": 1.159
+    },
+    {
+      "stages": "discriminator+eids",
+      "n_stages": 2,
+      "catch_%": 100.0,
+      "fpr_%": 0.219
+    },
+    {
+      "stages": "validator+discriminator+eids",
+      "n_stages": 3,
+      "catch_%": 100.0,
+      "fpr_%": 1.159
+    }
+  ],
+  "marginal_catch": {
+    "validator": 0.0,
+    "discriminator": 0.0,
+    "eids": 0.0
+  },
+  "marginal_fpr": {
+    "validator": 0.009405,
+    "discriminator": 0.0,
+    "eids": 0.002071
+  }
+}

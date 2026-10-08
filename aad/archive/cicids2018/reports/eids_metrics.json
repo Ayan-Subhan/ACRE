@@ -1,0 +1,656 @@
+{
+  "seed": 42,
+  "data_dir": "data/processed",
+  "adversarial_training": {
+    "adv_dir": "artifacts/adversarial_train",
+    "holdout_attacks": [
+      "deepfool"
+    ],
+    "sources": "all",
+    "fraction": 1.0
+  },
+  "augmentation": {},
+  "train_seconds": {},
+  "clean": {
+    "mlp_baseline": {
+      "accuracy": 0.9998975359626496,
+      "precision": 0.9998169755204759,
+      "recall": 0.9991312299954275,
+      "f1": 0.9994739851343625,
+      "f1_weighted": 0.9998975202838278,
+      "tn": 202595,
+      "fp": 4,
+      "fn": 19,
+      "tp": 21851,
+      "fpr": 1.9743434074205698e-05,
+      "fnr": 0.0008687700045724737,
+      "support_benign": 202599,
+      "support_attack": 21870,
+      "loss": 0.0005476317205731027,
+      "per_attack_type": {
+        "Benign": {
+          "support": 202599,
+          "correct_rate": 0.9999802565659258
+        },
+        "Type1 DoS-Hulk": {
+          "support": 21780,
+          "correct_rate": 0.9999540863177226
+        },
+        "Type2 DoS-SlowHTTPTest": {
+          "support": 9,
+          "correct_rate": 1.0
+        },
+        "Type3 BruteForce-Web": {
+          "support": 51,
+          "correct_rate": 0.6666666666666666
+        },
+        "Type4 BruteForce-XSS": {
+          "support": 23,
+          "correct_rate": 0.9565217391304348
+        },
+        "Type5 SQL-Injection": {
+          "support": 7,
+          "correct_rate": 1.0
+        }
+      }
+    },
+    "cnn_baseline": {
+      "accuracy": 0.9997906169671535,
+      "precision": 0.9997709888700591,
+      "recall": 0.998079561042524,
+      "f1": 0.998924558954763,
+      "f1_weighted": 0.9997905378916876,
+      "tn": 202594,
+      "fp": 5,
+      "fn": 42,
+      "tp": 21828,
+      "fpr": 2.467929259275712e-05,
+      "fnr": 0.0019204389574759945,
+      "support_benign": 202599,
+      "support_attack": 21870,
+      "loss": 0.0008001436229847162,
+      "per_attack_type": {
+        "Benign": {
+          "support": 202599,
+          "correct_rate": 0.9999753207074072
+        },
+        "Type1 DoS-Hulk": {
+          "support": 21780,
+          "correct_rate": 1.0
+        },
+        "Type2 DoS-SlowHTTPTest": {
+          "support": 9,
+          "correct_rate": 1.0
+        },
+        "Type3 BruteForce-Web": {
+          "support": 51,
+          "correct_rate": 0.49019607843137253
+        },
+        "Type4 BruteForce-XSS": {
+          "support": 23,
+          "correct_rate": 0.391304347826087
+        },
+        "Type5 SQL-Injection": {
+          "support": 7,
+          "correct_rate": 0.7142857142857143
+        }
+      }
+    },
+    "lstm_baseline": {
+      "accuracy": 0.9969973582098196,
+      "precision": 0.9755878657332615,
+      "recall": 0.994055784179241,
+      "f1": 0.9847352448249309,
+      "f1_weighted": 0.997009899503303,
+      "tn": 202055,
+      "fp": 544,
+      "fn": 130,
+      "tp": 21740,
+      "fpr": 0.002685107034091975,
+      "fnr": 0.00594421582075903,
+      "support_benign": 202599,
+      "support_attack": 21870,
+      "loss": 0.01702359501750583,
+      "per_attack_type": {
+        "Benign": {
+          "support": 202599,
+          "correct_rate": 0.997314892965908
+        },
+        "Type1 DoS-Hulk": {
+          "support": 21780,
+          "correct_rate": 0.9977502295684114
+        },
+        "Type2 DoS-SlowHTTPTest": {
+          "support": 9,
+          "correct_rate": 1.0
+        },
+        "Type3 BruteForce-Web": {
+          "support": 51,
+          "correct_rate": 0.0
+        },
+        "Type4 BruteForce-XSS": {
+          "support": 23,
+          "correct_rate": 0.0
+        },
+        "Type5 SQL-Injection": {
+          "support": 7,
+          "correct_rate": 0.0
+        }
+      }
+    },
+    "ensemble_baseline": {
+      "accuracy": 0.9974784936895518,
+      "precision": 0.9755357142857143,
+      "recall": 0.9991769547325103,
+      "f1": 0.9872148181612831,
+      "f1_weighted": 0.9974919361856968,
+      "tn": 202051,
+      "fp": 548,
+      "fn": 18,
+      "tp": 21852,
+      "fpr": 0.0027048504681661807,
+      "fnr": 0.0008230452674897119,
+      "support_benign": 202599,
+      "support_attack": 21870,
+      "loss": 0.0037626859559819928,
+      "per_attack_type": {
+        "Benign": {
+          "support": 202599,
+          "correct_rate": 0.9972951495318338
+        },
+        "Type1 DoS-Hulk": {
+          "support": 21780,
+          "correct_rate": 1.0
+        },
+        "Type2 DoS-SlowHTTPTest": {
+          "support": 9,
+          "correct_rate": 1.0
+        },
+        "Type3 BruteForce-Web": {
+          "support": 51,
+          "correct_rate": 0.6666666666666666
+        },
+        "Type4 BruteForce-XSS": {
+          "support": 23,
+          "correct_rate": 0.9565217391304348
+        },
+        "Type5 SQL-Injection": {
+          "support": 7,
+          "correct_rate": 1.0
+        }
+      },
+      "disagreement": {
+        "n_rows": 224469,
+        "unanimous_%": 0.9970686375401503,
+        "unique_flags": {
+          "mlp": 26,
+          "cnn": 3,
+          "lstm": 541
+        },
+        "unique_catches": {
+          "mlp": 24,
+          "cnn": 1,
+          "lstm": 0
+        },
+        "unique_false_alarms": {
+          "mlp": 2,
+          "cnn": 2,
+          "lstm": 541
+        }
+      }
+    },
+    "mlp_eids": {
+      "accuracy": 0.9998975359626496,
+      "precision": 0.9998169755204759,
+      "recall": 0.9991312299954275,
+      "f1": 0.9994739851343625,
+      "f1_weighted": 0.9998975202838278,
+      "tn": 202595,
+      "fp": 4,
+      "fn": 19,
+      "tp": 21851,
+      "fpr": 1.9743434074205698e-05,
+      "fnr": 0.0008687700045724737,
+      "support_benign": 202599,
+      "support_attack": 21870,
+      "loss": 0.0005499838089659574,
+      "per_attack_type": {
+        "Benign": {
+          "support": 202599,
+          "correct_rate": 0.9999802565659258
+        },
+        "Type1 DoS-Hulk": {
+          "support": 21780,
+          "correct_rate": 0.9999540863177226
+        },
+        "Type2 DoS-SlowHTTPTest": {
+          "support": 9,
+          "correct_rate": 1.0
+        },
+        "Type3 BruteForce-Web": {
+          "support": 51,
+          "correct_rate": 0.6666666666666666
+        },
+        "Type4 BruteForce-XSS": {
+          "support": 23,
+          "correct_rate": 0.9565217391304348
+        },
+        "Type5 SQL-Injection": {
+          "support": 7,
+          "correct_rate": 1.0
+        }
+      }
+    },
+    "cnn_eids": {
+      "accuracy": 0.9997282475531143,
+      "precision": 0.999862479944992,
+      "recall": 0.9973479652491998,
+      "f1": 0.9986036396932586,
+      "f1_weighted": 0.9997280949239362,
+      "tn": 202596,
+      "fp": 3,
+      "fn": 58,
+      "tp": 21812,
+      "fpr": 1.4807575555654273e-05,
+      "fnr": 0.002652034750800183,
+      "support_benign": 202599,
+      "support_attack": 21870,
+      "loss": 0.0010710257761542277,
+      "per_attack_type": {
+        "Benign": {
+          "support": 202599,
+          "correct_rate": 0.9999851924244444
+        },
+        "Type1 DoS-Hulk": {
+          "support": 21780,
+          "correct_rate": 1.0
+        },
+        "Type2 DoS-SlowHTTPTest": {
+          "support": 9,
+          "correct_rate": 0.0
+        },
+        "Type3 BruteForce-Web": {
+          "support": 51,
+          "correct_rate": 0.37254901960784315
+        },
+        "Type4 BruteForce-XSS": {
+          "support": 23,
+          "correct_rate": 0.391304347826087
+        },
+        "Type5 SQL-Injection": {
+          "support": 7,
+          "correct_rate": 0.5714285714285714
+        }
+      }
+    },
+    "lstm_eids": {
+      "accuracy": 0.9975854126850479,
+      "precision": 0.9805335255948089,
+      "recall": 0.9949702789208962,
+      "f1": 0.987699151196042,
+      "f1_weighted": 0.9975932752805079,
+      "tn": 202167,
+      "fp": 432,
+      "fn": 110,
+      "tp": 21760,
+      "fpr": 0.0021322908800142154,
+      "fnr": 0.005029721079103796,
+      "support_benign": 202599,
+      "support_attack": 21870,
+      "loss": 0.010475724733759354,
+      "per_attack_type": {
+        "Benign": {
+          "support": 202599,
+          "correct_rate": 0.9978677091199858
+        },
+        "Type1 DoS-Hulk": {
+          "support": 21780,
+          "correct_rate": 0.9990817263544536
+        },
+        "Type2 DoS-SlowHTTPTest": {
+          "support": 9,
+          "correct_rate": 0.0
+        },
+        "Type3 BruteForce-Web": {
+          "support": 51,
+          "correct_rate": 0.0
+        },
+        "Type4 BruteForce-XSS": {
+          "support": 23,
+          "correct_rate": 0.0
+        },
+        "Type5 SQL-Injection": {
+          "support": 7,
+          "correct_rate": 0.0
+        }
+      }
+    },
+    "ensemble_eids": {
+      "accuracy": 0.997986358918158,
+      "precision": 0.9805258906937091,
+      "recall": 0.9991769547325103,
+      "f1": 0.989763565540357,
+      "f1_weighted": 0.9979948095954241,
+      "tn": 202165,
+      "fp": 434,
+      "fn": 18,
+      "tp": 21852,
+      "fpr": 0.002142162597051318,
+      "fnr": 0.0008230452674897119,
+      "support_benign": 202599,
+      "support_attack": 21870,
+      "loss": 0.006877741571371136,
+      "per_attack_type": {
+        "Benign": {
+          "support": 202599,
+          "correct_rate": 0.9978578374029486
+        },
+        "Type1 DoS-Hulk": {
+          "support": 21780,
+          "correct_rate": 1.0
+        },
+        "Type2 DoS-SlowHTTPTest": {
+          "support": 9,
+          "correct_rate": 1.0
+        },
+        "Type3 BruteForce-Web": {
+          "support": 51,
+          "correct_rate": 0.6666666666666666
+        },
+        "Type4 BruteForce-XSS": {
+          "support": 23,
+          "correct_rate": 0.9565217391304348
+        },
+        "Type5 SQL-Injection": {
+          "support": 7,
+          "correct_rate": 1.0
+        }
+      },
+      "disagreement": {
+        "n_rows": 224469,
+        "unanimous_%": 0.9976656019316699,
+        "unique_flags": {
+          "mlp": 42,
+          "cnn": 1,
+          "lstm": 429
+        },
+        "unique_catches": {
+          "mlp": 40,
+          "cnn": 1,
+          "lstm": 0
+        },
+        "unique_false_alarms": {
+          "mlp": 2,
+          "cnn": 0,
+          "lstm": 429
+        }
+      }
+    }
+  },
+  "robustness": [
+    {
+      "regime": "transferred",
+      "attack": "bim",
+      "crafted_against": "cnn (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 98.98,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.0
+    },
+    {
+      "regime": "transferred",
+      "attack": "bim",
+      "crafted_against": "lstm (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 99.52,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.02
+    },
+    {
+      "regime": "transferred",
+      "attack": "bim",
+      "crafted_against": "mlp (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 99.48,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.0
+    },
+    {
+      "regime": "transferred",
+      "attack": "deepfool",
+      "crafted_against": "cnn (baseline)",
+      "n": 5000,
+      "MLP_%": 99.88,
+      "CNN_%": 99.68,
+      "LSTM_%": 99.52,
+      "ENSEMBLE_%": 99.88,
+      "baseline_%": 0.04
+    },
+    {
+      "regime": "transferred",
+      "attack": "deepfool",
+      "crafted_against": "lstm (baseline)",
+      "n": 5000,
+      "MLP_%": 99.98,
+      "CNN_%": 99.82,
+      "LSTM_%": 99.48,
+      "ENSEMBLE_%": 99.98,
+      "baseline_%": 0.58
+    },
+    {
+      "regime": "transferred",
+      "attack": "deepfool",
+      "crafted_against": "mlp (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 99.72,
+      "LSTM_%": 99.54,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.12
+    },
+    {
+      "regime": "transferred",
+      "attack": "fgsm",
+      "crafted_against": "cnn (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 99.36,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.0
+    },
+    {
+      "regime": "transferred",
+      "attack": "fgsm",
+      "crafted_against": "lstm (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 98.74,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.18
+    },
+    {
+      "regime": "transferred",
+      "attack": "fgsm",
+      "crafted_against": "mlp (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 99.46,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.0
+    },
+    {
+      "regime": "transferred",
+      "attack": "pgd",
+      "crafted_against": "cnn (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 98.48,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.0
+    },
+    {
+      "regime": "transferred",
+      "attack": "pgd",
+      "crafted_against": "lstm (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 99.38,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.02
+    },
+    {
+      "regime": "transferred",
+      "attack": "pgd",
+      "crafted_against": "mlp (baseline)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 100.0,
+      "LSTM_%": 99.46,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": 0.0
+    },
+    {
+      "regime": "adaptive",
+      "attack": "fgsm",
+      "crafted_against": "mlp (hardened)",
+      "n": 5000,
+      "MLP_%": 0.0,
+      "CNN_%": 72.26,
+      "LSTM_%": 6.14,
+      "ENSEMBLE_%": 73.36,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "bim",
+      "crafted_against": "mlp (hardened)",
+      "n": 5000,
+      "MLP_%": 0.0,
+      "CNN_%": 89.72,
+      "LSTM_%": 16.68,
+      "ENSEMBLE_%": 99.44,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "pgd",
+      "crafted_against": "mlp (hardened)",
+      "n": 5000,
+      "MLP_%": 0.0,
+      "CNN_%": 89.62,
+      "LSTM_%": 13.22,
+      "ENSEMBLE_%": 95.9,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "deepfool",
+      "crafted_against": "mlp (hardened)",
+      "n": 5000,
+      "MLP_%": 5.94,
+      "CNN_%": 99.78,
+      "LSTM_%": 99.36,
+      "ENSEMBLE_%": 99.8,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "fgsm",
+      "crafted_against": "cnn (hardened)",
+      "n": 5000,
+      "MLP_%": 99.86,
+      "CNN_%": 89.38,
+      "LSTM_%": 98.28,
+      "ENSEMBLE_%": 99.9,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "bim",
+      "crafted_against": "cnn (hardened)",
+      "n": 5000,
+      "MLP_%": 30.48,
+      "CNN_%": 81.84,
+      "LSTM_%": 84.72,
+      "ENSEMBLE_%": 99.36,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "pgd",
+      "crafted_against": "cnn (hardened)",
+      "n": 5000,
+      "MLP_%": 22.92,
+      "CNN_%": 72.44,
+      "LSTM_%": 90.98,
+      "ENSEMBLE_%": 98.24,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "deepfool",
+      "crafted_against": "cnn (hardened)",
+      "n": 5000,
+      "MLP_%": 99.76,
+      "CNN_%": 12.84,
+      "LSTM_%": 89.4,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "fgsm",
+      "crafted_against": "lstm (hardened)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 96.84,
+      "LSTM_%": 0.0,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "bim",
+      "crafted_against": "lstm (hardened)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 95.94,
+      "LSTM_%": 0.0,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "pgd",
+      "crafted_against": "lstm (hardened)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 99.94,
+      "LSTM_%": 0.0,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": NaN
+    },
+    {
+      "regime": "adaptive",
+      "attack": "deepfool",
+      "crafted_against": "lstm (hardened)",
+      "n": 5000,
+      "MLP_%": 100.0,
+      "CNN_%": 99.82,
+      "LSTM_%": 4.16,
+      "ENSEMBLE_%": 100.0,
+      "baseline_%": NaN
+    }
+  ]
+}

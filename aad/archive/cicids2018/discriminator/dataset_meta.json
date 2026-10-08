@@ -1,0 +1,20 @@
+{
+  "source_row_indices_sha": 557721064,
+  "n_cells": 12,
+  "cells": [
+    "bimxcnn",
+    "bimxlstm",
+    "bimxmlp",
+    "deepfoolxcnn",
+    "deepfoolxlstm",
+    "deepfoolxmlp",
+    "fgsmxcnn",
+    "fgsmxlstm",
+    "fgsmxmlp",
+    "pgdxcnn",
+    "pgdxlstm",
+    "pgdxmlp"
+  ],
+  "extra_negatives": "auto",
+  "seed": 42
+}

@@ -1,0 +1,9 @@
+protocol,held_out,n_train,n_test,accuracy_%,precision_%,catch_%,f1_%,fpr_%,fn,fp,fit_s
+random,-,84192,35808,100.0,100.0,100.0,100.0,0.0,0,0,5.5
+leave_one_attack_out,bim,73644,22452,100.0,100.0,100.0,100.0,0.0,0,0,4.6
+leave_one_attack_out,deepfool,73644,22452,80.737,100.0,2.853,5.547,0.0,4325,0,4.9
+leave_one_attack_out,fgsm,73644,22452,100.0,100.0,100.0,100.0,0.0,0,0,5.3
+leave_one_attack_out,pgd,73644,22452,100.0,100.0,100.0,100.0,0.0,0,0,5.3
+leave_one_model_out,cnn,70128,23936,78.697,100.0,14.1,24.716,0.0,5099,0,4.8
+leave_one_model_out,lstm,70128,23936,99.971,100.0,99.882,99.941,0.0,7,0,4.5
+leave_one_model_out,mlp,70128,23936,99.992,100.0,99.966,99.983,0.0,2,0,4.6

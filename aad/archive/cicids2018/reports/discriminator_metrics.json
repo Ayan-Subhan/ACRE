@@ -1,0 +1,478 @@
+{
+  "seed": 42,
+  "data_dir": "data/processed",
+  "random_forest": {
+    "n_estimators": 200,
+    "criterion": "gini",
+    "max_depth": null,
+    "min_samples_leaf": 1,
+    "max_features": "sqrt",
+    "class_weight": "balanced_subsample",
+    "n_jobs": -1
+  },
+  "dataset": {
+    "n_rows": 120000,
+    "n_adversarial": 60000,
+    "n_clean": 60000,
+    "n_twins": 5000,
+    "n_groups": 60000,
+    "attacks": [
+      "bim",
+      "deepfool",
+      "fgsm",
+      "pgd"
+    ],
+    "models": [
+      "cnn",
+      "lstm",
+      "mlp"
+    ],
+    "test_size": 0.3
+  },
+  "importances_top15": [
+    {
+      "feature": "Protocol",
+      "index": 1,
+      "gini_importance": 0.1453864592343578
+    },
+    {
+      "feature": "Bwd Header Len",
+      "index": 33,
+      "gini_importance": 0.06388224712202704
+    },
+    {
+      "feature": "Subflow Bwd Pkts",
+      "index": 54,
+      "gini_importance": 0.06157342377967443
+    },
+    {
+      "feature": "Tot Fwd Pkts",
+      "index": 3,
+      "gini_importance": 0.06065565168695154
+    },
+    {
+      "feature": "Active Max",
+      "index": 62,
+      "gini_importance": 0.05890274376725306
+    },
+    {
+      "feature": "Tot Bwd Pkts",
+      "index": 4,
+      "gini_importance": 0.05031435613823782
+    },
+    {
+      "feature": "Idle Max",
+      "index": 66,
+      "gini_importance": 0.043431911017399114
+    },
+    {
+      "feature": "Subflow Fwd Pkts",
+      "index": 52,
+      "gini_importance": 0.043282532232080576
+    },
+    {
+      "feature": "Idle Min",
+      "index": 67,
+      "gini_importance": 0.035413412413767345
+    },
+    {
+      "feature": "Down/Up Ratio",
+      "index": 48,
+      "gini_importance": 0.03475453931769524
+    },
+    {
+      "feature": "Fwd Seg Size Min",
+      "index": 59,
+      "gini_importance": 0.030672445481265066
+    },
+    {
+      "feature": "TotLen Fwd Pkts",
+      "index": 5,
+      "gini_importance": 0.030005481551486045
+    },
+    {
+      "feature": "FIN Flag Cnt",
+      "index": 41,
+      "gini_importance": 0.021028309480948346
+    },
+    {
+      "feature": "Dst Port",
+      "index": 0,
+      "gini_importance": 0.020907247147484365
+    },
+    {
+      "feature": "Active Min",
+      "index": 63,
+      "gini_importance": 0.0177245564243778
+    }
+  ],
+  "integrality_overlap": {
+    "n_integer_columns": 25,
+    "top_k": 15,
+    "top_k_that_are_integer_columns": 9,
+    "which": [
+      "Protocol",
+      "Subflow Bwd Pkts",
+      "Tot Fwd Pkts",
+      "Tot Bwd Pkts",
+      "Subflow Fwd Pkts",
+      "Down/Up Ratio",
+      "Fwd Seg Size Min",
+      "FIN Flag Cnt",
+      "Dst Port"
+    ],
+    "mass_on_integer_columns": 0.4686
+  },
+  "results": {
+    "random": {
+      "-": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "f1_weighted": 1.0,
+        "tn": 18000,
+        "fp": 0,
+        "fn": 0,
+        "tp": 17808,
+        "fpr": 0.0,
+        "fnr": 0.0,
+        "support_benign": 18000,
+        "support_attack": 17808,
+        "loss": 0.00021342777221678444,
+        "fit_seconds": 5.5,
+        "n_train": 84192,
+        "n_test": 35808,
+        "n_train_adversarial": 42192,
+        "per_attack": {
+          "bim": {
+            "support": 4452,
+            "catch_rate": 1.0
+          },
+          "deepfool": {
+            "support": 4452,
+            "catch_rate": 1.0
+          },
+          "fgsm": {
+            "support": 4452,
+            "catch_rate": 1.0
+          },
+          "pgd": {
+            "support": 4452,
+            "catch_rate": 1.0
+          }
+        },
+        "per_model": {
+          "cnn": {
+            "support": 5936,
+            "catch_rate": 1.0
+          },
+          "lstm": {
+            "support": 5936,
+            "catch_rate": 1.0
+          },
+          "mlp": {
+            "support": 5936,
+            "catch_rate": 1.0
+          }
+        }
+      }
+    },
+    "leave_one_attack_out": {
+      "bim": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "f1_weighted": 1.0,
+        "tn": 18000,
+        "fp": 0,
+        "fn": 0,
+        "tp": 4452,
+        "fpr": 0.0,
+        "fnr": 0.0,
+        "support_benign": 18000,
+        "support_attack": 4452,
+        "loss": 0.0013943027296351301,
+        "fit_seconds": 4.6,
+        "n_train": 73644,
+        "n_test": 22452,
+        "n_train_adversarial": 31644,
+        "per_attack": {
+          "bim": {
+            "support": 4452,
+            "catch_rate": 1.0
+          }
+        },
+        "per_model": {
+          "cnn": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "lstm": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "mlp": {
+            "support": 1484,
+            "catch_rate": 1.0
+          }
+        }
+      },
+      "deepfool": {
+        "accuracy": 0.8073668270087297,
+        "precision": 1.0,
+        "recall": 0.028526504941599282,
+        "f1": 0.055470626774404896,
+        "f1_weighted": 0.7267232791844656,
+        "tn": 18000,
+        "fp": 0,
+        "fn": 4325,
+        "tp": 127,
+        "fpr": 0.0,
+        "fnr": 0.9714734950584007,
+        "support_benign": 18000,
+        "support_attack": 4452,
+        "loss": 0.42768204601777604,
+        "fit_seconds": 4.9,
+        "n_train": 73644,
+        "n_test": 22452,
+        "n_train_adversarial": 31644,
+        "per_attack": {
+          "deepfool": {
+            "support": 4452,
+            "catch_rate": 0.028526504941599282
+          }
+        },
+        "per_model": {
+          "cnn": {
+            "support": 1484,
+            "catch_rate": 0.0
+          },
+          "lstm": {
+            "support": 1484,
+            "catch_rate": 0.0033692722371967657
+          },
+          "mlp": {
+            "support": 1484,
+            "catch_rate": 0.08221024258760108
+          }
+        }
+      },
+      "fgsm": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "f1_weighted": 1.0,
+        "tn": 18000,
+        "fp": 0,
+        "fn": 0,
+        "tp": 4452,
+        "fpr": 0.0,
+        "fnr": 0.0,
+        "support_benign": 18000,
+        "support_attack": 4452,
+        "loss": 0.010712626003843862,
+        "fit_seconds": 5.3,
+        "n_train": 73644,
+        "n_test": 22452,
+        "n_train_adversarial": 31644,
+        "per_attack": {
+          "fgsm": {
+            "support": 4452,
+            "catch_rate": 1.0
+          }
+        },
+        "per_model": {
+          "cnn": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "lstm": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "mlp": {
+            "support": 1484,
+            "catch_rate": 1.0
+          }
+        }
+      },
+      "pgd": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "f1_weighted": 1.0,
+        "tn": 18000,
+        "fp": 0,
+        "fn": 0,
+        "tp": 4452,
+        "fpr": 0.0,
+        "fnr": 0.0,
+        "support_benign": 18000,
+        "support_attack": 4452,
+        "loss": 0.0011076314086378614,
+        "fit_seconds": 5.3,
+        "n_train": 73644,
+        "n_test": 22452,
+        "n_train_adversarial": 31644,
+        "per_attack": {
+          "pgd": {
+            "support": 4452,
+            "catch_rate": 1.0
+          }
+        },
+        "per_model": {
+          "cnn": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "lstm": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "mlp": {
+            "support": 1484,
+            "catch_rate": 1.0
+          }
+        }
+      }
+    },
+    "leave_one_model_out": {
+      "cnn": {
+        "accuracy": 0.7869735962566845,
+        "precision": 1.0,
+        "recall": 0.14100404312668463,
+        "f1": 0.24715783257050053,
+        "f1_weighted": 0.7200006631187529,
+        "tn": 18000,
+        "fp": 0,
+        "fn": 5099,
+        "tp": 837,
+        "fpr": 0.0,
+        "fnr": 0.8589959568733153,
+        "support_benign": 18000,
+        "support_attack": 5936,
+        "loss": 0.3725325973009916,
+        "fit_seconds": 4.8,
+        "n_train": 70128,
+        "n_test": 23936,
+        "n_train_adversarial": 28128,
+        "per_attack": {
+          "bim": {
+            "support": 1484,
+            "catch_rate": 0.14353099730458221
+          },
+          "deepfool": {
+            "support": 1484,
+            "catch_rate": 0.09905660377358491
+          },
+          "fgsm": {
+            "support": 1484,
+            "catch_rate": 0.1778975741239892
+          },
+          "pgd": {
+            "support": 1484,
+            "catch_rate": 0.14353099730458221
+          }
+        },
+        "per_model": {
+          "cnn": {
+            "support": 5936,
+            "catch_rate": 0.14100404312668463
+          }
+        }
+      },
+      "lstm": {
+        "accuracy": 0.9997075534759359,
+        "precision": 1.0,
+        "recall": 0.9988207547169812,
+        "f1": 0.9994100294985251,
+        "f1_weighted": 0.9997074956352981,
+        "tn": 18000,
+        "fp": 0,
+        "fn": 7,
+        "tp": 5929,
+        "fpr": 0.0,
+        "fnr": 0.0011792452830188679,
+        "support_benign": 18000,
+        "support_attack": 5936,
+        "loss": 0.0451742924738022,
+        "fit_seconds": 4.5,
+        "n_train": 70128,
+        "n_test": 23936,
+        "n_train_adversarial": 28128,
+        "per_attack": {
+          "bim": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "deepfool": {
+            "support": 1484,
+            "catch_rate": 0.9952830188679245
+          },
+          "fgsm": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "pgd": {
+            "support": 1484,
+            "catch_rate": 1.0
+          }
+        },
+        "per_model": {
+          "lstm": {
+            "support": 5936,
+            "catch_rate": 0.9988207547169812
+          }
+        }
+      },
+      "mlp": {
+        "accuracy": 0.9999164438502673,
+        "precision": 1.0,
+        "recall": 0.9996630727762803,
+        "f1": 0.9998315080033698,
+        "f1_weighted": 0.9999164391318713,
+        "tn": 18000,
+        "fp": 0,
+        "fn": 2,
+        "tp": 5934,
+        "fpr": 0.0,
+        "fnr": 0.00033692722371967657,
+        "support_benign": 18000,
+        "support_attack": 5936,
+        "loss": 0.069978287288635,
+        "fit_seconds": 4.6,
+        "n_train": 70128,
+        "n_test": 23936,
+        "n_train_adversarial": 28128,
+        "per_attack": {
+          "bim": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "deepfool": {
+            "support": 1484,
+            "catch_rate": 0.9986522911051213
+          },
+          "fgsm": {
+            "support": 1484,
+            "catch_rate": 1.0
+          },
+          "pgd": {
+            "support": 1484,
+            "catch_rate": 1.0
+          }
+        },
+        "per_model": {
+          "mlp": {
+            "support": 5936,
+            "catch_rate": 0.9996630727762803
+          }
+        }
+      }
+    }
+  }
+}

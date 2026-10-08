@@ -1,0 +1,143 @@
+# Phase 1 (M1) - data pipeline configuration for CICIoT2023.
+# Every knob that changes the contents of data/processed/ lives here.
+#
+# The CSE-CIC-IDS2018 configuration this replaced is preserved verbatim at
+# archive/cicids2018/config/data.yaml. Walkthrough: docs/m1-data-pipeline.md.
+
+dataset: ciciot2023
+seed: 42
+
+raw:
+  dir: data/raw
+  # The Kaggle-merged release: all 169 CIC part files concatenated into one CSV
+  # (13.75 GB, 46,686,579 rows, 46 features + label).
+  files:
+    - ciciot23.csv
+  # pyarrow streaming block size. Each block is parsed in parallel and is
+  # roughly 250k rows; peak RAM during the scan stays around 1.5 GB.
+  block_size_mb: 64
+  # Sanity checks the scan enforces. A truncated or wrong file fails loudly here
+  # instead of producing a plausible-looking smaller dataset.
+  expected_rows: 46686579
+  expected_feature_count: 46
+
+label_column: label
+drop_columns: []
+
+# The full dataset is 97.6% DDoS/DoS flood traffic, and the flood classes are
+# millions of near-identical windows. Training on all of it costs ~22 h of CPU
+# per baseline pass and teaches nothing the first 60k rows of a flood do not.
+# So: every class is deduplicated first, then capped at cap_per_class unique
+# rows chosen uniformly at random (seeded). keep_all classes are never capped.
+sampling:
+  cap_per_class: 60000
+  keep_all: [benigntraffic]
+  # Interim cache of the sampled rows, so later runs skip the 13.75 GB scan.
+  # Invalidated automatically if the CSV, the cap, the seed or the label map change.
+  cache_file: data/interim/ciciot_capped.parquet
+
+# The 8 CIC categories. Codes are the y_category values written to the .npz files.
+categories:
+  Benign: 0
+  DDoS: 1
+  DoS: 2
+  Mirai: 3
+  Recon: 4
+  Spoofing: 5
+  Web: 6
+  BruteForce: 7
+
+# Canonical label map. Keys are slugs: lowercased, non-alphanumerics stripped,
+# so "DDoS-ICMP_Flood", "DDoS ICMP Flood" and "ddos-icmp-flood" all resolve to
+# the same class. Codes are y_multiclass; binary 1 = attack.
+label_map:
+  benigntraffic:          {name: BenignTraffic,           code: 0,  binary: 0, category: Benign}
+  ddosackfragmentation:   {name: DDoS-ACK_Fragmentation,  code: 1,  binary: 1, category: DDoS}
+  ddoshttpflood:          {name: DDoS-HTTP_Flood,         code: 2,  binary: 1, category: DDoS}
+  ddosicmpflood:          {name: DDoS-ICMP_Flood,         code: 3,  binary: 1, category: DDoS}
+  ddosicmpfragmentation:  {name: DDoS-ICMP_Fragmentation, code: 4,  binary: 1, category: DDoS}
+  ddospshackflood:        {name: DDoS-PSHACK_Flood,       code: 5,  binary: 1, category: DDoS}
+  ddosrstfinflood:        {name: DDoS-RSTFINFlood,        code: 6,  binary: 1, category: DDoS}
+  ddosslowloris:          {name: DDoS-SlowLoris,          code: 7,  binary: 1, category: DDoS}
+  ddossynflood:           {name: DDoS-SYN_Flood,          code: 8,  binary: 1, category: DDoS}
+  ddossynonymousipflood:  {name: DDoS-SynonymousIP_Flood, code: 9,  binary: 1, category: DDoS}
+  ddostcpflood:           {name: DDoS-TCP_Flood,          code: 10, binary: 1, category: DDoS}
+  ddosudpflood:           {name: DDoS-UDP_Flood,          code: 11, binary: 1, category: DDoS}
+  ddosudpfragmentation:   {name: DDoS-UDP_Fragmentation,  code: 12, binary: 1, category: DDoS}
+  doshttpflood:           {name: DoS-HTTP_Flood,          code: 13, binary: 1, category: DoS}
+  dossynflood:            {name: DoS-SYN_Flood,           code: 14, binary: 1, category: DoS}
+  dostcpflood:            {name: DoS-TCP_Flood,           code: 15, binary: 1, category: DoS}
+  dosudpflood:            {name: DoS-UDP_Flood,           code: 16, binary: 1, category: DoS}
+  miraigreethflood:       {name: Mirai-greeth_flood,      code: 17, binary: 1, category: Mirai}
+  miraigreipflood:        {name: Mirai-greip_flood,       code: 18, binary: 1, category: Mirai}
+  miraiudpplain:          {name: Mirai-udpplain,          code: 19, binary: 1, category: Mirai}
+  reconhostdiscovery:     {name: Recon-HostDiscovery,     code: 20, binary: 1, category: Recon}
+  reconosscan:            {name: Recon-OSScan,            code: 21, binary: 1, category: Recon}
+  reconpingsweep:         {name: Recon-PingSweep,         code: 22, binary: 1, category: Recon}
+  reconportscan:          {name: Recon-PortScan,          code: 23, binary: 1, category: Recon}
+  vulnerabilityscan:      {name: VulnerabilityScan,       code: 24, binary: 1, category: Recon}
+  dnsspoofing:            {name: DNS_Spoofing,            code: 25, binary: 1, category: Spoofing}
+  mitmarpspoofing:        {name: MITM-ArpSpoofing,        code: 26, binary: 1, category: Spoofing}
+  backdoormalware:        {name: Backdoor_Malware,        code: 27, binary: 1, category: Web}
+  browserhijacking:       {name: BrowserHijacking,        code: 28, binary: 1, category: Web}
+  commandinjection:       {name: CommandInjection,        code: 29, binary: 1, category: Web}
+  sqlinjection:           {name: SqlInjection,            code: 30, binary: 1, category: Web}
+  uploadingattack:        {name: Uploading_Attack,        code: 31, binary: 1, category: Web}
+  xss:                    {name: XSS,                     code: 32, binary: 1, category: Web}
+  dictionarybruteforce:   {name: DictionaryBruteForce,    code: 33, binary: 1, category: BruteForce}
+
+clean:
+  # Defensive: the scan counts NaN/inf per column and the sampler never selects
+  # such rows, so these normally report zero. Kept as a second line of defense.
+  replace_inf_with_nan: true
+  drop_nan_rows: true
+  # Exact duplicate feature+label rows. Already removed before sampling (on the
+  # FULL 46.7M rows), so this pass must report zero; a nonzero count means the
+  # sampler is broken.
+  drop_duplicates: true
+  # Drop a feature when fewer than this many TRAIN rows differ from its most
+  # common value (0 = drop only exactly-constant columns). 100 rows = 0.006% of
+  # train. Removes Telnet (1 row), SMTP (1), IRC (2), cwr_flag_number (9),
+  # ece_flag_number (15), Drate (38) and DHCP (0); keeps DNS (2,318), SSH
+  # (1,363), ARP (851), IPv/LLC (1,680).
+  min_non_mode_rows: 100
+
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+  # Stratify on the 34-way label so every class is present in all three splits.
+  stratify_on: multiclass
+
+transform:
+  # Heavy-tailed columns get a signed log1p, sign(x)*log(1+|x|), before MinMax.
+  # Without it MinMax squeezes almost every row into the bottom 1% of [0,1]
+  # (one extreme row sets the max), and eps=0.1 in phases 3+ stops meaning
+  # "10% of the feature's range" for typical traffic. Signed so that the one
+  # column that can be negative (Covariance) is handled and the map stays
+  # invertible: x = sign(y)*(exp(|y|)-1). Choice of columns is data-driven -
+  # see artifacts/reports/feature_stats.csv and docs/m1-data-pipeline.md.
+  #
+  # "auto" = every column whose MEDIAN lands in the bottom auto_p50_position of
+  # its MinMax range (measured on TRAIN only) and whose span exceeds
+  # auto_min_span. An explicit list of column names is also accepted.
+  # (A first run used the 99th percentile < 0.05 instead; it picked only 5
+  # columns and left packet-size columns with their median at 0.2-1.4% of the
+  # range - see docs/m1-data-pipeline.md, step 6.)
+  log1p_columns: auto
+  auto_p50_position: 0.02
+  auto_min_span: 10
+
+scale:
+  # MinMax to [0,1] because eps in FGSM/PGD is in input units and ART assumes
+  # clip_values=(0,1). Fitted on train only; val/test are clipped after transform.
+  feature_range: [0.0, 1.0]
+  clip_transformed: true
+
+output:
+  interim_dir: data/interim
+  processed_dir: data/processed
+  # --sample-frac smoke runs write here instead, so a smoke test can never
+  # overwrite the real processed dataset.
+  smoke_dir: data/smoke
+  reports_dir: artifacts/reports

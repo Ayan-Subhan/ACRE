@@ -1,0 +1,15 @@
+traffic,kind,n,stopped_%,by_validator_%,by_discriminator_%,by_eids_%,allowed_%
+clean benign,FPR,167040,1.159,0.952,0.0,0.207,98.841
+clean attack,detect,15429,99.994,0.097,0.0,99.896,0.006
+bim x cnn,catch,1484,100.0,100.0,0.0,0.0,0.0
+bim x lstm,catch,1484,100.0,100.0,0.0,0.0,0.0
+bim x mlp,catch,1484,100.0,100.0,0.0,0.0,0.0
+deepfool x cnn,catch,1484,100.0,100.0,0.0,0.0,0.0
+deepfool x lstm,catch,1484,100.0,100.0,0.0,0.0,0.0
+deepfool x mlp,catch,1484,100.0,100.0,0.0,0.0,0.0
+fgsm x cnn,catch,1484,100.0,100.0,0.0,0.0,0.0
+fgsm x lstm,catch,1484,100.0,100.0,0.0,0.0,0.0
+fgsm x mlp,catch,1484,100.0,100.0,0.0,0.0,0.0
+pgd x cnn,catch,1484,100.0,100.0,0.0,0.0,0.0
+pgd x lstm,catch,1484,100.0,100.0,0.0,0.0,0.0
+pgd x mlp,catch,1484,100.0,100.0,0.0,0.0,0.0
