@@ -3,127 +3,134 @@
   "suspect_threshold": 0.99,
   "duplicates": {
     "rows_in_file": 46686579,
-    "exact_duplicate_rows": 18588033,
-    "conflicting_feature_vectors": 0,
+    "exact_duplicate_rows": 18846007,
+    "conflicting_feature_vectors": 48574,
     "per_class": [
       {
         "class": "DDoS-ICMP_Flood",
         "rows_in_file": 7200504,
-        "exact_duplicate_%": 74.87,
+        "exact_duplicate_%": 75.66,
         "conflicting_rows": 0,
         "sampled": 60000
       },
       {
         "class": "DDoS-RSTFINFlood",
         "rows_in_file": 4045285,
-        "exact_duplicate_%": 73.5,
+        "exact_duplicate_%": 73.95,
         "conflicting_rows": 0,
         "sampled": 60000
       },
       {
         "class": "DDoS-TCP_Flood",
         "rows_in_file": 4497667,
-        "exact_duplicate_%": 65.1,
-        "conflicting_rows": 0,
+        "exact_duplicate_%": 66.06,
+        "conflicting_rows": 14802,
         "sampled": 60000
       },
       {
         "class": "DDoS-PSHACK_Flood",
         "rows_in_file": 4094755,
-        "exact_duplicate_%": 59.78,
-        "conflicting_rows": 0,
+        "exact_duplicate_%": 60.4,
+        "conflicting_rows": 3,
         "sampled": 60000
       },
       {
         "class": "DDoS-SYN_Flood",
         "rows_in_file": 4059190,
-        "exact_duplicate_%": 52.37,
-        "conflicting_rows": 0,
+        "exact_duplicate_%": 53.52,
+        "conflicting_rows": 29861,
         "sampled": 60000
       },
       {
         "class": "DoS-TCP_Flood",
         "rows_in_file": 2671445,
-        "exact_duplicate_%": 33.41,
-        "conflicting_rows": 0,
+        "exact_duplicate_%": 34.04,
+        "conflicting_rows": 14802,
         "sampled": 60000
       },
       {
         "class": "Mirai-greeth_flood",
         "rows_in_file": 991866,
-        "exact_duplicate_%": 32.12,
+        "exact_duplicate_%": 33.8,
         "conflicting_rows": 0,
         "sampled": 60000
       },
       {
         "class": "Mirai-greip_flood",
         "rows_in_file": 751682,
-        "exact_duplicate_%": 26.78,
+        "exact_duplicate_%": 27.95,
         "conflicting_rows": 0,
         "sampled": 60000
       },
       {
         "class": "DoS-SYN_Flood",
         "rows_in_file": 2028834,
-        "exact_duplicate_%": 19.68,
-        "conflicting_rows": 0,
+        "exact_duplicate_%": 20.05,
+        "conflicting_rows": 20325,
         "sampled": 60000
       },
       {
         "class": "DDoS-SynonymousIP_Flood",
         "rows_in_file": 3598138,
-        "exact_duplicate_%": 14.79,
-        "conflicting_rows": 0,
+        "exact_duplicate_%": 15.07,
+        "conflicting_rows": 19829,
         "sampled": 60000
       },
       {
         "class": "DoS-UDP_Flood",
         "rows_in_file": 3318595,
-        "exact_duplicate_%": 10.81,
+        "exact_duplicate_%": 10.91,
         "conflicting_rows": 0,
         "sampled": 60000
       },
       {
         "class": "DDoS-ACK_Fragmentation",
         "rows_in_file": 285104,
-        "exact_duplicate_%": 3.57,
+        "exact_duplicate_%": 4.16,
         "conflicting_rows": 0,
         "sampled": 60000
       },
       {
         "class": "DDoS-ICMP_Fragmentation",
         "rows_in_file": 452489,
-        "exact_duplicate_%": 1.88,
+        "exact_duplicate_%": 2.27,
         "conflicting_rows": 0,
         "sampled": 60000
       },
       {
         "class": "Recon-PortScan",
         "rows_in_file": 82284,
-        "exact_duplicate_%": 0.19,
-        "conflicting_rows": 0,
+        "exact_duplicate_%": 0.45,
+        "conflicting_rows": 2,
         "sampled": 60000
+      },
+      {
+        "class": "Recon-PingSweep",
+        "rows_in_file": 2262,
+        "exact_duplicate_%": 0.35,
+        "conflicting_rows": 0,
+        "sampled": 2254
       },
       {
         "class": "Recon-OSScan",
         "rows_in_file": 98259,
-        "exact_duplicate_%": 0.15,
-        "conflicting_rows": 0,
+        "exact_duplicate_%": 0.35,
+        "conflicting_rows": 2,
         "sampled": 60000
       },
       {
         "class": "DoS-HTTP_Flood",
         "rows_in_file": 71864,
         "exact_duplicate_%": 0.11,
-        "conflicting_rows": 0,
+        "conflicting_rows": 1,
         "sampled": 60000
       },
       {
-        "class": "Recon-PingSweep",
-        "rows_in_file": 2262,
-        "exact_duplicate_%": 0.09,
+        "class": "Recon-HostDiscovery",
+        "rows_in_file": 134378,
+        "exact_duplicate_%": 0.07,
         "conflicting_rows": 0,
-        "sampled": 2260
+        "sampled": 60000
       },
       {
         "class": "DDoS-HTTP_Flood",
@@ -133,16 +140,9 @@
         "sampled": 28772
       },
       {
-        "class": "Recon-HostDiscovery",
-        "rows_in_file": 134378,
-        "exact_duplicate_%": 0.02,
-        "conflicting_rows": 0,
-        "sampled": 60000
-      },
-      {
         "class": "DNS_Spoofing",
         "rows_in_file": 178911,
-        "exact_duplicate_%": 0.02,
+        "exact_duplicate_%": 0.06,
         "conflicting_rows": 0,
         "sampled": 60000
       },
@@ -161,18 +161,18 @@
         "sampled": 5245
       },
       {
-        "class": "Uploading_Attack",
-        "rows_in_file": 1252,
-        "exact_duplicate_%": 0.0,
-        "conflicting_rows": 0,
-        "sampled": 1252
-      },
-      {
         "class": "CommandInjection",
         "rows_in_file": 5409,
         "exact_duplicate_%": 0.0,
         "conflicting_rows": 0,
         "sampled": 5409
+      },
+      {
+        "class": "Uploading_Attack",
+        "rows_in_file": 1252,
+        "exact_duplicate_%": 0.0,
+        "conflicting_rows": 0,
+        "sampled": 1252
       },
       {
         "class": "XSS",
@@ -193,7 +193,7 @@
         "rows_in_file": 1098195,
         "exact_duplicate_%": 0.0,
         "conflicting_rows": 0,
-        "sampled": 1098177
+        "sampled": 1098155
       },
       {
         "class": "MITM-ArpSpoofing",
@@ -248,297 +248,305 @@
   },
   "single_feature": [
     {
-      "feature": "IAT",
-      "binary_balanced_acc": 0.941076519819737,
-      "category_balanced_acc": 0.4957419961197733,
-      "n_distinct_train": 79675,
-      "suspect": false
-    },
-    {
       "feature": "Number",
-      "binary_balanced_acc": 0.882529279102536,
-      "category_balanced_acc": 0.2477902904582886,
+      "binary_balanced_acc": 0.8825534002199489,
+      "category_balanced_acc": 0.2512849820483749,
       "n_distinct_train": 96,
       "suspect": false
     },
     {
       "feature": "Weight",
-      "binary_balanced_acc": 0.8825012251248289,
-      "category_balanced_acc": 0.2478349158081098,
+      "binary_balanced_acc": 0.8825458572663794,
+      "category_balanced_acc": 0.2513602135298564,
       "n_distinct_train": 102,
       "suspect": false
     },
     {
       "feature": "rst_count",
-      "binary_balanced_acc": 0.8816169531946296,
-      "category_balanced_acc": 0.3420176928254686,
-      "n_distinct_train": 40569,
+      "binary_balanced_acc": 0.8811338068887768,
+      "category_balanced_acc": 0.3408721577451596,
+      "n_distinct_train": 40604,
       "suspect": false
     },
     {
       "feature": "urg_count",
-      "binary_balanced_acc": 0.8761090819740793,
-      "category_balanced_acc": 0.3118303516696297,
-      "n_distinct_train": 13719,
+      "binary_balanced_acc": 0.8762304927576312,
+      "category_balanced_acc": 0.3101480024500666,
+      "n_distinct_train": 13706,
       "suspect": false
     },
     {
       "feature": "Variance",
-      "binary_balanced_acc": 0.8377196950269472,
-      "category_balanced_acc": 0.29603461081227955,
-      "n_distinct_train": 247,
+      "binary_balanced_acc": 0.83822114949132,
+      "category_balanced_acc": 0.29572208940818484,
+      "n_distinct_train": 243,
       "suspect": false
     },
     {
       "feature": "flow_duration",
-      "binary_balanced_acc": 0.818150989430759,
-      "category_balanced_acc": 0.31712058575420565,
-      "n_distinct_train": 260561,
+      "binary_balanced_acc": 0.81729185027278,
+      "category_balanced_acc": 0.31360441422765595,
+      "n_distinct_train": 260884,
       "suspect": false
     },
     {
       "feature": "Header_Length",
-      "binary_balanced_acc": 0.8057699957753512,
-      "category_balanced_acc": 0.3658206088215547,
-      "n_distinct_train": 213514,
+      "binary_balanced_acc": 0.8052322565955021,
+      "category_balanced_acc": 0.36577849443054133,
+      "n_distinct_train": 213437,
       "suspect": false
     },
     {
       "feature": "HTTPS",
-      "binary_balanced_acc": 0.7990610275080736,
-      "category_balanced_acc": 0.2130997832777869,
+      "binary_balanced_acc": 0.7995479649078718,
+      "category_balanced_acc": 0.21320840651972728,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "Duration",
-      "binary_balanced_acc": 0.7924246177622175,
-      "category_balanced_acc": 0.27792981509542825,
-      "n_distinct_train": 7284,
+      "binary_balanced_acc": 0.7935239466108504,
+      "category_balanced_acc": 0.2767943358147212,
+      "n_distinct_train": 7243,
       "suspect": false
     },
     {
       "feature": "ack_flag_number",
-      "binary_balanced_acc": 0.7874925373448739,
-      "category_balanced_acc": 0.23023377239311102,
+      "binary_balanced_acc": 0.788227591037546,
+      "category_balanced_acc": 0.23029087443238389,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "Tot size",
-      "binary_balanced_acc": 0.7781929477211085,
-      "category_balanced_acc": 0.38552187165445273,
-      "n_distinct_train": 42319,
+      "binary_balanced_acc": 0.7785925213210356,
+      "category_balanced_acc": 0.3900979465282177,
+      "n_distinct_train": 42380,
       "suspect": false
     },
     {
       "feature": "Magnitue",
-      "binary_balanced_acc": 0.7769939140143041,
-      "category_balanced_acc": 0.3844026917031289,
-      "n_distinct_train": 210401,
+      "binary_balanced_acc": 0.7777656860690905,
+      "category_balanced_acc": 0.3885141163430359,
+      "n_distinct_train": 210097,
       "suspect": false
     },
     {
       "feature": "AVG",
-      "binary_balanced_acc": 0.7767009002597858,
-      "category_balanced_acc": 0.38822390785771654,
-      "n_distinct_train": 211699,
+      "binary_balanced_acc": 0.777592259540006,
+      "category_balanced_acc": 0.3893555633913854,
+      "n_distinct_train": 211347,
       "suspect": false
     },
     {
       "feature": "Std",
-      "binary_balanced_acc": 0.7742196866847584,
-      "category_balanced_acc": 0.2987833845365231,
-      "n_distinct_train": 205182,
+      "binary_balanced_acc": 0.7741019375459661,
+      "category_balanced_acc": 0.29909768003929027,
+      "n_distinct_train": 204744,
       "suspect": false
     },
     {
       "feature": "Radius",
-      "binary_balanced_acc": 0.773596232078889,
-      "category_balanced_acc": 0.2988969080434537,
-      "n_distinct_train": 202521,
+      "binary_balanced_acc": 0.7736894897917206,
+      "category_balanced_acc": 0.29898988742131494,
+      "n_distinct_train": 202207,
       "suspect": false
     },
     {
       "feature": "Max",
-      "binary_balanced_acc": 0.7711739300522663,
-      "category_balanced_acc": 0.38330907046403595,
-      "n_distinct_train": 40903,
+      "binary_balanced_acc": 0.7709956536844593,
+      "category_balanced_acc": 0.3815704500829068,
+      "n_distinct_train": 41037,
       "suspect": false
     },
     {
       "feature": "Min",
-      "binary_balanced_acc": 0.7564342227284808,
-      "category_balanced_acc": 0.33823797054132015,
-      "n_distinct_train": 26905,
+      "binary_balanced_acc": 0.7550286717164152,
+      "category_balanced_acc": 0.33897366256616435,
+      "n_distinct_train": 27091,
       "suspect": false
     },
     {
       "feature": "Covariance",
-      "binary_balanced_acc": 0.7508614393090937,
-      "category_balanced_acc": 0.2763818061011032,
-      "n_distinct_train": 202418,
+      "binary_balanced_acc": 0.7506030545511551,
+      "category_balanced_acc": 0.2726417073543671,
+      "n_distinct_train": 202164,
       "suspect": false
     },
     {
       "feature": "Tot sum",
-      "binary_balanced_acc": 0.7249743826991089,
-      "category_balanced_acc": 0.39224345338767913,
-      "n_distinct_train": 118910,
-      "suspect": false
-    },
-    {
-      "feature": "Srate",
-      "binary_balanced_acc": 0.709877293103328,
-      "category_balanced_acc": 0.2641626086059895,
-      "n_distinct_train": 294869,
+      "binary_balanced_acc": 0.7249496632874649,
+      "category_balanced_acc": 0.38996484613090177,
+      "n_distinct_train": 118908,
       "suspect": false
     },
     {
       "feature": "Rate",
-      "binary_balanced_acc": 0.709877293103328,
-      "category_balanced_acc": 0.2641626086059895,
-      "n_distinct_train": 294869,
+      "binary_balanced_acc": 0.7094009290693493,
+      "category_balanced_acc": 0.26355284158849496,
+      "n_distinct_train": 295512,
+      "suspect": false
+    },
+    {
+      "feature": "Srate",
+      "binary_balanced_acc": 0.7094009290693493,
+      "category_balanced_acc": 0.26355284158849496,
+      "n_distinct_train": 295512,
       "suspect": false
     },
     {
       "feature": "Protocol Type",
-      "binary_balanced_acc": 0.6839828398808954,
-      "category_balanced_acc": 0.30444972521602776,
-      "n_distinct_train": 2435,
+      "binary_balanced_acc": 0.684427796661597,
+      "category_balanced_acc": 0.3041093752938634,
+      "n_distinct_train": 2444,
       "suspect": false
     },
     {
       "feature": "syn_count",
-      "binary_balanced_acc": 0.6513589178589664,
-      "category_balanced_acc": 0.2758225228746931,
-      "n_distinct_train": 676,
+      "binary_balanced_acc": 0.650672093290587,
+      "category_balanced_acc": 0.27691657305258244,
+      "n_distinct_train": 668,
       "suspect": false
     },
     {
       "feature": "TCP",
-      "binary_balanced_acc": 0.6423939579217488,
-      "category_balanced_acc": 0.2316967915095886,
+      "binary_balanced_acc": 0.6428549774761014,
+      "category_balanced_acc": 0.23168827756327756,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "fin_count",
-      "binary_balanced_acc": 0.5952118081186263,
-      "category_balanced_acc": 0.18040893421283777,
-      "n_distinct_train": 546,
+      "binary_balanced_acc": 0.5949948845517665,
+      "category_balanced_acc": 0.18084866775027186,
+      "n_distinct_train": 540,
       "suspect": false
     },
     {
       "feature": "syn_flag_number",
-      "binary_balanced_acc": 0.5768502701775182,
-      "category_balanced_acc": 0.16086805555555556,
+      "binary_balanced_acc": 0.5769710132727989,
+      "category_balanced_acc": 0.16079050925925925,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "ack_count",
-      "binary_balanced_acc": 0.5567212533360053,
-      "category_balanced_acc": 0.18971901997118706,
-      "n_distinct_train": 265,
+      "binary_balanced_acc": 0.556776017181197,
+      "category_balanced_acc": 0.18993667505012513,
+      "n_distinct_train": 264,
       "suspect": false
     },
     {
       "feature": "UDP",
-      "binary_balanced_acc": 0.5509656241846054,
-      "category_balanced_acc": 0.15823940823301585,
+      "binary_balanced_acc": 0.5513311114378442,
+      "category_balanced_acc": 0.15832257257257257,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "ICMP",
-      "binary_balanced_acc": 0.5408228636907972,
-      "category_balanced_acc": 0.14764259429622814,
+      "binary_balanced_acc": 0.5408805334762642,
+      "category_balanced_acc": 0.14766942655627108,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "rst_flag_number",
-      "binary_balanced_acc": 0.5337788993093305,
-      "category_balanced_acc": 0.1375357763467239,
+      "binary_balanced_acc": 0.5338265121448389,
+      "category_balanced_acc": 0.1375229990800368,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "HTTP",
-      "binary_balanced_acc": 0.5236763025344547,
-      "category_balanced_acc": 0.14819907407407407,
+      "binary_balanced_acc": 0.5239670506565646,
+      "category_balanced_acc": 0.148125,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "fin_flag_number",
-      "binary_balanced_acc": 0.520807688486162,
-      "category_balanced_acc": 0.13651231728508637,
+      "binary_balanced_acc": 0.5207916891423897,
+      "category_balanced_acc": 0.13649826229173057,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "psh_flag_number",
-      "binary_balanced_acc": 0.5176864698412456,
-      "category_balanced_acc": 0.13659633207264302,
-      "n_distinct_train": 2,
-      "suspect": false
-    },
-    {
-      "feature": "SSH",
-      "binary_balanced_acc": 0.5006300009197093,
-      "category_balanced_acc": 0.14241071428571428,
+      "binary_balanced_acc": 0.5180006217299454,
+      "category_balanced_acc": 0.13659457306892908,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "DNS",
-      "binary_balanced_acc": 0.5005204571027546,
-      "category_balanced_acc": 0.12573498105382505,
+      "binary_balanced_acc": 0.5006311268261797,
+      "category_balanced_acc": 0.12577222669889873,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
-      "feature": "LLC",
-      "binary_balanced_acc": 0.5002264920210108,
-      "category_balanced_acc": 0.12555046452275442,
-      "n_distinct_train": 2,
-      "suspect": false
-    },
-    {
-      "feature": "IPv",
-      "binary_balanced_acc": 0.5002264920210108,
-      "category_balanced_acc": 0.12555046452275442,
+      "feature": "SSH",
+      "binary_balanced_acc": 0.5006277045328085,
+      "category_balanced_acc": 0.1422755750907174,
       "n_distinct_train": 2,
       "suspect": false
     },
     {
       "feature": "ARP",
-      "binary_balanced_acc": 0.5001832827317307,
-      "category_balanced_acc": 0.12528125,
+      "binary_balanced_acc": 0.5001996574534386,
+      "category_balanced_acc": 0.1253566442056699,
+      "n_distinct_train": 2,
+      "suspect": false
+    },
+    {
+      "feature": "LLC",
+      "binary_balanced_acc": 0.5001882276150069,
+      "category_balanced_acc": 0.12559187761792023,
+      "n_distinct_train": 2,
+      "suspect": false
+    },
+    {
+      "feature": "IPv",
+      "binary_balanced_acc": 0.5001882276150069,
+      "category_balanced_acc": 0.12559187761792023,
       "n_distinct_train": 2,
       "suspect": false
     }
   ],
   "single_feature_flagged": [],
   "overlap": {
-    "test_rows": 382187,
-    "test_rows_identical_to_a_train_row": 2,
-    "of_which_same_binary_label": 2,
+    "test_rows": 382183,
+    "test_rows_identical_to_a_train_row": 24,
+    "of_which_same_binary_label": 24,
     "of_which_other_label_only": 0,
     "per_class": {
-      "Mirai-greeth_flood": {
+      "DDoS-SYN_Flood": {
+        "test_rows": 9000,
+        "in_train": 4,
+        "in_train_same_binary_label": 4
+      },
+      "DDoS-SynonymousIP_Flood": {
         "test_rows": 9000,
         "in_train": 1,
         "in_train_same_binary_label": 1
       },
-      "Mirai-greip_flood": {
+      "DDoS-TCP_Flood": {
         "test_rows": 9000,
-        "in_train": 1,
-        "in_train_same_binary_label": 1
+        "in_train": 2,
+        "in_train_same_binary_label": 2
+      },
+      "DoS-SYN_Flood": {
+        "test_rows": 9000,
+        "in_train": 6,
+        "in_train_same_binary_label": 6
+      },
+      "DoS-TCP_Flood": {
+        "test_rows": 9000,
+        "in_train": 11,
+        "in_train_same_binary_label": 11
       }
     }
   },
-  "elapsed_seconds": 59.7
+  "elapsed_seconds": 101.0
 }

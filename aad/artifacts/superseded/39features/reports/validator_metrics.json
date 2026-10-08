@@ -1,0 +1,638 @@
+{
+  "fpr_budget": 0.01,
+  "range_tolerance": 0.01,
+  "dependency_percentile": 99.9,
+  "integer_columns": [
+    "fin_flag_number",
+    "syn_flag_number",
+    "rst_flag_number",
+    "psh_flag_number",
+    "ack_flag_number",
+    "HTTP",
+    "HTTPS",
+    "DNS",
+    "SSH",
+    "TCP",
+    "UDP",
+    "ARP",
+    "ICMP",
+    "IPv",
+    "LLC"
+  ],
+  "integrality_excluded_unverifiable": [
+    "IAT"
+  ],
+  "dependency_rules": [
+    {
+      "name": "Min <= AVG <= Max",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 2.9382380855578656e-07,
+        "share_nonzero": 0.000620508791191637
+      }
+    },
+    {
+      "name": "Srate == Rate",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "IPv == LLC",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "HTTP implies TCP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "HTTPS implies TCP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "SSH implies TCP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "DNS implies UDP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "FIN flag implies TCP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "SYN flag implies TCP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "RST flag implies TCP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "PSH flag implies TCP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "ACK flag implies TCP",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "TCP + UDP + ICMP <= 1",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    },
+    {
+      "name": "ARP + IPv <= 1",
+      "tolerance": 1e-06,
+      "benign_residual": {
+        "p50": 0.0,
+        "p99": 0.0,
+        "p99.9": 0.0,
+        "max": 0.0,
+        "share_nonzero": 0.0
+      }
+    }
+  ],
+  "dependency_pruned": [
+    {
+      "name": "6 TCP + 17 UDP + ICMP <= Protocol Type",
+      "reason": "calibrated tolerance 4.89 > 0.05: benign traffic does not obey it tightly",
+      "benign_residual": {
+        "p50": 2.1287373179383308e-09,
+        "p99": 0.3461538125931696,
+        "p99.9": 0.4893617531248449,
+        "max": 0.6071428909270594,
+        "share_nonzero": 0.5386757796036028
+      }
+    },
+    {
+      "name": "Tot sum ~= Number * AVG",
+      "reason": "calibrated tolerance 5.1 > 0.05: benign traffic does not obey it tightly",
+      "benign_residual": {
+        "p50": 0.13682137105052888,
+        "p99": 0.4243495463525991,
+        "p99.9": 0.5104206018409807,
+        "max": 0.6561911487371077,
+        "share_nonzero": 1.0
+      }
+    }
+  ],
+  "distribution": {
+    "groups": [
+      "TCP",
+      "UDP",
+      "ICMP",
+      "ARP",
+      "other"
+    ],
+    "train_rows": [
+      661088,
+      52446,
+      8,
+      175,
+      55007
+    ],
+    "uses_global_profile": [
+      false,
+      false,
+      true,
+      false,
+      false
+    ],
+    "threshold": [
+      5.17474113172591,
+      10.789439976523102,
+      6.8553616166539415,
+      10.3308077935044,
+      9.878597863208675
+    ],
+    "calibration": {
+      "source": "benign rows of data/processed/val.npz (train+val for tiny groups)",
+      "n_rows": 164726,
+      "val_rows_per_group": [
+        141805,
+        11102,
+        1,
+        32,
+        11786
+      ],
+      "threshold_source": [
+        "val",
+        "val",
+        "global",
+        "train+val (in-sample)",
+        "val"
+      ],
+      "fpr_budget": 0.01,
+      "global_threshold": 6.8553616166539415
+    }
+  },
+  "fpr_by_group": [
+    {
+      "protocol group": "TCP",
+      "benign test rows": 141589,
+      "FPR_%": 0.954,
+      "range_%": 0.001,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 0.954
+    },
+    {
+      "protocol group": "UDP",
+      "benign test rows": 11252,
+      "FPR_%": 1.102,
+      "range_%": 0.009,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 1.093
+    },
+    {
+      "protocol group": "ICMP",
+      "benign test rows": 1,
+      "FPR_%": 0.0,
+      "range_%": 0.0,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 0.0
+    },
+    {
+      "protocol group": "ARP",
+      "benign test rows": 54,
+      "FPR_%": 1.852,
+      "range_%": 0.0,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 1.852
+    },
+    {
+      "protocol group": "other",
+      "benign test rows": 11831,
+      "FPR_%": 1.006,
+      "range_%": 0.0,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 1.006
+    }
+  ],
+  "reject_by_category": [
+    {
+      "category": "Benign",
+      "test rows": 164727,
+      "rejected_%": 0.968,
+      "range_%": 0.001,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 0.968
+    },
+    {
+      "category": "DDoS",
+      "test rows": 97830,
+      "rejected_%": 50.249,
+      "range_%": 0.095,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 50.224
+    },
+    {
+      "category": "DoS",
+      "test rows": 36000,
+      "rejected_%": 39.65,
+      "range_%": 0.067,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 39.628
+    },
+    {
+      "category": "Mirai",
+      "test rows": 27000,
+      "rejected_%": 65.948,
+      "range_%": 65.922,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 0.067
+    },
+    {
+      "category": "Recon",
+      "test rows": 32946,
+      "rejected_%": 12.171,
+      "range_%": 3.075,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 9.403
+    },
+    {
+      "category": "Spoofing",
+      "test rows": 18000,
+      "rejected_%": 3.278,
+      "range_%": 1.517,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 1.817
+    },
+    {
+      "category": "Web",
+      "test rows": 3724,
+      "rejected_%": 10.258,
+      "range_%": 6.176,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 4.511
+    },
+    {
+      "category": "BruteForce",
+      "test rows": 1960,
+      "rejected_%": 18.316,
+      "range_%": 17.704,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 3.98
+    }
+  ],
+  "rows": [
+    {
+      "set": "clean benign (test)",
+      "kind": "FPR",
+      "n": 164727,
+      "combined_%": 0.968,
+      "range_%": 0.001,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 0.968
+    },
+    {
+      "set": "clean attack (test)",
+      "kind": "reject",
+      "n": 217460,
+      "combined_%": 39.814,
+      "range_%": 9.095,
+      "integrality_%": 0.0,
+      "dependency_%": 0.0,
+      "distribution_%": 30.851
+    },
+    {
+      "set": "bim x cnn",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 100.0,
+      "range_%": 79.16,
+      "integrality_%": 100.0,
+      "dependency_%": 99.94,
+      "distribution_%": 100.0,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.68,
+      "pass_and_evade_%": 0.0,
+      "evade_model_only_%": 86.46,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 0.0,
+      "attack": "bim",
+      "model": "cnn"
+    },
+    {
+      "set": "bim x lstm",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 100.0,
+      "range_%": 63.36,
+      "integrality_%": 100.0,
+      "dependency_%": 99.82,
+      "distribution_%": 97.66,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.68,
+      "pass_and_evade_%": 0.0,
+      "evade_model_only_%": 57.62,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.02,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 0.0,
+      "attack": "bim",
+      "model": "lstm"
+    },
+    {
+      "set": "bim x mlp",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 86.42,
+      "range_%": 21.92,
+      "integrality_%": 54.74,
+      "dependency_%": 54.62,
+      "distribution_%": 78.54,
+      "clean_orig_%": 39.32,
+      "attributable_%": 47.1,
+      "pass_and_evade_%": 0.02,
+      "evade_model_only_%": 25.34,
+      "sole_range_%": 7.82,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 23.8,
+      "attack": "bim",
+      "model": "mlp"
+    },
+    {
+      "set": "deepfool x cnn",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 100.0,
+      "range_%": 77.04,
+      "integrality_%": 100.0,
+      "dependency_%": 100.0,
+      "distribution_%": 99.0,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.68,
+      "pass_and_evade_%": 0.0,
+      "evade_model_only_%": 91.0,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 0.0,
+      "attack": "deepfool",
+      "model": "cnn"
+    },
+    {
+      "set": "deepfool x lstm",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 100.0,
+      "range_%": 68.62,
+      "integrality_%": 99.98,
+      "dependency_%": 100.0,
+      "distribution_%": 97.26,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.68,
+      "pass_and_evade_%": 0.0,
+      "evade_model_only_%": 85.96,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.02,
+      "sole_distribution_%": 0.0,
+      "attack": "deepfool",
+      "model": "lstm"
+    },
+    {
+      "set": "deepfool x mlp",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 99.98,
+      "range_%": 25.12,
+      "integrality_%": 99.98,
+      "dependency_%": 99.98,
+      "distribution_%": 98.62,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.66,
+      "pass_and_evade_%": 0.02,
+      "evade_model_only_%": 70.04,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 0.0,
+      "attack": "deepfool",
+      "model": "mlp"
+    },
+    {
+      "set": "fgsm x cnn",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 100.0,
+      "range_%": 68.66,
+      "integrality_%": 100.0,
+      "dependency_%": 96.48,
+      "distribution_%": 99.98,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.68,
+      "pass_and_evade_%": 0.0,
+      "evade_model_only_%": 30.06,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 0.0,
+      "attack": "fgsm",
+      "model": "cnn"
+    },
+    {
+      "set": "fgsm x lstm",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 100.0,
+      "range_%": 53.26,
+      "integrality_%": 99.98,
+      "dependency_%": 97.22,
+      "distribution_%": 99.32,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.68,
+      "pass_and_evade_%": 0.0,
+      "evade_model_only_%": 19.94,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.02,
+      "sole_distribution_%": 0.0,
+      "attack": "fgsm",
+      "model": "lstm"
+    },
+    {
+      "set": "fgsm x mlp",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 86.42,
+      "range_%": 12.98,
+      "integrality_%": 54.74,
+      "dependency_%": 52.26,
+      "distribution_%": 78.12,
+      "clean_orig_%": 39.32,
+      "attributable_%": 47.1,
+      "pass_and_evade_%": 0.02,
+      "evade_model_only_%": 12.72,
+      "sole_range_%": 7.82,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 23.8,
+      "attack": "fgsm",
+      "model": "mlp"
+    },
+    {
+      "set": "pgd x cnn",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 100.0,
+      "range_%": 82.98,
+      "integrality_%": 100.0,
+      "dependency_%": 99.74,
+      "distribution_%": 100.0,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.68,
+      "pass_and_evade_%": 0.0,
+      "evade_model_only_%": 98.56,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 0.0,
+      "attack": "pgd",
+      "model": "cnn"
+    },
+    {
+      "set": "pgd x lstm",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 100.0,
+      "range_%": 67.86,
+      "integrality_%": 100.0,
+      "dependency_%": 99.5,
+      "distribution_%": 97.7,
+      "clean_orig_%": 39.32,
+      "attributable_%": 60.68,
+      "pass_and_evade_%": 0.0,
+      "evade_model_only_%": 69.36,
+      "sole_range_%": 0.0,
+      "sole_integrality_%": 0.02,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 0.0,
+      "attack": "pgd",
+      "model": "lstm"
+    },
+    {
+      "set": "pgd x mlp",
+      "kind": "catch",
+      "n": 5000,
+      "combined_%": 86.42,
+      "range_%": 25.36,
+      "integrality_%": 54.74,
+      "dependency_%": 54.16,
+      "distribution_%": 78.54,
+      "clean_orig_%": 39.32,
+      "attributable_%": 47.1,
+      "pass_and_evade_%": 0.02,
+      "evade_model_only_%": 31.34,
+      "sole_range_%": 7.82,
+      "sole_integrality_%": 0.0,
+      "sole_dependency_%": 0.0,
+      "sole_distribution_%": 23.8,
+      "attack": "pgd",
+      "model": "mlp"
+    }
+  ]
+}

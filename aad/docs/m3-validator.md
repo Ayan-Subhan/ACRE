@@ -4,9 +4,29 @@ Milestone M3 of [`ciciot2023-implementation-plan.md`](ciciot2023-implementation-
 Inputs: the M1 dataset (39 features; [`m1-data-pipeline.md`](m1-data-pipeline.md)) and
 the M2 baselines ([`m2-baselines.md`](m2-baselines.md)). Run date: 2026-10-08, CPU.
 
-> Scope note. The proposal to drop `IAT` and correct how the earlier docs describe it is
-> **on hold** pending review. M3 therefore runs on the current 39-feature data, `IAT`
-> included. The validator treats `IAT` like any other column; nothing in M3 depends on it.
+> ## Update 2026-10-08: re-run on 38 features (no `IAT`) (current state)
+>
+> Sections 1–7 below describe the first M3 run on the 39-feature data, archived in
+> `artifacts/superseded/39features/`. After `IAT` was dropped and the baselines retrained on
+> the GPU ([`m2-baselines.md`](m2-baselines.md), update), M3 was re-run: the 12 attack sets
+> were regenerated on the GPU (`03_generate_ae.py --no-sweep`, < 2 min) and the rules re-mined
+> (`04_analyze_validate.py`). The current `artifacts/rules.json` and
+> `artifacts/reports/table5_validator.md` are from this run.
+>
+> - **Same rule set:** 15 integral columns, the same 14 dependency rules kept, the same 2
+>   pruned. Distribution thresholds: TCP 6.43, UDP 10.11, ARP 8.52, other 8.80, ICMP 6.92.
+> - **Benign FPR 1.031%**, almost all distribution (per group: TCP 1.03, UDP 1.07, other
+>   1.05, ARP 2.63 on 38 rows).
+> - **Gate 1 still stops the unconstrained attacks end to end.** At most **0.02%** of any set
+>   passes the validator *and* fools its model (was ≤ 0.02%). Mean combined catch 95.54%,
+>   62.64% attributable to perturbation. The distribution family still carries it (sole
+>   catches 4.45%; integrality and dependency 0%).
+> - **The attacks are weaker against the retrained models.** Without any gate, PGD fools the
+>   CNN on 68.56% of rows (98.56% before) and the MLP on 34.96% (31.34% before); the MLP
+>   attacks move only 16–18 of 38 features. The MLP saturation effect of §4.3 is stronger
+>   (82.2% combined catch on its gradient-sign sets; the unperturbed rows explain the gap).
+>   With the hardware, the data and the weights all changed, the cause is not isolated;
+>   M4's attacks start from these models.
 
 ---
 

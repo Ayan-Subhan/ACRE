@@ -22,7 +22,18 @@ raw:
   expected_feature_count: 46
 
 label_column: label
-drop_columns: []
+
+# Dropped at the scan, BEFORE deduplication (src/aad/data/loader.py:scan), so they
+# play no part in deciding what is a duplicate. expected_feature_count above is
+# checked on the raw header, before this drop.
+#
+# IAT: the dataset paper defines it as the time since the previous packet, but in
+# the CSV it is a near-copy of `Number` (correlation 0.998 on the M1 sample): three
+# levels, ~0.006 / ~8.33e7 / ~1.665e8, matching Number 5.5 / 9.5 / 13.5. A real
+# inter-arrival time exists only at the lowest level. Dropping it cost nothing in the
+# M2 ablation (95.27% vs 95.29% balanced accuracy). Full analysis:
+# docs/ciciot2023-features.md.
+drop_columns: [IAT]
 
 # The full dataset is 97.6% DDoS/DoS flood traffic, and the flood classes are
 # millions of near-identical windows. Training on all of it costs ~22 h of CPU

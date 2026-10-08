@@ -43,6 +43,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from tensorflow import keras  # noqa: E402
 
+import aad.models.base  # noqa: E402,F401  (portable .keras load, Windows <-> WSL)
 from aad.defense.discriminator import build_dataset, load_cells, split_random  # noqa: E402
 from aad.defense.pipeline import (  # noqa: E402
     ALLOWED,

@@ -1,65 +1,65 @@
 # Table III - NIDS accuracy and loss (clean test set)
 
-Data: `data/processed` | test rows: 382,187 (217,460 attack, 164,727 benign)
-Seed 42, batch 1024, Adam lr=0.001, early stopping on val_loss (patience 4), class_weight on. `fpr_%` = benign flows flagged as attack; `balanced_acc_%` = mean of benign and attack recall.
+Data: `data/processed` | 38 features | test rows: 382,183 (217,459 attack, 164,724 benign) | trained on GPU: NVIDIA GeForce RTX 3050 Laptop GPU
+Seed 42, batch 1024, Adam lr=0.001, early stopping on val_loss (patience 4), weighting: binary. `fpr_%` = benign flows flagged as attack; `balanced_acc_%` = mean of benign and attack recall.
 
 
 | model   |   accuracy_% |   balanced_acc_% |   precision_% |   recall_% |    f1_% |   test_loss |   fpr_% |    fn |   fp |   params |   epochs |   train_s |   s_per_epoch |
 |:--------|-------------:|-----------------:|--------------:|-----------:|--------:|------------:|--------:|------:|-----:|---------:|---------:|----------:|--------------:|
-| MLP     |      94.948  |          95.2924 |       98.2267 |    92.7964 | 95.4344 |     0.12884 |  2.2115 | 15665 | 3643 |    15522 |       28 |     404.7 |          14.5 |
-| CNN     |      94.8837 |          95.2484 |       98.3046 |    92.6051 | 95.3698 |     0.12843 |  2.1083 | 16081 | 3473 |    33346 |       30 |    1708   |          56.9 |
-| LSTM    |      94.6539 |          94.9289 |       97.5523 |    92.9362 | 95.1883 |     0.1326  |  3.0784 | 15361 | 5071 |    19042 |       30 |    8482.8 |         282.8 |
+| MLP     |      94.847  |          95.2455 |       98.4925 |    92.3572 | 95.3262 |     0.12989 |  1.8662 | 16620 | 3074 |    15394 |       30 |     546.7 |          18.2 |
+| CNN     |      94.7457 |          95.1146 |       98.22   |    92.4409 | 95.2429 |     0.1309  |  2.2116 | 16438 | 3643 |    33346 |       27 |     504.7 |          18.7 |
+| LSTM    |      94.4278 |          94.8159 |       98.0851 |    92.0031 | 94.9468 |     0.13563 |  2.3712 | 17390 | 3906 |    19042 |       30 |     628.1 |          20.9 |
 
 ## Detection rate per category (%)
 
 For Benign, "detection" means correctly passed as benign (= 100 - FPR).
 
-| category   |   support |    MLP |     CNN |   LSTM |
-|:-----------|----------:|-------:|--------:|-------:|
-| Benign     |    164727 | 97.788 |  97.892 | 96.922 |
-| DDoS       |     97830 | 99.996 |  99.995 | 99.995 |
-| DoS        |     36000 | 99.997 | 100     | 99.994 |
-| Mirai      |     27000 | 99.996 | 100     | 99.996 |
-| Recon      |     32946 | 73.669 |  72.95  | 75.436 |
-| Spoofing   |     18000 | 71.228 |  70.767 | 70.156 |
-| Web        |      3724 | 69.71  |  68.421 | 68.367 |
-| BruteForce |      1960 | 65.459 |  62.959 | 63.776 |
+| category   |   support |     MLP |    CNN |   LSTM |
+|:-----------|----------:|--------:|-------:|-------:|
+| Benign     |    164724 |  98.134 | 97.788 | 97.629 |
+| DDoS       |     97830 |  99.998 | 99.997 | 99.976 |
+| DoS        |     36000 | 100     | 99.997 | 99.989 |
+| Mirai      |     27000 | 100     | 99.996 | 99.993 |
+| Recon      |     32946 |  72.397 | 72.519 | 71.89  |
+| Spoofing   |     18000 |  69.261 | 69.817 | 67.889 |
+| Web        |      3723 |  66.694 | 67.741 | 61.832 |
+| BruteForce |      1960 |  61.684 | 61.99  | 54.133 |
 
 ## Detection rate per class (%)
 
 | class                   |   support |     MLP |     CNN |    LSTM |
 |:------------------------|----------:|--------:|--------:|--------:|
-| BenignTraffic           |    164727 |  97.788 |  97.892 |  96.922 |
-| DDoS-ACK_Fragmentation  |      9000 |  99.989 |  99.978 |  99.989 |
-| DDoS-HTTP_Flood         |      4316 | 100     | 100     | 100     |
+| BenignTraffic           |    164724 |  98.134 |  97.788 |  97.629 |
+| DDoS-ACK_Fragmentation  |      9000 | 100     |  99.978 |  99.933 |
+| DDoS-HTTP_Flood         |      4316 | 100     | 100     |  99.838 |
 | DDoS-ICMP_Flood         |      9000 | 100     | 100     | 100     |
-| DDoS-ICMP_Fragmentation |      9000 |  99.989 | 100     |  99.989 |
+| DDoS-ICMP_Fragmentation |      9000 | 100     | 100     | 100     |
 | DDoS-PSHACK_Flood       |      9000 | 100     | 100     |  99.989 |
 | DDoS-RSTFINFlood        |      9000 | 100     | 100     | 100     |
-| DDoS-SlowLoris          |      3514 |  99.943 |  99.943 |  99.943 |
+| DDoS-SlowLoris          |      3514 |  99.972 | 100     |  99.858 |
 | DDoS-SYN_Flood          |      9000 | 100     | 100     | 100     |
 | DDoS-SynonymousIP_Flood |      9000 | 100     | 100     | 100     |
-| DDoS-TCP_Flood          |      9000 | 100     | 100     | 100     |
-| DDoS-UDP_Flood          |      9000 | 100     | 100     | 100     |
-| DDoS-UDP_Fragmentation  |      9000 | 100     |  99.989 | 100     |
-| DoS-HTTP_Flood          |      9000 |  99.989 | 100     |  99.978 |
+| DDoS-TCP_Flood          |      9000 |  99.989 |  99.989 |  99.989 |
+| DDoS-UDP_Flood          |      9000 | 100     | 100     |  99.989 |
+| DDoS-UDP_Fragmentation  |      9000 | 100     | 100     |  99.978 |
+| DoS-HTTP_Flood          |      9000 | 100     |  99.989 |  99.956 |
 | DoS-SYN_Flood           |      9000 | 100     | 100     | 100     |
 | DoS-TCP_Flood           |      9000 | 100     | 100     | 100     |
 | DoS-UDP_Flood           |      9000 | 100     | 100     | 100     |
-| Mirai-greeth_flood      |      9000 | 100     | 100     | 100     |
-| Mirai-greip_flood       |      9000 |  99.989 | 100     | 100     |
-| Mirai-udpplain          |      9000 | 100     | 100     |  99.989 |
-| Recon-HostDiscovery     |      9000 |  87.5   |  86.667 |  86.744 |
-| Recon-OSScan            |      9000 |  49.411 |  47.989 |  53.378 |
-| Recon-PingSweep         |       339 |  48.083 |  47.198 |  54.867 |
-| Recon-PortScan          |      9000 |  68.667 |  68.333 |  71.678 |
-| VulnerabilityScan       |      5607 |  99.982 |  99.964 |  99.964 |
-| DNS_Spoofing            |      9000 |  64.244 |  63.178 |  63.4   |
-| MITM-ArpSpoofing        |      9000 |  78.211 |  78.356 |  76.911 |
-| Backdoor_Malware        |       482 |  77.801 |  74.274 |  73.237 |
-| BrowserHijacking        |       879 |  55.29  |  57.338 |  55.176 |
-| CommandInjection        |       812 |  73.768 |  72.906 |  72.291 |
-| SqlInjection            |       786 |  71.756 |  71.12  |  73.41  |
-| Uploading_Attack        |       188 |  73.936 |  70.213 |  68.617 |
-| XSS                     |       577 |  75.043 |  69.844 |  71.924 |
-| DictionaryBruteForce    |      1960 |  65.459 |  62.959 |  63.776 |
+| Mirai-greeth_flood      |      9000 | 100     | 100     |  99.978 |
+| Mirai-greip_flood       |      9000 | 100     | 100     | 100     |
+| Mirai-udpplain          |      9000 | 100     |  99.989 | 100     |
+| Recon-HostDiscovery     |      9000 |  85.611 |  85.433 |  83.467 |
+| Recon-OSScan            |      9000 |  47.911 |  47.844 |  48.478 |
+| Recon-PingSweep         |       338 |  45.858 |  43.787 |  42.012 |
+| Recon-PortScan          |      9000 |  67.5   |  68.267 |  67.389 |
+| VulnerabilityScan       |      5608 |  99.947 |  99.947 |  99.911 |
+| DNS_Spoofing            |      9000 |  62.322 |  62.611 |  61.422 |
+| MITM-ArpSpoofing        |      9000 |  76.2   |  77.022 |  74.356 |
+| Backdoor_Malware        |       482 |  72.199 |  73.859 |  68.672 |
+| BrowserHijacking        |       879 |  54.039 |  55.404 |  51.536 |
+| CommandInjection        |       812 |  73.522 |  73.03  |  62.931 |
+| SqlInjection            |       786 |  68.702 |  72.137 |  66.158 |
+| Uploading_Attack        |       187 |  66.31  |  64.171 |  60.428 |
+| XSS                     |       577 |  69.151 |  69.151 |  64.818 |
+| DictionaryBruteForce    |      1960 |  61.684 |  61.99  |  54.133 |

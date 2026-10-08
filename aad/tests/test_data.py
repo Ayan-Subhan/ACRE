@@ -105,6 +105,30 @@ def test_rows_differing_only_below_float32_precision_are_duplicates(tmp_path):
     assert rep["exact_duplicate_rows_float64"] == 0
 
 
+def test_dropped_column_is_excluded_and_ignored_by_deduplication(tmp_path):
+    """drop_columns must act at the scan, so a row differing only in a dropped
+    column is a duplicate - the reason IAT is dropped there, not after loading."""
+    path = _write_csv(tmp_path / "drop.csv", [
+        (1.0, 5.0, "DDoS-ICMP_Flood"),
+        (2.0, 5.0, "DDoS-ICMP_Flood"),   # differs only in flow_duration
+        (3.0, 6.0, "DDoS-ICMP_Flood"),   # differs in Tot sum too: distinct
+    ])
+    s = scan(path, "label", LABEL_MAP, drop_columns=["flow_duration"])
+    assert s.feature_columns == ["Tot sum"]
+    assert s.extra["header_feature_count"] == 2
+    _, rep = duplicate_analysis(s)
+    assert rep["exact_duplicate_rows"] == 1
+
+    df = load_selected(path, np.array([0, 2]), "label", drop_columns=["flow_duration"])
+    assert list(df.columns) == ["Tot sum", "label"]
+
+
+def test_unknown_drop_column_is_an_error(tmp_path):
+    path = _write_csv(tmp_path / "x.csv", [(1.0, 2.0, "BenignTraffic")])
+    with pytest.raises(ValueError, match="not in the CSV header"):
+        scan(path, "label", LABEL_MAP, drop_columns=["IATT"])
+
+
 def test_select_capped_honours_cap_keep_all_and_exclusions(csv_file):
     s = scan(csv_file, "label", LABEL_MAP)
     is_first, _ = duplicate_analysis(s)

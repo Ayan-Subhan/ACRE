@@ -89,6 +89,8 @@ def _fingerprint(csv: Path, cfg: dict) -> dict:
         # Bump when the meaning of "duplicate" changes. v2 = float32 precision
         # (v1 used exact float64 equality and left IAT-jitter twins in).
         "dedup": "float32-v2",
+        # Dropped columns change both the feature set and what counts as a duplicate.
+        "drop_columns": sorted(cfg.get("drop_columns") or []),
     }
 
 
@@ -120,7 +122,9 @@ def ingest(cfg: dict, rescan: bool) -> tuple[pd.DataFrame, dict]:
         log.info("step 1 ingest: cache is stale (CSV, cap, seed or label map changed)")
 
     log.info("step 1 ingest: pass 1 - scanning %s (%.2f GB)", csv.name, fp["csv_bytes"] / 1e9)
-    s = scan(csv, cfg["label_column"], cfg["label_map"], int(raw_cfg["block_size_mb"]))
+    drop = list(cfg.get("drop_columns") or [])
+    s = scan(csv, cfg["label_column"], cfg["label_map"], int(raw_cfg["block_size_mb"]),
+             drop_columns=drop)
 
     # Sanity checks against what the dataset is published to contain.
     if raw_cfg.get("expected_rows") and s.n_rows != int(raw_cfg["expected_rows"]):
@@ -129,8 +133,9 @@ def ingest(cfg: dict, rescan: bool) -> tuple[pd.DataFrame, dict]:
             "the file is truncated or is a different release"
         )
     if raw_cfg.get("expected_feature_count") and \
-            len(s.feature_columns) != int(raw_cfg["expected_feature_count"]):
-        raise ValueError(f"{len(s.feature_columns)} feature columns, expected "
+            s.extra["header_feature_count"] != int(raw_cfg["expected_feature_count"]):
+        # Checked on the raw header, before drop_columns, so it validates the file.
+        raise ValueError(f"{s.extra['header_feature_count']} feature columns, expected "
                          f"{raw_cfg['expected_feature_count']}")
 
     is_first, dup = duplicate_analysis(s)
@@ -138,7 +143,8 @@ def ingest(cfg: dict, rescan: bool) -> tuple[pd.DataFrame, dict]:
     positions, kept = select_capped(s, is_first, int(smp["cap_per_class"]), keep_all,
                                     int(cfg["seed"]))
     log.info("step 1 ingest: selected %d rows; pass 2 - loading them", len(positions))
-    df = load_selected(csv, positions, cfg["label_column"], int(raw_cfg["block_size_mb"]))
+    df = load_selected(csv, positions, cfg["label_column"], int(raw_cfg["block_size_mb"]),
+                       drop_columns=drop)
 
     code_to_name = {int(e["code"]): e["name"] for e in cfg["label_map"].values()}
     report = {
@@ -146,6 +152,7 @@ def ingest(cfg: dict, rescan: bool) -> tuple[pd.DataFrame, dict]:
         "csv_bytes": fp["csv_bytes"],
         "rows_in_file": s.n_rows,
         "feature_columns": s.feature_columns,
+        "dropped_columns": drop,
         "scan_seconds": s.seconds,
         "raw_label_counts": s.raw_label_counts,
         "nan_cells_by_column": s.nan_by_column,
@@ -280,6 +287,8 @@ def write_markdown_table(table: pd.DataFrame, path: Path, meta: dict) -> None:
         f"- Rows dropped by the post-sample clean pass (must be 0): NaN "
         f"{meta['clean'].get('rows_dropped_nan', 0)}, duplicate "
         f"{meta['clean'].get('rows_dropped_duplicate', 0)}",
+        f"- Columns dropped at the scan, before deduplication (`drop_columns`): "
+        f"{meta['drop_columns'] or 'none'}",
         f"- Constant / near-constant columns dropped (fewer than {meta['min_non_mode_rows']} "
         f"train rows differ from the column's mode; train only): "
         f"{meta['constant_columns_non_mode_rows']}",
@@ -430,6 +439,7 @@ def main() -> int:
         "rows_after_cleaning": sum(len(p) for p in parts.values()),
         "label_counts_kept": label_counts,
         "clean": clean_report,
+        "drop_columns": ingest_report.get("dropped_columns", []),
         "n_features_before_constant_drop": n_features_before,
         "n_features": len(feature_cols),
         "constant_columns": constant_cols,

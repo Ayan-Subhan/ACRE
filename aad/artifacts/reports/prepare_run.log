@@ -1,55 +1,69 @@
-﻿15:47:13  INFO    step 1 ingest: cache hit ciciot_capped.parquet (use --rescan to rebuild)
-15:47:22  INFO    label distribution after normalisation: {'Backdoor_Malware': 3218, 'BenignTraffic': 1098177, 'BrowserHijacking': 5859, 'CommandInjection': 5409, 'DDoS-ACK_Fragmentation': 60000, 'DDoS-HTTP_Flood': 28772, 'DDoS-ICMP_Flood': 60000, 'DDoS-ICMP_Fragmentation': 60000, 'DDoS-PSHACK_Flood': 60000, 'DDoS-RSTFINFlood': 60000, 'DDoS-SlowLoris': 23426, 'DDoS-SYN_Flood': 60000, 'DDoS-SynonymousIP_Flood': 60000, 'DDoS-TCP_Flood': 60000, 'DDoS-UDP_Flood': 60000, 'DDoS-UDP_Fragmentation': 60000, 'DictionaryBruteForce': 13064, 'DNS_Spoofing': 60000, 'DoS-HTTP_Flood': 60000, 'DoS-SYN_Flood': 60000, 'DoS-TCP_Flood': 60000, 'DoS-UDP_Flood': 60000, 'Mirai-greeth_flood': 60000, 'Mirai-greip_flood': 60000, 'Mirai-udpplain': 60000, 'MITM-ArpSpoofing': 60000, 'Recon-HostDiscovery': 60000, 'Recon-OSScan': 60000, 'Recon-PingSweep': 2260, 'Recon-PortScan': 60000, 'SqlInjection': 5245, 'Uploading_Attack': 1252, 'VulnerabilityScan': 37382, 'XSS': 3846}
-15:47:22  INFO    step 2 labels: 34 classes, 46 features
-15:47:24  INFO    dropped 0 row(s) containing NaN (2547910 -> 2547910)
-15:47:32  INFO    dropped 0 exact duplicate row(s) (2547910 -> 2547910)
-15:47:33  INFO    step 3 clean: 0 rows dropped (as expected - ingest already filtered)
-15:47:35  INFO    train: 1783537 rows (70.00%)
-15:47:35  INFO    val: 382186 rows (15.00%)
-15:47:35  INFO    test: 382187 rows (15.00%)
-15:47:35  INFO    step 4 split: {'train': 1783537, 'val': 382186, 'test': 382187}
-15:47:39  INFO    7 constant / near-constant column(s) on train (< 100 non-mode rows): {'Drate': 38, 'ece_flag_number': 15, 'cwr_flag_number': 9, 'Telnet': 1, 'SMTP': 1, 'IRC': 2, 'DHCP': 0}
-15:47:39  INFO    step 5 constants: dropped ['Drate', 'ece_flag_number', 'cwr_flag_number', 'Telnet', 'SMTP', 'IRC', 'DHCP'], 39 features remain
-15:47:41  INFO    step 6 log1p: 16 column(s): ['flow_duration', 'Header_Length', 'Rate', 'Srate', 'syn_count', 'fin_count', 'urg_count', 'rst_count', 'Tot sum', 'Min', 'Max', 'AVG', 'Std', 'Tot size', 'Radius', 'Covariance']
-15:47:52  INFO    step 7 scale: train.npz X(1783537, 39)  attack=56.90%  clipped=0.00000%
-15:47:54  INFO    step 7 scale: val.npz X(382186, 39)  attack=56.90%  clipped=0.00003%
-15:47:56  INFO    step 7 scale: test.npz X(382187, 39)  attack=56.90%  clipped=0.00005%
+19:49:26  INFO    step 1 ingest: cache is stale (CSV, cap, seed or label map changed)
+19:49:26  INFO    step 1 ingest: pass 1 - scanning ciciot23.csv (13.75 GB)
+19:50:43  INFO      scanned    5011434 rows  (78s)
+19:51:41  INFO      scanned   10022955 rows  (135s)
+19:52:21  INFO      scanned   15034301 rows  (176s)
+19:53:15  INFO      scanned   20045858 rows  (230s)
+19:54:07  INFO      scanned   25057367 rows  (281s)
+19:54:50  INFO      scanned   30068630 rows  (325s)
+19:55:45  INFO      scanned   35079776 rows  (380s)
+19:56:42  INFO      scanned   40091045 rows  (436s)
+19:57:15  INFO      scanned   45102696 rows  (469s)
+19:57:30  INFO    scan: 46686579 rows x 45 features in 484s (dropped: ['IAT'])
+19:58:04  INFO    step 1 ingest: selected 2547882 rows; pass 2 - loading them
+20:03:12  INFO    pass 2: loaded 2547882 selected rows in 308s
+20:03:21  INFO    step 1 ingest: cached 2547882 rows -> ciciot_capped.parquet (228 MB)
+20:03:40  INFO    label distribution after normalisation: {'Backdoor_Malware': 3218, 'BenignTraffic': 1098155, 'BrowserHijacking': 5859, 'CommandInjection': 5409, 'DDoS-ACK_Fragmentation': 60000, 'DDoS-HTTP_Flood': 28772, 'DDoS-ICMP_Flood': 60000, 'DDoS-ICMP_Fragmentation': 60000, 'DDoS-PSHACK_Flood': 60000, 'DDoS-RSTFINFlood': 60000, 'DDoS-SlowLoris': 23426, 'DDoS-SYN_Flood': 60000, 'DDoS-SynonymousIP_Flood': 60000, 'DDoS-TCP_Flood': 60000, 'DDoS-UDP_Flood': 60000, 'DDoS-UDP_Fragmentation': 60000, 'DictionaryBruteForce': 13064, 'DNS_Spoofing': 60000, 'DoS-HTTP_Flood': 60000, 'DoS-SYN_Flood': 60000, 'DoS-TCP_Flood': 60000, 'DoS-UDP_Flood': 60000, 'Mirai-greeth_flood': 60000, 'Mirai-greip_flood': 60000, 'Mirai-udpplain': 60000, 'MITM-ArpSpoofing': 60000, 'Recon-HostDiscovery': 60000, 'Recon-OSScan': 60000, 'Recon-PingSweep': 2254, 'Recon-PortScan': 60000, 'SqlInjection': 5245, 'Uploading_Attack': 1252, 'VulnerabilityScan': 37382, 'XSS': 3846}
+20:03:40  INFO    step 2 labels: 34 classes, 45 features
+20:03:43  INFO    dropped 0 row(s) containing NaN (2547882 -> 2547882)
+20:03:57  INFO    dropped 0 exact duplicate row(s) (2547882 -> 2547882)
+20:03:58  INFO    step 3 clean: 0 rows dropped (as expected - ingest already filtered)
+20:04:03  INFO    train: 1783517 rows (70.00%)
+20:04:03  INFO    val: 382182 rows (15.00%)
+20:04:03  INFO    test: 382183 rows (15.00%)
+20:04:03  INFO    step 4 split: {'train': 1783517, 'val': 382182, 'test': 382183}
+20:04:09  INFO    7 constant / near-constant column(s) on train (< 100 non-mode rows): {'Drate': 46, 'ece_flag_number': 8, 'cwr_flag_number': 6, 'Telnet': 0, 'SMTP': 1, 'IRC': 3, 'DHCP': 1}
+20:04:09  INFO    step 5 constants: dropped ['Drate', 'ece_flag_number', 'cwr_flag_number', 'Telnet', 'SMTP', 'IRC', 'DHCP'], 38 features remain
+20:04:12  INFO    step 6 log1p: 16 column(s): ['flow_duration', 'Header_Length', 'Rate', 'Srate', 'syn_count', 'fin_count', 'urg_count', 'rst_count', 'Tot sum', 'Min', 'Max', 'AVG', 'Std', 'Tot size', 'Radius', 'Covariance']
+20:04:36  INFO    step 7 scale: train.npz X(1783517, 38)  attack=56.90%  clipped=0.00000%
+20:04:41  INFO    step 7 scale: val.npz X(382182, 38)  attack=56.90%  clipped=0.00001%
+20:04:45  INFO    step 7 scale: test.npz X(382183, 38)  attack=56.90%  clipped=0.00001%
 
 code                   class   category  rows_in_file  exact_duplicates  conflicting    kept   train    val   test
-   0           BenignTraffic     Benign       1098195                18            0 1098177  768724 164726 164727
-   1  DDoS-ACK_Fragmentation       DDoS        285104             10171            0   60000   42000   9000   9000
+   0           BenignTraffic     Benign       1098195                40            0 1098155  768708 164723 164724
+   1  DDoS-ACK_Fragmentation       DDoS        285104             11852            0   60000   42000   9000   9000
    2         DDoS-HTTP_Flood       DDoS         28790                18            0   28772   20140   4316   4316
-   3         DDoS-ICMP_Flood       DDoS       7200504           5391331            0   60000   42000   9000   9000
-   4 DDoS-ICMP_Fragmentation       DDoS        452489              8510            0   60000   42000   9000   9000
-   5       DDoS-PSHACK_Flood       DDoS       4094755           2447671            0   60000   42000   9000   9000
-   6        DDoS-RSTFINFlood       DDoS       4045285           2973326            0   60000   42000   9000   9000
+   3         DDoS-ICMP_Flood       DDoS       7200504           5448156            0   60000   42000   9000   9000
+   4 DDoS-ICMP_Fragmentation       DDoS        452489             10293            0   60000   42000   9000   9000
+   5       DDoS-PSHACK_Flood       DDoS       4094755           2473436            3   60000   42000   9000   9000
+   6        DDoS-RSTFINFlood       DDoS       4045285           2991663            0   60000   42000   9000   9000
    7          DDoS-SlowLoris       DDoS         23426                 0            0   23426   16398   3514   3514
-   8          DDoS-SYN_Flood       DDoS       4059190           2125743            0   60000   42000   9000   9000
-   9 DDoS-SynonymousIP_Flood       DDoS       3598138            532172            0   60000   42000   9000   9000
-  10          DDoS-TCP_Flood       DDoS       4497667           2928062            0   60000   42000   9000   9000
+   8          DDoS-SYN_Flood       DDoS       4059190           2172582        29861   60000   42000   9000   9000
+   9 DDoS-SynonymousIP_Flood       DDoS       3598138            542250        19829   60000   42000   9000   9000
+  10          DDoS-TCP_Flood       DDoS       4497667           2971163        14802   60000   42000   9000   9000
   11          DDoS-UDP_Flood       DDoS       5412287                 0            0   60000   42000   9000   9000
   12  DDoS-UDP_Fragmentation       DDoS        286925                 0            0   60000   42000   9000   9000
-  13          DoS-HTTP_Flood        DoS         71864                78            0   60000   42000   9000   9000
-  14           DoS-SYN_Flood        DoS       2028834            399238            0   60000   42000   9000   9000
-  15           DoS-TCP_Flood        DoS       2671445            892537            0   60000   42000   9000   9000
-  16           DoS-UDP_Flood        DoS       3318595            358862            0   60000   42000   9000   9000
-  17      Mirai-greeth_flood      Mirai        991866            318634            0   60000   42000   9000   9000
-  18       Mirai-greip_flood      Mirai        751682            201280            0   60000   42000   9000   9000
+  13          DoS-HTTP_Flood        DoS         71864                81            1   60000   42000   9000   9000
+  14           DoS-SYN_Flood        DoS       2028834            406863        20325   60000   42000   9000   9000
+  15           DoS-TCP_Flood        DoS       2671445            909384        14802   60000   42000   9000   9000
+  16           DoS-UDP_Flood        DoS       3318595            361970            0   60000   42000   9000   9000
+  17      Mirai-greeth_flood      Mirai        991866            335255            0   60000   42000   9000   9000
+  18       Mirai-greip_flood      Mirai        751682            210068            0   60000   42000   9000   9000
   19          Mirai-udpplain      Mirai        890576                 0            0   60000   42000   9000   9000
-  20     Recon-HostDiscovery      Recon        134378                33            0   60000   42000   9000   9000
-  21            Recon-OSScan      Recon         98259               147            0   60000   42000   9000   9000
-  22         Recon-PingSweep      Recon          2262                 2            0    2260    1582    339    339
-  23          Recon-PortScan      Recon         82284               160            0   60000   42000   9000   9000
-  24       VulnerabilityScan      Recon         37382                 0            0   37382   26168   5607   5607
-  25            DNS_Spoofing   Spoofing        178911                38            0   60000   42000   9000   9000
-  26        MITM-ArpSpoofing   Spoofing        307593                 2            0   60000   42000   9000   9000
+  20     Recon-HostDiscovery      Recon        134378                96            0   60000   42000   9000   9000
+  21            Recon-OSScan      Recon         98259               341            2   60000   42000   9000   9000
+  22         Recon-PingSweep      Recon          2262                 8            0    2254    1578    338    338
+  23          Recon-PortScan      Recon         82284               371            2   60000   42000   9000   9000
+  24       VulnerabilityScan      Recon         37382                 0            0   37382   26167   5607   5608
+  25            DNS_Spoofing   Spoofing        178911               111            0   60000   42000   9000   9000
+  26        MITM-ArpSpoofing   Spoofing        307593                 6            0   60000   42000   9000   9000
   27        Backdoor_Malware        Web          3218                 0            0    3218    2253    483    482
   28        BrowserHijacking        Web          5859                 0            0    5859    4101    879    879
   29        CommandInjection        Web          5409                 0            0    5409    3786    811    812
   30            SqlInjection        Web          5245                 0            0    5245    3672    787    786
-  31        Uploading_Attack        Web          1252                 0            0    1252     876    188    188
+  31        Uploading_Attack        Web          1252                 0            0    1252     877    188    187
   32                     XSS        Web          3846                 0            0    3846    2692    577    577
   33    DictionaryBruteForce BruteForce         13064                 0            0   13064    9145   1959   1960
-                         ALL                 46686579          18588033            0 2547910 1783537 382186 382187
+                         ALL                 46686579          18846007        99627 2547882 1783517 382182 382183
 
-done in 43.2s -> D:\base_imp\aad\data\processed
+done in 920.0s -> D:\base_imp\aad\data\processed

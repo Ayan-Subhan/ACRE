@@ -1,15 +1,17 @@
-﻿17:55:09  INFO    data data/processed | train (1783537, 39)  val (382186, 39)  test (382187, 39) | attack share 56.899%
-17:55:09  INFO    class_weight enabled: {0: 1.1600632997018436, 1: 0.8787515532418287}
-17:55:09  INFO    ======================================================================
-17:55:09  INFO    training MLP
-17:55:09  INFO    
+2026-10-08 20:07:16.804306: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+20:07:22  INFO    data data/processed | train (1783517, 38)  val (382182, 38)  test (382183, 38) | attack share 56.899%
+20:07:22  INFO    class_weight binary: {0: 1.1600744365871045, 1: 0.8787451628828676}
+20:07:22  INFO    ======================================================================
+20:07:22  INFO    training MLP
+2026-10-08 20:07:24.930175: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:47] Overriding orig_value setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+20:07:25  INFO    
 Model: "mlp"
 ________________________________________________________________________________________
  Layer (type)                          Output Shape                       Param #       
 ========================================================================================
- features (InputLayer)                 [(None, 39)]                       0             
+ features (InputLayer)                 [(None, 38)]                       0             
                                                                                         
- dense_0 (Dense)                       (None, 128)                        5120          
+ dense_0 (Dense)                       (None, 128)                        4992          
                                                                                         
  dropout_0 (Dropout)                   (None, 128)                        0             
                                                                                         
@@ -24,91 +26,93 @@ ________________________________________________________________________________
  softmax (Dense)                       (None, 2)                          66            
                                                                                         
 ========================================================================================
-Total params: 15522 (60.63 KB)
-Trainable params: 15522 (60.63 KB)
+Total params: 15394 (60.13 KB)
+Trainable params: 15394 (60.13 KB)
 Non-trainable params: 0 (0.00 Byte)
 ________________________________________________________________________________________
 Epoch 1/30
-1742/1742 - 15s - loss: 0.1943 - accuracy: 0.9172 - precision: 0.9681 - recall: 0.8835 - val_loss: 0.1533 - val_accuracy: 0.9376 - val_precision: 0.9765 - val_recall: 0.9123 - lr: 0.0010 - 15s/epoch - 9ms/step
+1742/1742 - 19s - loss: 0.1947 - accuracy: 0.9178 - precision: 0.9668 - recall: 0.8859 - val_loss: 0.1621 - val_accuracy: 0.9341 - val_precision: 0.9860 - val_recall: 0.8970 - lr: 0.0010 - 19s/epoch - 11ms/step
 Epoch 2/30
-1742/1742 - 18s - loss: 0.1534 - accuracy: 0.9365 - precision: 0.9759 - recall: 0.9108 - val_loss: 0.1475 - val_accuracy: 0.9408 - val_precision: 0.9815 - val_recall: 0.9131 - lr: 0.0010 - 18s/epoch - 10ms/step
+1742/1742 - 17s - loss: 0.1516 - accuracy: 0.9376 - precision: 0.9766 - recall: 0.9121 - val_loss: 0.1503 - val_accuracy: 0.9402 - val_precision: 0.9821 - val_recall: 0.9114 - lr: 0.0010 - 17s/epoch - 10ms/step
 Epoch 3/30
-1742/1742 - 19s - loss: 0.1472 - accuracy: 0.9390 - precision: 0.9777 - recall: 0.9137 - val_loss: 0.1451 - val_accuracy: 0.9417 - val_precision: 0.9842 - val_recall: 0.9122 - lr: 0.0010 - 19s/epoch - 11ms/step
+1742/1742 - 18s - loss: 0.1463 - accuracy: 0.9398 - precision: 0.9782 - recall: 0.9146 - val_loss: 0.1482 - val_accuracy: 0.9411 - val_precision: 0.9855 - val_recall: 0.9099 - lr: 0.0010 - 18s/epoch - 10ms/step
 Epoch 4/30
-1742/1742 - 20s - loss: 0.1443 - accuracy: 0.9403 - precision: 0.9785 - recall: 0.9151 - val_loss: 0.1417 - val_accuracy: 0.9429 - val_precision: 0.9829 - val_recall: 0.9155 - lr: 0.0010 - 20s/epoch - 12ms/step
+1742/1742 - 17s - loss: 0.1435 - accuracy: 0.9410 - precision: 0.9786 - recall: 0.9164 - val_loss: 0.1435 - val_accuracy: 0.9429 - val_precision: 0.9797 - val_recall: 0.9186 - lr: 0.0010 - 17s/epoch - 10ms/step
 Epoch 5/30
-1742/1742 - 18s - loss: 0.1424 - accuracy: 0.9412 - precision: 0.9793 - recall: 0.9160 - val_loss: 0.1392 - val_accuracy: 0.9441 - val_precision: 0.9819 - val_recall: 0.9188 - lr: 0.0010 - 18s/epoch - 10ms/step
+1742/1742 - 18s - loss: 0.1416 - accuracy: 0.9416 - precision: 0.9791 - recall: 0.9170 - val_loss: 0.1448 - val_accuracy: 0.9403 - val_precision: 0.9896 - val_recall: 0.9046 - lr: 0.0010 - 18s/epoch - 10ms/step
 Epoch 6/30
-1742/1742 - 21s - loss: 0.1410 - accuracy: 0.9416 - precision: 0.9794 - recall: 0.9168 - val_loss: 0.1397 - val_accuracy: 0.9444 - val_precision: 0.9836 - val_recall: 0.9175 - lr: 0.0010 - 21s/epoch - 12ms/step
+1742/1742 - 18s - loss: 0.1404 - accuracy: 0.9421 - precision: 0.9796 - recall: 0.9174 - val_loss: 0.1403 - val_accuracy: 0.9444 - val_precision: 0.9810 - val_recall: 0.9200 - lr: 0.0010 - 18s/epoch - 10ms/step
 Epoch 7/30
-1742/1742 - 20s - loss: 0.1400 - accuracy: 0.9423 - precision: 0.9796 - recall: 0.9178 - val_loss: 0.1376 - val_accuracy: 0.9454 - val_precision: 0.9798 - val_recall: 0.9231 - lr: 0.0010 - 20s/epoch - 12ms/step
+1742/1742 - 19s - loss: 0.1398 - accuracy: 0.9425 - precision: 0.9798 - recall: 0.9178 - val_loss: 0.1401 - val_accuracy: 0.9438 - val_precision: 0.9859 - val_recall: 0.9144 - lr: 0.0010 - 19s/epoch - 11ms/step
 Epoch 8/30
-1742/1742 - 19s - loss: 0.1390 - accuracy: 0.9428 - precision: 0.9796 - recall: 0.9185 - val_loss: 0.1395 - val_accuracy: 0.9445 - val_precision: 0.9857 - val_recall: 0.9158 - lr: 0.0010 - 19s/epoch - 11ms/step
+1742/1742 - 20s - loss: 0.1386 - accuracy: 0.9429 - precision: 0.9799 - recall: 0.9185 - val_loss: 0.1377 - val_accuracy: 0.9458 - val_precision: 0.9773 - val_recall: 0.9263 - lr: 0.0010 - 20s/epoch - 12ms/step
 Epoch 9/30
-1742/1742 - 20s - loss: 0.1382 - accuracy: 0.9431 - precision: 0.9798 - recall: 0.9189 - val_loss: 0.1356 - val_accuracy: 0.9462 - val_precision: 0.9825 - val_recall: 0.9219 - lr: 0.0010 - 20s/epoch - 12ms/step
+1742/1742 - 19s - loss: 0.1383 - accuracy: 0.9431 - precision: 0.9800 - recall: 0.9188 - val_loss: 0.1386 - val_accuracy: 0.9446 - val_precision: 0.9864 - val_recall: 0.9153 - lr: 0.0010 - 19s/epoch - 11ms/step
 Epoch 10/30
-1742/1742 - 22s - loss: 0.1374 - accuracy: 0.9434 - precision: 0.9797 - recall: 0.9196 - val_loss: 0.1363 - val_accuracy: 0.9466 - val_precision: 0.9808 - val_recall: 0.9242 - lr: 0.0010 - 22s/epoch - 13ms/step
+1742/1742 - 18s - loss: 0.1375 - accuracy: 0.9435 - precision: 0.9800 - recall: 0.9195 - val_loss: 0.1374 - val_accuracy: 0.9457 - val_precision: 0.9831 - val_recall: 0.9203 - lr: 0.0010 - 18s/epoch - 10ms/step
 Epoch 11/30
-
-Epoch 11: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
-1742/1742 - 21s - loss: 0.1370 - accuracy: 0.9439 - precision: 0.9799 - recall: 0.9203 - val_loss: 0.1363 - val_accuracy: 0.9461 - val_precision: 0.9830 - val_recall: 0.9211 - lr: 0.0010 - 21s/epoch - 12ms/step
+1742/1742 - 18s - loss: 0.1369 - accuracy: 0.9437 - precision: 0.9802 - recall: 0.9196 - val_loss: 0.1368 - val_accuracy: 0.9451 - val_precision: 0.9855 - val_recall: 0.9170 - lr: 0.0010 - 18s/epoch - 10ms/step
 Epoch 12/30
-1742/1742 - 7s - loss: 0.1344 - accuracy: 0.9448 - precision: 0.9799 - recall: 0.9220 - val_loss: 0.1337 - val_accuracy: 0.9474 - val_precision: 0.9826 - val_recall: 0.9239 - lr: 5.0000e-04 - 7s/epoch - 4ms/step
+1742/1742 - 17s - loss: 0.1364 - accuracy: 0.9440 - precision: 0.9802 - recall: 0.9203 - val_loss: 0.1354 - val_accuracy: 0.9457 - val_precision: 0.9807 - val_recall: 0.9228 - lr: 0.0010 - 17s/epoch - 9ms/step
 Epoch 13/30
-1742/1742 - 7s - loss: 0.1337 - accuracy: 0.9451 - precision: 0.9802 - recall: 0.9221 - val_loss: 0.1317 - val_accuracy: 0.9478 - val_precision: 0.9804 - val_recall: 0.9268 - lr: 5.0000e-04 - 7s/epoch - 4ms/step
+1742/1742 - 19s - loss: 0.1361 - accuracy: 0.9441 - precision: 0.9803 - recall: 0.9202 - val_loss: 0.1357 - val_accuracy: 0.9462 - val_precision: 0.9827 - val_recall: 0.9217 - lr: 0.0010 - 19s/epoch - 11ms/step
 Epoch 14/30
-1742/1742 - 7s - loss: 0.1334 - accuracy: 0.9454 - precision: 0.9799 - recall: 0.9229 - val_loss: 0.1325 - val_accuracy: 0.9473 - val_precision: 0.9831 - val_recall: 0.9232 - lr: 5.0000e-04 - 7s/epoch - 4ms/step
+
+Epoch 14: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
+1742/1742 - 18s - loss: 0.1357 - accuracy: 0.9443 - precision: 0.9801 - recall: 0.9209 - val_loss: 0.1377 - val_accuracy: 0.9451 - val_precision: 0.9837 - val_recall: 0.9188 - lr: 0.0010 - 18s/epoch - 10ms/step
 Epoch 15/30
-
-Epoch 15: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
-1742/1742 - 15s - loss: 0.1333 - accuracy: 0.9454 - precision: 0.9800 - recall: 0.9230 - val_loss: 0.1331 - val_accuracy: 0.9480 - val_precision: 0.9832 - val_recall: 0.9245 - lr: 5.0000e-04 - 15s/epoch - 9ms/step
+1742/1742 - 18s - loss: 0.1331 - accuracy: 0.9453 - precision: 0.9802 - recall: 0.9225 - val_loss: 0.1340 - val_accuracy: 0.9465 - val_precision: 0.9856 - val_recall: 0.9195 - lr: 5.0000e-04 - 18s/epoch - 10ms/step
 Epoch 16/30
-1742/1742 - 22s - loss: 0.1319 - accuracy: 0.9462 - precision: 0.9801 - recall: 0.9242 - val_loss: 0.1315 - val_accuracy: 0.9478 - val_precision: 0.9840 - val_recall: 0.9234 - lr: 2.5000e-04 - 22s/epoch - 13ms/step
+1742/1742 - 19s - loss: 0.1329 - accuracy: 0.9454 - precision: 0.9803 - recall: 0.9225 - val_loss: 0.1318 - val_accuracy: 0.9474 - val_precision: 0.9822 - val_recall: 0.9243 - lr: 5.0000e-04 - 19s/epoch - 11ms/step
 Epoch 17/30
-1742/1742 - 19s - loss: 0.1316 - accuracy: 0.9461 - precision: 0.9799 - recall: 0.9242 - val_loss: 0.1313 - val_accuracy: 0.9481 - val_precision: 0.9830 - val_recall: 0.9248 - lr: 2.5000e-04 - 19s/epoch - 11ms/step
+1742/1742 - 17s - loss: 0.1324 - accuracy: 0.9457 - precision: 0.9804 - recall: 0.9230 - val_loss: 0.1317 - val_accuracy: 0.9477 - val_precision: 0.9838 - val_recall: 0.9234 - lr: 5.0000e-04 - 17s/epoch - 10ms/step
 Epoch 18/30
-1742/1742 - 17s - loss: 0.1315 - accuracy: 0.9462 - precision: 0.9801 - recall: 0.9243 - val_loss: 0.1310 - val_accuracy: 0.9486 - val_precision: 0.9827 - val_recall: 0.9260 - lr: 2.5000e-04 - 17s/epoch - 10ms/step
+
+Epoch 18: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
+1742/1742 - 18s - loss: 0.1321 - accuracy: 0.9458 - precision: 0.9804 - recall: 0.9232 - val_loss: 0.1318 - val_accuracy: 0.9476 - val_precision: 0.9834 - val_recall: 0.9235 - lr: 5.0000e-04 - 18s/epoch - 10ms/step
 Epoch 19/30
-1742/1742 - 20s - loss: 0.1312 - accuracy: 0.9464 - precision: 0.9800 - recall: 0.9247 - val_loss: 0.1310 - val_accuracy: 0.9482 - val_precision: 0.9836 - val_recall: 0.9244 - lr: 2.5000e-04 - 20s/epoch - 11ms/step
+1742/1742 - 18s - loss: 0.1308 - accuracy: 0.9465 - precision: 0.9806 - recall: 0.9242 - val_loss: 0.1318 - val_accuracy: 0.9475 - val_precision: 0.9840 - val_recall: 0.9228 - lr: 2.5000e-04 - 18s/epoch - 10ms/step
 Epoch 20/30
-
-Epoch 20: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
-1742/1742 - 20s - loss: 0.1311 - accuracy: 0.9463 - precision: 0.9801 - recall: 0.9244 - val_loss: 0.1310 - val_accuracy: 0.9484 - val_precision: 0.9841 - val_recall: 0.9243 - lr: 2.5000e-04 - 20s/epoch - 11ms/step
+1742/1742 - 19s - loss: 0.1306 - accuracy: 0.9464 - precision: 0.9803 - recall: 0.9244 - val_loss: 0.1308 - val_accuracy: 0.9483 - val_precision: 0.9827 - val_recall: 0.9255 - lr: 2.5000e-04 - 19s/epoch - 11ms/step
 Epoch 21/30
-1742/1742 - 7s - loss: 0.1305 - accuracy: 0.9467 - precision: 0.9801 - recall: 0.9250 - val_loss: 0.1305 - val_accuracy: 0.9490 - val_precision: 0.9838 - val_recall: 0.9256 - lr: 1.2500e-04 - 7s/epoch - 4ms/step
+1742/1742 - 17s - loss: 0.1304 - accuracy: 0.9464 - precision: 0.9805 - recall: 0.9242 - val_loss: 0.1317 - val_accuracy: 0.9479 - val_precision: 0.9850 - val_recall: 0.9225 - lr: 2.5000e-04 - 17s/epoch - 10ms/step
 Epoch 22/30
-1742/1742 - 8s - loss: 0.1303 - accuracy: 0.9467 - precision: 0.9799 - recall: 0.9254 - val_loss: 0.1301 - val_accuracy: 0.9487 - val_precision: 0.9835 - val_recall: 0.9254 - lr: 1.2500e-04 - 8s/epoch - 5ms/step
-Epoch 23/30
-1742/1742 - 7s - loss: 0.1302 - accuracy: 0.9468 - precision: 0.9801 - recall: 0.9253 - val_loss: 0.1300 - val_accuracy: 0.9487 - val_precision: 0.9835 - val_recall: 0.9253 - lr: 1.2500e-04 - 7s/epoch - 4ms/step
-Epoch 24/30
-1742/1742 - 7s - loss: 0.1299 - accuracy: 0.9469 - precision: 0.9802 - recall: 0.9253 - val_loss: 0.1292 - val_accuracy: 0.9493 - val_precision: 0.9823 - val_recall: 0.9277 - lr: 1.2500e-04 - 7s/epoch - 4ms/step
-Epoch 25/30
-1742/1742 - 7s - loss: 0.1301 - accuracy: 0.9468 - precision: 0.9802 - recall: 0.9253 - val_loss: 0.1299 - val_accuracy: 0.9489 - val_precision: 0.9836 - val_recall: 0.9257 - lr: 1.2500e-04 - 7s/epoch - 4ms/step
-Epoch 26/30
 
-Epoch 26: ReduceLROnPlateau reducing learning rate to 6.25000029685907e-05.
-1742/1742 - 7s - loss: 0.1301 - accuracy: 0.9469 - precision: 0.9801 - recall: 0.9255 - val_loss: 0.1301 - val_accuracy: 0.9488 - val_precision: 0.9842 - val_recall: 0.9249 - lr: 1.2500e-04 - 7s/epoch - 4ms/step
+Epoch 22: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
+1742/1742 - 18s - loss: 0.1304 - accuracy: 0.9464 - precision: 0.9806 - recall: 0.9240 - val_loss: 0.1324 - val_accuracy: 0.9479 - val_precision: 0.9850 - val_recall: 0.9224 - lr: 2.5000e-04 - 18s/epoch - 10ms/step
+Epoch 23/30
+1742/1742 - 18s - loss: 0.1297 - accuracy: 0.9468 - precision: 0.9805 - recall: 0.9248 - val_loss: 0.1300 - val_accuracy: 0.9484 - val_precision: 0.9836 - val_recall: 0.9248 - lr: 1.2500e-04 - 18s/epoch - 10ms/step
+Epoch 24/30
+1742/1742 - 17s - loss: 0.1294 - accuracy: 0.9470 - precision: 0.9807 - recall: 0.9252 - val_loss: 0.1301 - val_accuracy: 0.9485 - val_precision: 0.9839 - val_recall: 0.9245 - lr: 1.2500e-04 - 17s/epoch - 10ms/step
+Epoch 25/30
+
+Epoch 25: ReduceLROnPlateau reducing learning rate to 6.25000029685907e-05.
+1742/1742 - 18s - loss: 0.1293 - accuracy: 0.9470 - precision: 0.9806 - recall: 0.9251 - val_loss: 0.1302 - val_accuracy: 0.9484 - val_precision: 0.9844 - val_recall: 0.9240 - lr: 1.2500e-04 - 18s/epoch - 11ms/step
+Epoch 26/30
+1742/1742 - 19s - loss: 0.1289 - accuracy: 0.9471 - precision: 0.9808 - recall: 0.9251 - val_loss: 0.1299 - val_accuracy: 0.9484 - val_precision: 0.9841 - val_recall: 0.9242 - lr: 6.2500e-05 - 19s/epoch - 11ms/step
 Epoch 27/30
-1742/1742 - 7s - loss: 0.1296 - accuracy: 0.9470 - precision: 0.9801 - recall: 0.9257 - val_loss: 0.1293 - val_accuracy: 0.9492 - val_precision: 0.9835 - val_recall: 0.9263 - lr: 6.2500e-05 - 7s/epoch - 4ms/step
+1742/1742 - 20s - loss: 0.1288 - accuracy: 0.9471 - precision: 0.9807 - recall: 0.9253 - val_loss: 0.1302 - val_accuracy: 0.9484 - val_precision: 0.9845 - val_recall: 0.9239 - lr: 6.2500e-05 - 20s/epoch - 12ms/step
 Epoch 28/30
-Restoring model weights from the end of the best epoch: 24.
 
 Epoch 28: ReduceLROnPlateau reducing learning rate to 3.125000148429535e-05.
-1742/1742 - 7s - loss: 0.1296 - accuracy: 0.9470 - precision: 0.9802 - recall: 0.9255 - val_loss: 0.1294 - val_accuracy: 0.9492 - val_precision: 0.9831 - val_recall: 0.9267 - lr: 6.2500e-05 - 7s/epoch - 4ms/step
-Epoch 28: early stopping
-18:01:55  INFO    mlp: acc 94.9480%  bal.acc 95.2924%  F1 95.4344%  FPR 2.2115%  loss 0.12884  (404.7s, 28 epochs)
-18:01:55  INFO    ======================================================================
-18:01:55  INFO    training CNN
-18:01:55  INFO    
+1742/1742 - 19s - loss: 0.1289 - accuracy: 0.9471 - precision: 0.9806 - recall: 0.9253 - val_loss: 0.1300 - val_accuracy: 0.9485 - val_precision: 0.9844 - val_recall: 0.9241 - lr: 6.2500e-05 - 19s/epoch - 11ms/step
+Epoch 29/30
+1742/1742 - 19s - loss: 0.1286 - accuracy: 0.9473 - precision: 0.9808 - recall: 0.9255 - val_loss: 0.1297 - val_accuracy: 0.9486 - val_precision: 0.9842 - val_recall: 0.9245 - lr: 3.1250e-05 - 19s/epoch - 11ms/step
+Epoch 30/30
+1742/1742 - 18s - loss: 0.1285 - accuracy: 0.9473 - precision: 0.9808 - recall: 0.9256 - val_loss: 0.1301 - val_accuracy: 0.9483 - val_precision: 0.9848 - val_recall: 0.9235 - lr: 3.1250e-05 - 18s/epoch - 10ms/step
+20:16:34  INFO    mlp: acc 94.8470%  bal.acc 95.2455%  F1 95.3262%  FPR 1.8662%  loss 0.12989  (546.7s, 30 epochs)
+20:16:34  INFO    ======================================================================
+20:16:34  INFO    training CNN
+20:16:34  INFO    
 Model: "cnn"
 ________________________________________________________________________________________
  Layer (type)                          Output Shape                       Param #       
 ========================================================================================
- features (InputLayer)                 [(None, 39)]                       0             
+ features (InputLayer)                 [(None, 38)]                       0             
                                                                                         
- to_sequence (Reshape)                 (None, 39, 1)                      0             
+ to_sequence (Reshape)                 (None, 38, 1)                      0             
                                                                                         
- conv_0 (Conv1D)                       (None, 39, 64)                     256           
+ conv_0 (Conv1D)                       (None, 38, 64)                     256           
                                                                                         
  pool_0 (MaxPooling1D)                 (None, 19, 64)                     0             
                                                                                         
@@ -128,84 +132,85 @@ Trainable params: 33346 (130.26 KB)
 Non-trainable params: 0 (0.00 Byte)
 ________________________________________________________________________________________
 Epoch 1/30
-1742/1742 - 60s - loss: 0.1926 - accuracy: 0.9187 - precision: 0.9649 - recall: 0.8895 - val_loss: 0.1624 - val_accuracy: 0.9347 - val_precision: 0.9785 - val_recall: 0.9052 - lr: 0.0010 - 60s/epoch - 34ms/step
+2026-10-08 20:16:38.057574: W tensorflow/tsl/framework/bfc_allocator.cc:296] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.62GiB with freed_by_count=0. The caller indicates that this is not a failure, but this may mean that there could be performance gains if more memory were available.
+2026-10-08 20:16:38.398706: W tensorflow/tsl/framework/bfc_allocator.cc:296] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.12GiB with freed_by_count=0. The caller indicates that this is not a failure, but this may mean that there could be performance gains if more memory were available.
+2026-10-08 20:16:57.681687: W tensorflow/tsl/framework/bfc_allocator.cc:296] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.52GiB with freed_by_count=0. The caller indicates that this is not a failure, but this may mean that there could be performance gains if more memory were available.
+1742/1742 - 25s - loss: 0.1927 - accuracy: 0.9187 - precision: 0.9647 - recall: 0.8897 - val_loss: 0.1659 - val_accuracy: 0.9333 - val_precision: 0.9819 - val_recall: 0.8994 - lr: 0.0010 - 25s/epoch - 14ms/step
 Epoch 2/30
-1742/1742 - 56s - loss: 0.1554 - accuracy: 0.9359 - precision: 0.9769 - recall: 0.9088 - val_loss: 0.1528 - val_accuracy: 0.9383 - val_precision: 0.9814 - val_recall: 0.9087 - lr: 0.0010 - 56s/epoch - 32ms/step
+1742/1742 - 22s - loss: 0.1529 - accuracy: 0.9367 - precision: 0.9776 - recall: 0.9096 - val_loss: 0.1507 - val_accuracy: 0.9396 - val_precision: 0.9719 - val_recall: 0.9204 - lr: 0.0010 - 22s/epoch - 13ms/step
 Epoch 3/30
-1742/1742 - 56s - loss: 0.1497 - accuracy: 0.9381 - precision: 0.9787 - recall: 0.9110 - val_loss: 0.1533 - val_accuracy: 0.9372 - val_precision: 0.9872 - val_recall: 0.9013 - lr: 0.0010 - 56s/epoch - 32ms/step
+1742/1742 - 22s - loss: 0.1478 - accuracy: 0.9390 - precision: 0.9798 - recall: 0.9115 - val_loss: 0.1505 - val_accuracy: 0.9399 - val_precision: 0.9815 - val_recall: 0.9116 - lr: 0.0010 - 22s/epoch - 13ms/step
 Epoch 4/30
-1742/1742 - 53s - loss: 0.1467 - accuracy: 0.9394 - precision: 0.9795 - recall: 0.9126 - val_loss: 0.1514 - val_accuracy: 0.9379 - val_precision: 0.9871 - val_recall: 0.9026 - lr: 0.0010 - 53s/epoch - 30ms/step
+1742/1742 - 22s - loss: 0.1449 - accuracy: 0.9399 - precision: 0.9803 - recall: 0.9127 - val_loss: 0.1453 - val_accuracy: 0.9415 - val_precision: 0.9796 - val_recall: 0.9162 - lr: 0.0010 - 22s/epoch - 12ms/step
 Epoch 5/30
-1742/1742 - 51s - loss: 0.1440 - accuracy: 0.9404 - precision: 0.9800 - recall: 0.9140 - val_loss: 0.1497 - val_accuracy: 0.9399 - val_precision: 0.9859 - val_recall: 0.9074 - lr: 0.0010 - 51s/epoch - 30ms/step
+1742/1742 - 22s - loss: 0.1429 - accuracy: 0.9406 - precision: 0.9808 - recall: 0.9135 - val_loss: 0.1456 - val_accuracy: 0.9401 - val_precision: 0.9864 - val_recall: 0.9072 - lr: 0.0010 - 22s/epoch - 12ms/step
 Epoch 6/30
-1742/1742 - 51s - loss: 0.1425 - accuracy: 0.9412 - precision: 0.9804 - recall: 0.9149 - val_loss: 0.1456 - val_accuracy: 0.9404 - val_precision: 0.9867 - val_recall: 0.9076 - lr: 0.0010 - 51s/epoch - 29ms/step
+
+Epoch 6: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
+1742/1742 - 21s - loss: 0.1409 - accuracy: 0.9415 - precision: 0.9812 - recall: 0.9147 - val_loss: 0.1476 - val_accuracy: 0.9415 - val_precision: 0.9808 - val_recall: 0.9151 - lr: 0.0010 - 21s/epoch - 12ms/step
 Epoch 7/30
-1742/1742 - 51s - loss: 0.1405 - accuracy: 0.9420 - precision: 0.9810 - recall: 0.9159 - val_loss: 0.1467 - val_accuracy: 0.9404 - val_precision: 0.9875 - val_recall: 0.9066 - lr: 0.0010 - 51s/epoch - 29ms/step
+1742/1742 - 20s - loss: 0.1378 - accuracy: 0.9427 - precision: 0.9815 - recall: 0.9165 - val_loss: 0.1421 - val_accuracy: 0.9424 - val_precision: 0.9852 - val_recall: 0.9124 - lr: 5.0000e-04 - 20s/epoch - 12ms/step
 Epoch 8/30
-1742/1742 - 51s - loss: 0.1395 - accuracy: 0.9424 - precision: 0.9810 - recall: 0.9165 - val_loss: 0.1432 - val_accuracy: 0.9425 - val_precision: 0.9858 - val_recall: 0.9121 - lr: 0.0010 - 51s/epoch - 29ms/step
+1742/1742 - 18s - loss: 0.1365 - accuracy: 0.9432 - precision: 0.9815 - recall: 0.9174 - val_loss: 0.1396 - val_accuracy: 0.9437 - val_precision: 0.9795 - val_recall: 0.9203 - lr: 5.0000e-04 - 18s/epoch - 10ms/step
 Epoch 9/30
-1742/1742 - 55s - loss: 0.1382 - accuracy: 0.9430 - precision: 0.9815 - recall: 0.9171 - val_loss: 0.1388 - val_accuracy: 0.9447 - val_precision: 0.9776 - val_recall: 0.9239 - lr: 0.0010 - 55s/epoch - 31ms/step
+1742/1742 - 16s - loss: 0.1360 - accuracy: 0.9434 - precision: 0.9818 - recall: 0.9176 - val_loss: 0.1393 - val_accuracy: 0.9436 - val_precision: 0.9841 - val_recall: 0.9157 - lr: 5.0000e-04 - 16s/epoch - 9ms/step
 Epoch 10/30
-1742/1742 - 56s - loss: 0.1368 - accuracy: 0.9436 - precision: 0.9814 - recall: 0.9183 - val_loss: 0.1397 - val_accuracy: 0.9447 - val_precision: 0.9824 - val_recall: 0.9193 - lr: 0.0010 - 56s/epoch - 32ms/step
+1742/1742 - 18s - loss: 0.1354 - accuracy: 0.9437 - precision: 0.9818 - recall: 0.9180 - val_loss: 0.1369 - val_accuracy: 0.9449 - val_precision: 0.9786 - val_recall: 0.9234 - lr: 5.0000e-04 - 18s/epoch - 10ms/step
 Epoch 11/30
-1742/1742 - 53s - loss: 0.1363 - accuracy: 0.9438 - precision: 0.9816 - recall: 0.9184 - val_loss: 0.1358 - val_accuracy: 0.9461 - val_precision: 0.9788 - val_recall: 0.9253 - lr: 0.0010 - 53s/epoch - 30ms/step
+1742/1742 - 17s - loss: 0.1345 - accuracy: 0.9442 - precision: 0.9819 - recall: 0.9187 - val_loss: 0.1374 - val_accuracy: 0.9441 - val_precision: 0.9826 - val_recall: 0.9179 - lr: 5.0000e-04 - 17s/epoch - 10ms/step
 Epoch 12/30
-1742/1742 - 51s - loss: 0.1353 - accuracy: 0.9443 - precision: 0.9817 - recall: 0.9192 - val_loss: 0.1399 - val_accuracy: 0.9441 - val_precision: 0.9865 - val_recall: 0.9143 - lr: 0.0010 - 51s/epoch - 29ms/step
+
+Epoch 12: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
+1742/1742 - 18s - loss: 0.1338 - accuracy: 0.9443 - precision: 0.9819 - recall: 0.9191 - val_loss: 0.1467 - val_accuracy: 0.9418 - val_precision: 0.9888 - val_recall: 0.9079 - lr: 5.0000e-04 - 18s/epoch - 10ms/step
 Epoch 13/30
-
-Epoch 13: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
-1742/1742 - 51s - loss: 0.1346 - accuracy: 0.9445 - precision: 0.9819 - recall: 0.9194 - val_loss: 0.1435 - val_accuracy: 0.9427 - val_precision: 0.9863 - val_recall: 0.9121 - lr: 0.0010 - 51s/epoch - 29ms/step
+1742/1742 - 17s - loss: 0.1321 - accuracy: 0.9451 - precision: 0.9820 - recall: 0.9203 - val_loss: 0.1345 - val_accuracy: 0.9460 - val_precision: 0.9779 - val_recall: 0.9261 - lr: 2.5000e-04 - 17s/epoch - 10ms/step
 Epoch 14/30
-1742/1742 - 52s - loss: 0.1319 - accuracy: 0.9456 - precision: 0.9821 - recall: 0.9212 - val_loss: 0.1358 - val_accuracy: 0.9451 - val_precision: 0.9861 - val_recall: 0.9165 - lr: 5.0000e-04 - 52s/epoch - 30ms/step
+1742/1742 - 18s - loss: 0.1316 - accuracy: 0.9454 - precision: 0.9821 - recall: 0.9208 - val_loss: 0.1397 - val_accuracy: 0.9439 - val_precision: 0.9861 - val_recall: 0.9143 - lr: 2.5000e-04 - 18s/epoch - 10ms/step
 Epoch 15/30
-1742/1742 - 51s - loss: 0.1314 - accuracy: 0.9459 - precision: 0.9821 - recall: 0.9217 - val_loss: 0.1330 - val_accuracy: 0.9470 - val_precision: 0.9809 - val_recall: 0.9249 - lr: 5.0000e-04 - 51s/epoch - 29ms/step
+1742/1742 - 17s - loss: 0.1312 - accuracy: 0.9455 - precision: 0.9820 - recall: 0.9211 - val_loss: 0.1332 - val_accuracy: 0.9467 - val_precision: 0.9764 - val_recall: 0.9287 - lr: 2.5000e-04 - 17s/epoch - 10ms/step
 Epoch 16/30
-1742/1742 - 51s - loss: 0.1308 - accuracy: 0.9460 - precision: 0.9822 - recall: 0.9218 - val_loss: 0.1421 - val_accuracy: 0.9440 - val_precision: 0.9886 - val_recall: 0.9120 - lr: 5.0000e-04 - 51s/epoch - 29ms/step
+1742/1742 - 18s - loss: 0.1309 - accuracy: 0.9457 - precision: 0.9821 - recall: 0.9214 - val_loss: 0.1328 - val_accuracy: 0.9469 - val_precision: 0.9777 - val_recall: 0.9279 - lr: 2.5000e-04 - 18s/epoch - 10ms/step
 Epoch 17/30
-
-Epoch 17: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
-1742/1742 - 51s - loss: 0.1303 - accuracy: 0.9463 - precision: 0.9821 - recall: 0.9223 - val_loss: 0.1371 - val_accuracy: 0.9454 - val_precision: 0.9862 - val_recall: 0.9170 - lr: 5.0000e-04 - 51s/epoch - 29ms/step
+1742/1742 - 17s - loss: 0.1306 - accuracy: 0.9458 - precision: 0.9820 - recall: 0.9217 - val_loss: 0.1326 - val_accuracy: 0.9469 - val_precision: 0.9785 - val_recall: 0.9271 - lr: 2.5000e-04 - 17s/epoch - 10ms/step
 Epoch 18/30
-1742/1742 - 52s - loss: 0.1290 - accuracy: 0.9470 - precision: 0.9824 - recall: 0.9233 - val_loss: 0.1318 - val_accuracy: 0.9478 - val_precision: 0.9803 - val_recall: 0.9269 - lr: 2.5000e-04 - 52s/epoch - 30ms/step
+1742/1742 - 18s - loss: 0.1303 - accuracy: 0.9459 - precision: 0.9820 - recall: 0.9218 - val_loss: 0.1378 - val_accuracy: 0.9436 - val_precision: 0.9891 - val_recall: 0.9109 - lr: 2.5000e-04 - 18s/epoch - 10ms/step
 Epoch 19/30
-1742/1742 - 51s - loss: 0.1285 - accuracy: 0.9470 - precision: 0.9823 - recall: 0.9236 - val_loss: 0.1312 - val_accuracy: 0.9474 - val_precision: 0.9831 - val_recall: 0.9235 - lr: 2.5000e-04 - 51s/epoch - 29ms/step
+1742/1742 - 17s - loss: 0.1299 - accuracy: 0.9462 - precision: 0.9822 - recall: 0.9221 - val_loss: 0.1323 - val_accuracy: 0.9469 - val_precision: 0.9809 - val_recall: 0.9247 - lr: 2.5000e-04 - 17s/epoch - 10ms/step
 Epoch 20/30
-1742/1742 - 51s - loss: 0.1282 - accuracy: 0.9473 - precision: 0.9825 - recall: 0.9238 - val_loss: 0.1325 - val_accuracy: 0.9471 - val_precision: 0.9846 - val_recall: 0.9215 - lr: 2.5000e-04 - 51s/epoch - 29ms/step
+1742/1742 - 17s - loss: 0.1297 - accuracy: 0.9463 - precision: 0.9822 - recall: 0.9224 - val_loss: 0.1319 - val_accuracy: 0.9472 - val_precision: 0.9795 - val_recall: 0.9266 - lr: 2.5000e-04 - 17s/epoch - 10ms/step
 Epoch 21/30
-1742/1742 - 51s - loss: 0.1280 - accuracy: 0.9471 - precision: 0.9824 - recall: 0.9236 - val_loss: 0.1297 - val_accuracy: 0.9482 - val_precision: 0.9801 - val_recall: 0.9278 - lr: 2.5000e-04 - 51s/epoch - 29ms/step
+1742/1742 - 18s - loss: 0.1294 - accuracy: 0.9464 - precision: 0.9822 - recall: 0.9226 - val_loss: 0.1371 - val_accuracy: 0.9457 - val_precision: 0.9853 - val_recall: 0.9182 - lr: 2.5000e-04 - 18s/epoch - 10ms/step
 Epoch 22/30
-1742/1742 - 51s - loss: 0.1279 - accuracy: 0.9473 - precision: 0.9824 - recall: 0.9240 - val_loss: 0.1329 - val_accuracy: 0.9462 - val_precision: 0.9874 - val_recall: 0.9171 - lr: 2.5000e-04 - 51s/epoch - 29ms/step
+
+Epoch 22: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
+1742/1742 - 17s - loss: 0.1292 - accuracy: 0.9466 - precision: 0.9823 - recall: 0.9228 - val_loss: 0.1325 - val_accuracy: 0.9468 - val_precision: 0.9824 - val_recall: 0.9230 - lr: 2.5000e-04 - 17s/epoch - 10ms/step
 Epoch 23/30
-
-Epoch 23: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
-1742/1742 - 51s - loss: 0.1275 - accuracy: 0.9474 - precision: 0.9825 - recall: 0.9241 - val_loss: 0.1307 - val_accuracy: 0.9473 - val_precision: 0.9846 - val_recall: 0.9218 - lr: 2.5000e-04 - 51s/epoch - 29ms/step
+1742/1742 - 19s - loss: 0.1282 - accuracy: 0.9469 - precision: 0.9822 - recall: 0.9234 - val_loss: 0.1310 - val_accuracy: 0.9473 - val_precision: 0.9819 - val_recall: 0.9244 - lr: 1.2500e-04 - 19s/epoch - 11ms/step
 Epoch 24/30
-1742/1742 - 54s - loss: 0.1268 - accuracy: 0.9478 - precision: 0.9826 - recall: 0.9245 - val_loss: 0.1322 - val_accuracy: 0.9477 - val_precision: 0.9843 - val_recall: 0.9228 - lr: 1.2500e-04 - 54s/epoch - 31ms/step
+1742/1742 - 17s - loss: 0.1280 - accuracy: 0.9472 - precision: 0.9824 - recall: 0.9237 - val_loss: 0.1346 - val_accuracy: 0.9460 - val_precision: 0.9855 - val_recall: 0.9186 - lr: 1.2500e-04 - 17s/epoch - 10ms/step
 Epoch 25/30
-1742/1742 - 52s - loss: 0.1265 - accuracy: 0.9478 - precision: 0.9825 - recall: 0.9247 - val_loss: 0.1293 - val_accuracy: 0.9481 - val_precision: 0.9825 - val_recall: 0.9253 - lr: 1.2500e-04 - 52s/epoch - 30ms/step
-Epoch 26/30
-1742/1742 - 51s - loss: 0.1264 - accuracy: 0.9479 - precision: 0.9825 - recall: 0.9249 - val_loss: 0.1298 - val_accuracy: 0.9483 - val_precision: 0.9824 - val_recall: 0.9256 - lr: 1.2500e-04 - 51s/epoch - 29ms/step
-Epoch 27/30
 
-Epoch 27: ReduceLROnPlateau reducing learning rate to 6.25000029685907e-05.
-1742/1742 - 50s - loss: 0.1263 - accuracy: 0.9479 - precision: 0.9825 - recall: 0.9250 - val_loss: 0.1295 - val_accuracy: 0.9482 - val_precision: 0.9822 - val_recall: 0.9258 - lr: 1.2500e-04 - 50s/epoch - 29ms/step
-Epoch 28/30
-1742/1742 - 118s - loss: 0.1257 - accuracy: 0.9483 - precision: 0.9827 - recall: 0.9255 - val_loss: 0.1287 - val_accuracy: 0.9486 - val_precision: 0.9824 - val_recall: 0.9261 - lr: 6.2500e-05 - 118s/epoch - 68ms/step
-Epoch 29/30
-1742/1742 - 128s - loss: 0.1258 - accuracy: 0.9481 - precision: 0.9826 - recall: 0.9252 - val_loss: 0.1280 - val_accuracy: 0.9488 - val_precision: 0.9806 - val_recall: 0.9285 - lr: 6.2500e-05 - 128s/epoch - 73ms/step
-Epoch 30/30
-1742/1742 - 51s - loss: 0.1257 - accuracy: 0.9481 - precision: 0.9825 - recall: 0.9253 - val_loss: 0.1292 - val_accuracy: 0.9483 - val_precision: 0.9828 - val_recall: 0.9253 - lr: 6.2500e-05 - 51s/epoch - 29ms/step
-18:30:27  INFO    cnn: acc 94.8837%  bal.acc 95.2484%  F1 95.3698%  FPR 2.1083%  loss 0.12843  (1708.0s, 30 epochs)
-18:30:27  INFO    ======================================================================
-18:30:27  INFO    training LSTM
-18:30:27  INFO    
+Epoch 25: ReduceLROnPlateau reducing learning rate to 6.25000029685907e-05.
+1742/1742 - 18s - loss: 0.1279 - accuracy: 0.9471 - precision: 0.9823 - recall: 0.9237 - val_loss: 0.1319 - val_accuracy: 0.9470 - val_precision: 0.9834 - val_recall: 0.9224 - lr: 1.2500e-04 - 18s/epoch - 11ms/step
+Epoch 26/30
+1742/1742 - 17s - loss: 0.1273 - accuracy: 0.9473 - precision: 0.9824 - recall: 0.9240 - val_loss: 0.1318 - val_accuracy: 0.9467 - val_precision: 0.9848 - val_recall: 0.9206 - lr: 6.2500e-05 - 17s/epoch - 10ms/step
+Epoch 27/30
+Restoring model weights from the end of the best epoch: 23.
+
+Epoch 27: ReduceLROnPlateau reducing learning rate to 3.125000148429535e-05.
+1742/1742 - 18s - loss: 0.1271 - accuracy: 0.9475 - precision: 0.9824 - recall: 0.9242 - val_loss: 0.1315 - val_accuracy: 0.9472 - val_precision: 0.9829 - val_recall: 0.9232 - lr: 6.2500e-05 - 18s/epoch - 10ms/step
+Epoch 27: early stopping
+20:26:00  INFO    cnn: acc 94.7457%  bal.acc 95.1146%  F1 95.2429%  FPR 2.2116%  loss 0.13090  (504.7s, 27 epochs)
+20:26:00  INFO    ======================================================================
+20:26:00  INFO    training LSTM
+20:26:00  INFO    
 Model: "lstm"
 ________________________________________________________________________________________
  Layer (type)                          Output Shape                       Param #       
 ========================================================================================
- features (InputLayer)                 [(None, 39)]                       0             
+ features (InputLayer)                 [(None, 38)]                       0             
                                                                                         
- to_sequence (Reshape)                 (None, 39, 1)                      0             
+ to_sequence (Reshape)                 (None, 38, 1)                      0             
                                                                                         
  lstm (LSTM)                           (None, 64)                         16896         
                                                                                         
@@ -221,85 +226,89 @@ Trainable params: 19042 (74.38 KB)
 Non-trainable params: 0 (0.00 Byte)
 ________________________________________________________________________________________
 Epoch 1/30
-1742/1742 - 175s - loss: 0.3288 - accuracy: 0.8477 - precision: 0.9396 - recall: 0.7825 - val_loss: 0.2758 - val_accuracy: 0.8731 - val_precision: 0.9607 - val_recall: 0.8100 - lr: 0.0010 - 175s/epoch - 100ms/step
+1742/1742 - 24s - loss: 0.3163 - accuracy: 0.8493 - precision: 0.9453 - recall: 0.7803 - val_loss: 0.2683 - val_accuracy: 0.8727 - val_precision: 0.9766 - val_recall: 0.7953 - lr: 0.0010 - 24s/epoch - 14ms/step
 Epoch 2/30
-1742/1742 - 188s - loss: 0.2416 - accuracy: 0.8914 - precision: 0.9700 - recall: 0.8350 - val_loss: 0.2044 - val_accuracy: 0.9112 - val_precision: 0.9769 - val_recall: 0.8645 - lr: 0.0010 - 188s/epoch - 108ms/step
+1742/1742 - 22s - loss: 0.2463 - accuracy: 0.8828 - precision: 0.9702 - recall: 0.8191 - val_loss: 0.2492 - val_accuracy: 0.8905 - val_precision: 0.9848 - val_recall: 0.8202 - lr: 0.0010 - 22s/epoch - 13ms/step
 Epoch 3/30
-1742/1742 - 168s - loss: 0.1986 - accuracy: 0.9128 - precision: 0.9767 - recall: 0.8674 - val_loss: 0.1933 - val_accuracy: 0.9176 - val_precision: 0.9853 - val_recall: 0.8681 - lr: 0.0010 - 168s/epoch - 96ms/step
+1742/1742 - 23s - loss: 0.2143 - accuracy: 0.9071 - precision: 0.9631 - recall: 0.8700 - val_loss: 0.2128 - val_accuracy: 0.9124 - val_precision: 0.9845 - val_recall: 0.8595 - lr: 0.0010 - 23s/epoch - 13ms/step
 Epoch 4/30
-1742/1742 - 168s - loss: 0.1783 - accuracy: 0.9228 - precision: 0.9777 - recall: 0.8845 - val_loss: 0.1701 - val_accuracy: 0.9275 - val_precision: 0.9780 - val_recall: 0.8927 - lr: 0.0010 - 168s/epoch - 96ms/step
+1742/1742 - 22s - loss: 0.1903 - accuracy: 0.9198 - precision: 0.9659 - recall: 0.8904 - val_loss: 0.1835 - val_accuracy: 0.9234 - val_precision: 0.9690 - val_recall: 0.8940 - lr: 0.0010 - 22s/epoch - 13ms/step
 Epoch 5/30
-1742/1742 - 195s - loss: 0.1759 - accuracy: 0.9232 - precision: 0.9779 - recall: 0.8850 - val_loss: 0.1668 - val_accuracy: 0.9302 - val_precision: 0.9726 - val_recall: 0.9027 - lr: 0.0010 - 195s/epoch - 112ms/step
+1742/1742 - 21s - loss: 0.1821 - accuracy: 0.9241 - precision: 0.9667 - recall: 0.8975 - val_loss: 0.1738 - val_accuracy: 0.9278 - val_precision: 0.9728 - val_recall: 0.8981 - lr: 0.0010 - 21s/epoch - 12ms/step
 Epoch 6/30
-1742/1742 - 288s - loss: 0.1646 - accuracy: 0.9288 - precision: 0.9783 - recall: 0.8948 - val_loss: 0.1719 - val_accuracy: 0.9273 - val_precision: 0.9870 - val_recall: 0.8838 - lr: 0.0010 - 288s/epoch - 165ms/step
+1742/1742 - 22s - loss: 0.1736 - accuracy: 0.9282 - precision: 0.9679 - recall: 0.9037 - val_loss: 0.1660 - val_accuracy: 0.9324 - val_precision: 0.9578 - val_recall: 0.9218 - lr: 0.0010 - 22s/epoch - 13ms/step
 Epoch 7/30
-1742/1742 - 169s - loss: 0.1596 - accuracy: 0.9312 - precision: 0.9782 - recall: 0.8991 - val_loss: 0.1610 - val_accuracy: 0.9321 - val_precision: 0.9805 - val_recall: 0.8985 - lr: 0.0010 - 169s/epoch - 97ms/step
+1742/1742 - 20s - loss: 0.1689 - accuracy: 0.9307 - precision: 0.9687 - recall: 0.9076 - val_loss: 0.1625 - val_accuracy: 0.9342 - val_precision: 0.9734 - val_recall: 0.9092 - lr: 0.0010 - 20s/epoch - 12ms/step
 Epoch 8/30
-1742/1742 - 350s - loss: 0.1566 - accuracy: 0.9328 - precision: 0.9780 - recall: 0.9022 - val_loss: 0.1622 - val_accuracy: 0.9319 - val_precision: 0.9840 - val_recall: 0.8950 - lr: 0.0010 - 350s/epoch - 201ms/step
+1742/1742 - 22s - loss: 0.1646 - accuracy: 0.9328 - precision: 0.9695 - recall: 0.9105 - val_loss: 0.1600 - val_accuracy: 0.9352 - val_precision: 0.9602 - val_recall: 0.9244 - lr: 0.0010 - 22s/epoch - 12ms/step
 Epoch 9/30
-1742/1742 - 278s - loss: 0.1542 - accuracy: 0.9336 - precision: 0.9782 - recall: 0.9035 - val_loss: 0.1593 - val_accuracy: 0.9331 - val_precision: 0.9806 - val_recall: 0.9002 - lr: 0.0010 - 278s/epoch - 159ms/step
+1742/1742 - 21s - loss: 0.1617 - accuracy: 0.9342 - precision: 0.9703 - recall: 0.9123 - val_loss: 0.1592 - val_accuracy: 0.9356 - val_precision: 0.9647 - val_recall: 0.9205 - lr: 0.0010 - 21s/epoch - 12ms/step
 Epoch 10/30
-1742/1742 - 413s - loss: 0.1521 - accuracy: 0.9346 - precision: 0.9785 - recall: 0.9049 - val_loss: 0.1557 - val_accuracy: 0.9358 - val_precision: 0.9674 - val_recall: 0.9180 - lr: 0.0010 - 413s/epoch - 237ms/step
+1742/1742 - 20s - loss: 0.1589 - accuracy: 0.9354 - precision: 0.9711 - recall: 0.9136 - val_loss: 0.1579 - val_accuracy: 0.9371 - val_precision: 0.9737 - val_recall: 0.9141 - lr: 0.0010 - 20s/epoch - 11ms/step
 Epoch 11/30
-1742/1742 - 433s - loss: 0.1500 - accuracy: 0.9354 - precision: 0.9781 - recall: 0.9068 - val_loss: 0.1490 - val_accuracy: 0.9375 - val_precision: 0.9771 - val_recall: 0.9115 - lr: 0.0010 - 433s/epoch - 248ms/step
+1742/1742 - 21s - loss: 0.1557 - accuracy: 0.9366 - precision: 0.9724 - recall: 0.9145 - val_loss: 0.1568 - val_accuracy: 0.9364 - val_precision: 0.9764 - val_recall: 0.9102 - lr: 0.0010 - 21s/epoch - 12ms/step
 Epoch 12/30
-1742/1742 - 419s - loss: 0.1478 - accuracy: 0.9365 - precision: 0.9776 - recall: 0.9092 - val_loss: 0.1541 - val_accuracy: 0.9362 - val_precision: 0.9806 - val_recall: 0.9059 - lr: 0.0010 - 419s/epoch - 240ms/step
+1742/1742 - 20s - loss: 0.1534 - accuracy: 0.9373 - precision: 0.9729 - recall: 0.9154 - val_loss: 0.1521 - val_accuracy: 0.9381 - val_precision: 0.9707 - val_recall: 0.9190 - lr: 0.0010 - 20s/epoch - 11ms/step
 Epoch 13/30
-1742/1742 - 443s - loss: 0.1475 - accuracy: 0.9366 - precision: 0.9775 - recall: 0.9096 - val_loss: 0.1482 - val_accuracy: 0.9382 - val_precision: 0.9771 - val_recall: 0.9127 - lr: 0.0010 - 443s/epoch - 254ms/step
+1742/1742 - 21s - loss: 0.1514 - accuracy: 0.9381 - precision: 0.9735 - recall: 0.9163 - val_loss: 0.1539 - val_accuracy: 0.9390 - val_precision: 0.9760 - val_recall: 0.9153 - lr: 0.0010 - 21s/epoch - 12ms/step
 Epoch 14/30
-1742/1742 - 437s - loss: 0.1442 - accuracy: 0.9382 - precision: 0.9775 - recall: 0.9123 - val_loss: 0.1446 - val_accuracy: 0.9399 - val_precision: 0.9788 - val_recall: 0.9142 - lr: 0.0010 - 437s/epoch - 251ms/step
+
+Epoch 14: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
+1742/1742 - 21s - loss: 0.1494 - accuracy: 0.9388 - precision: 0.9740 - recall: 0.9168 - val_loss: 0.1681 - val_accuracy: 0.9336 - val_precision: 0.9807 - val_recall: 0.9010 - lr: 0.0010 - 21s/epoch - 12ms/step
 Epoch 15/30
-1742/1742 - 356s - loss: 0.1429 - accuracy: 0.9388 - precision: 0.9779 - recall: 0.9130 - val_loss: 0.1447 - val_accuracy: 0.9394 - val_precision: 0.9809 - val_recall: 0.9113 - lr: 0.0010 - 356s/epoch - 205ms/step
+1742/1742 - 20s - loss: 0.1442 - accuracy: 0.9407 - precision: 0.9754 - recall: 0.9189 - val_loss: 0.1445 - val_accuracy: 0.9410 - val_precision: 0.9706 - val_recall: 0.9243 - lr: 5.0000e-04 - 20s/epoch - 11ms/step
 Epoch 16/30
-
-Epoch 16: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
-1742/1742 - 290s - loss: 0.1415 - accuracy: 0.9394 - precision: 0.9778 - recall: 0.9143 - val_loss: 0.1481 - val_accuracy: 0.9375 - val_precision: 0.9808 - val_recall: 0.9078 - lr: 0.0010 - 290s/epoch - 166ms/step
+1742/1742 - 21s - loss: 0.1430 - accuracy: 0.9411 - precision: 0.9759 - recall: 0.9192 - val_loss: 0.1458 - val_accuracy: 0.9403 - val_precision: 0.9730 - val_recall: 0.9206 - lr: 5.0000e-04 - 21s/epoch - 12ms/step
 Epoch 17/30
-1742/1742 - 307s - loss: 0.1377 - accuracy: 0.9408 - precision: 0.9778 - recall: 0.9168 - val_loss: 0.1414 - val_accuracy: 0.9414 - val_precision: 0.9789 - val_recall: 0.9167 - lr: 5.0000e-04 - 307s/epoch - 176ms/step
+1742/1742 - 20s - loss: 0.1415 - accuracy: 0.9415 - precision: 0.9767 - recall: 0.9192 - val_loss: 0.1434 - val_accuracy: 0.9412 - val_precision: 0.9735 - val_recall: 0.9219 - lr: 5.0000e-04 - 20s/epoch - 11ms/step
 Epoch 18/30
-1742/1742 - 269s - loss: 0.1369 - accuracy: 0.9414 - precision: 0.9779 - recall: 0.9177 - val_loss: 0.1397 - val_accuracy: 0.9420 - val_precision: 0.9788 - val_recall: 0.9180 - lr: 5.0000e-04 - 269s/epoch - 154ms/step
+1742/1742 - 21s - loss: 0.1408 - accuracy: 0.9416 - precision: 0.9769 - recall: 0.9190 - val_loss: 0.1451 - val_accuracy: 0.9407 - val_precision: 0.9808 - val_recall: 0.9137 - lr: 5.0000e-04 - 21s/epoch - 12ms/step
 Epoch 19/30
-1742/1742 - 181s - loss: 0.1360 - accuracy: 0.9419 - precision: 0.9778 - recall: 0.9188 - val_loss: 0.1386 - val_accuracy: 0.9426 - val_precision: 0.9764 - val_recall: 0.9214 - lr: 5.0000e-04 - 181s/epoch - 104ms/step
+1742/1742 - 21s - loss: 0.1400 - accuracy: 0.9419 - precision: 0.9776 - recall: 0.9189 - val_loss: 0.1403 - val_accuracy: 0.9431 - val_precision: 0.9736 - val_recall: 0.9251 - lr: 5.0000e-04 - 21s/epoch - 12ms/step
 Epoch 20/30
-1742/1742 - 293s - loss: 0.1356 - accuracy: 0.9422 - precision: 0.9778 - recall: 0.9193 - val_loss: 0.1380 - val_accuracy: 0.9430 - val_precision: 0.9751 - val_recall: 0.9234 - lr: 5.0000e-04 - 293s/epoch - 168ms/step
+1742/1742 - 20s - loss: 0.1391 - accuracy: 0.9422 - precision: 0.9779 - recall: 0.9191 - val_loss: 0.1447 - val_accuracy: 0.9412 - val_precision: 0.9798 - val_recall: 0.9156 - lr: 5.0000e-04 - 20s/epoch - 11ms/step
 Epoch 21/30
-1742/1742 - 453s - loss: 0.1350 - accuracy: 0.9425 - precision: 0.9778 - recall: 0.9199 - val_loss: 0.1407 - val_accuracy: 0.9426 - val_precision: 0.9765 - val_recall: 0.9214 - lr: 5.0000e-04 - 453s/epoch - 260ms/step
-Epoch 22/30
-1742/1742 - 304s - loss: 0.1345 - accuracy: 0.9428 - precision: 0.9777 - recall: 0.9206 - val_loss: 0.1372 - val_accuracy: 0.9434 - val_precision: 0.9765 - val_recall: 0.9227 - lr: 5.0000e-04 - 304s/epoch - 175ms/step
-Epoch 23/30
-1742/1742 - 170s - loss: 0.1341 - accuracy: 0.9431 - precision: 0.9777 - recall: 0.9210 - val_loss: 0.1395 - val_accuracy: 0.9416 - val_precision: 0.9825 - val_recall: 0.9136 - lr: 5.0000e-04 - 170s/epoch - 98ms/step
-Epoch 24/30
-1742/1742 - 167s - loss: 0.1337 - accuracy: 0.9432 - precision: 0.9777 - recall: 0.9212 - val_loss: 0.1359 - val_accuracy: 0.9444 - val_precision: 0.9755 - val_recall: 0.9255 - lr: 5.0000e-04 - 167s/epoch - 96ms/step
-Epoch 25/30
-1742/1742 - 165s - loss: 0.1332 - accuracy: 0.9437 - precision: 0.9778 - recall: 0.9220 - val_loss: 0.1365 - val_accuracy: 0.9439 - val_precision: 0.9772 - val_recall: 0.9230 - lr: 5.0000e-04 - 165s/epoch - 95ms/step
-Epoch 26/30
 
-Epoch 26: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
-1742/1742 - 166s - loss: 0.1329 - accuracy: 0.9439 - precision: 0.9779 - recall: 0.9222 - val_loss: 0.1375 - val_accuracy: 0.9434 - val_precision: 0.9795 - val_recall: 0.9198 - lr: 5.0000e-04 - 166s/epoch - 95ms/step
+Epoch 21: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
+1742/1742 - 21s - loss: 0.1382 - accuracy: 0.9423 - precision: 0.9780 - recall: 0.9194 - val_loss: 0.1402 - val_accuracy: 0.9427 - val_precision: 0.9766 - val_recall: 0.9214 - lr: 5.0000e-04 - 21s/epoch - 12ms/step
+Epoch 22/30
+1742/1742 - 21s - loss: 0.1355 - accuracy: 0.9435 - precision: 0.9785 - recall: 0.9209 - val_loss: 0.1408 - val_accuracy: 0.9424 - val_precision: 0.9814 - val_recall: 0.9161 - lr: 2.5000e-04 - 21s/epoch - 12ms/step
+Epoch 23/30
+1742/1742 - 20s - loss: 0.1350 - accuracy: 0.9437 - precision: 0.9787 - recall: 0.9211 - val_loss: 0.1376 - val_accuracy: 0.9437 - val_precision: 0.9784 - val_recall: 0.9215 - lr: 2.5000e-04 - 20s/epoch - 12ms/step
+Epoch 24/30
+1742/1742 - 21s - loss: 0.1344 - accuracy: 0.9438 - precision: 0.9788 - recall: 0.9213 - val_loss: 0.1389 - val_accuracy: 0.9435 - val_precision: 0.9797 - val_recall: 0.9197 - lr: 2.5000e-04 - 21s/epoch - 12ms/step
+Epoch 25/30
+
+Epoch 25: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
+1742/1742 - 20s - loss: 0.1341 - accuracy: 0.9440 - precision: 0.9789 - recall: 0.9215 - val_loss: 0.1387 - val_accuracy: 0.9435 - val_precision: 0.9815 - val_recall: 0.9180 - lr: 2.5000e-04 - 20s/epoch - 11ms/step
+Epoch 26/30
+1742/1742 - 21s - loss: 0.1327 - accuracy: 0.9446 - precision: 0.9793 - recall: 0.9222 - val_loss: 0.1365 - val_accuracy: 0.9443 - val_precision: 0.9803 - val_recall: 0.9206 - lr: 1.2500e-04 - 21s/epoch - 12ms/step
 Epoch 27/30
-1742/1742 - 194s - loss: 0.1304 - accuracy: 0.9448 - precision: 0.9781 - recall: 0.9238 - val_loss: 0.1343 - val_accuracy: 0.9450 - val_precision: 0.9756 - val_recall: 0.9265 - lr: 2.5000e-04 - 194s/epoch - 111ms/step
+1742/1742 - 21s - loss: 0.1326 - accuracy: 0.9447 - precision: 0.9794 - recall: 0.9222 - val_loss: 0.1353 - val_accuracy: 0.9446 - val_precision: 0.9799 - val_recall: 0.9215 - lr: 1.2500e-04 - 21s/epoch - 12ms/step
 Epoch 28/30
-1742/1742 - 333s - loss: 0.1303 - accuracy: 0.9451 - precision: 0.9781 - recall: 0.9241 - val_loss: 0.1331 - val_accuracy: 0.9457 - val_precision: 0.9765 - val_recall: 0.9268 - lr: 2.5000e-04 - 333s/epoch - 191ms/step
+1742/1742 - 20s - loss: 0.1322 - accuracy: 0.9449 - precision: 0.9794 - recall: 0.9225 - val_loss: 0.1366 - val_accuracy: 0.9449 - val_precision: 0.9768 - val_recall: 0.9252 - lr: 1.2500e-04 - 20s/epoch - 11ms/step
 Epoch 29/30
-1742/1742 - 344s - loss: 0.1298 - accuracy: 0.9453 - precision: 0.9784 - recall: 0.9242 - val_loss: 0.1324 - val_accuracy: 0.9457 - val_precision: 0.9757 - val_recall: 0.9276 - lr: 2.5000e-04 - 344s/epoch - 198ms/step
+
+Epoch 29: ReduceLROnPlateau reducing learning rate to 6.25000029685907e-05.
+1742/1742 - 21s - loss: 0.1320 - accuracy: 0.9449 - precision: 0.9794 - recall: 0.9226 - val_loss: 0.1358 - val_accuracy: 0.9445 - val_precision: 0.9809 - val_recall: 0.9204 - lr: 1.2500e-04 - 21s/epoch - 12ms/step
 Epoch 30/30
-1742/1742 - 368s - loss: 0.1296 - accuracy: 0.9454 - precision: 0.9785 - recall: 0.9244 - val_loss: 0.1327 - val_accuracy: 0.9461 - val_precision: 0.9752 - val_recall: 0.9289 - lr: 2.5000e-04 - 368s/epoch - 211ms/step
-20:52:12  INFO    lstm: acc 94.6539%  bal.acc 94.9289%  F1 95.1883%  FPR 3.0784%  loss 0.13260  (8482.8s, 30 epochs)
-20:52:12  WARNING below the 99% balanced-accuracy target: ['mlp', 'cnn', 'lstm']
+1742/1742 - 20s - loss: 0.1312 - accuracy: 0.9453 - precision: 0.9796 - recall: 0.9230 - val_loss: 0.1362 - val_accuracy: 0.9443 - val_precision: 0.9813 - val_recall: 0.9196 - lr: 6.2500e-05 - 20s/epoch - 11ms/step
+20:36:32  INFO    lstm: acc 94.4278%  bal.acc 94.8159%  F1 94.9468%  FPR 2.3712%  loss 0.13563  (628.1s, 30 epochs)
 
 model      accuracy  precision   recall       f1      loss     FPR%
 -------------------------------------------------------------------
-MLP         94.9480    98.2267  92.7964  95.4344   0.12884   2.2115
-CNN         94.8837    98.3046  92.6051  95.3698   0.12843   2.1083
-LSTM        94.6539    97.5523  92.9362  95.1883   0.13260   3.0784
+MLP         94.8470    98.4925  92.3572  95.3262   0.12989   1.8662
+CNN         94.7457    98.2200  92.4409  95.2429   0.13090   2.2116
+LSTM        94.4278    98.0851  92.0031  94.9468   0.13563   2.3712
 
 per-category detection rate (%):
-  category  support    MLP     CNN   LSTM
-    Benign   164727 97.788  97.892 96.922
-      DDoS    97830 99.996  99.995 99.995
-       DoS    36000 99.997 100.000 99.994
-     Mirai    27000 99.996 100.000 99.996
-     Recon    32946 73.669  72.950 75.436
-  Spoofing    18000 71.228  70.767 70.156
-       Web     3724 69.710  68.421 68.367
-BruteForce     1960 65.459  62.959 63.776
+20:36:32  WARNING below the 99% balanced-accuracy target: ['mlp', 'cnn', 'lstm']
+  category  support     MLP    CNN   LSTM
+    Benign   164724  98.134 97.788 97.629
+      DDoS    97830  99.998 99.997 99.976
+       DoS    36000 100.000 99.997 99.989
+     Mirai    27000 100.000 99.996 99.993
+     Recon    32946  72.397 72.519 71.890
+  Spoofing    18000  69.261 69.817 67.889
+       Web     3723  66.694 67.741 61.832
+BruteForce     1960  61.684 61.990 54.133

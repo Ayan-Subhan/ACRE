@@ -64,7 +64,21 @@ This plan moves the project to CICIoT2023 and builds:
 > profile. Results: benign FPR 0.97%; ≤ 0.02% of any unconstrained adversarial set passes
 > the gate and fools its model; the distribution family carries the gate (5.95% sole
 > catches; integrality and dependency 0% sole). The `IAT` drop proposed during M3 planning
-> is on hold for user review.
+> was then approved and carried out (below).
+>
+> **`IAT` dropped, M1–M3 re-run (2026-10-08).** `drop_columns: [IAT]` at the scan, so it
+> no longer takes part in deduplication; the dataset was rebuilt (38 features; duplicates
+> 40.37%, now 18.8M of them exact copies; 48,574 DDoS/DoS feature vectors share two labels),
+> the baselines retrained on the GPU through WSL2 (29.5 min instead of ~2 h 54 min on CPU:
+> MLP 95.25 / CNN 95.11 / LSTM 94.82% balanced accuracy, FPR 1.87–2.37%), and M3 re-run
+> (FPR 1.03%, ≤ 0.02% pass-and-evade). 39-feature results archived in
+> `artifacts/superseded/39features/`. Two corrections to earlier notes: `IAT` is a copy of
+> `Number`, not a timestamp (`docs/ciciot2023-features.md`); and without `IAT` the Random
+> Forest reference falls to 95.40%, level with the networks, so its earlier lead came from
+> `IAT`. **Open before M4:** decide whether `IAT`'s real-gap component (the `Number` = 5.5
+> rows) is genuine timing worth recovering as a properly scaled feature, or a capture
+> fingerprint. This needs a diagnostic: re-extract `IAT` for the current sample and test it
+> per `Number` level, and against capture order.
 
 ---
 
