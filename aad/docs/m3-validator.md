@@ -16,9 +16,10 @@ the M2 baselines ([`m2-baselines.md`](m2-baselines.md)). Run date: 2026-10-08, C
 > - **At most 0.04% of any unconstrained set passes the validator and fools its
 >   model.** Without the gate, PGD fools the CNN on 99.78%, the MLP on 66.0% and the
 >   LSTM on 51.2% of rows.
-> - **The MLP no longer saturates.** Its gradient attacks now move 24–31 of 36
->   features, and FGSM evades it on 63% of correctly classified rows (13% before), so
->   §4.3's saturation effect belonged to the 38-feature MLP, not to the architecture.
+> - **The MLP saturates much less.** Its gradient attacks leave 16% of its source rows
+>   untouched (45% before) and move 24–31 of 36 features on the rest; FGSM evades it on
+>   63% of correctly classified rows (13% before). §4.3's saturation effect was mostly a
+>   property of the 38-feature MLP.
 
 > ## Update 2026-10-08: re-run on 38 features (no `IAT`) (superseded 2026-10-09)
 >

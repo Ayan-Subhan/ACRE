@@ -186,7 +186,12 @@ class Projector:
         self.free = [(self.idx[n], lo, hi) for n, (lo, hi) in spec.free_bounds.items() if n in self.idx]
         self.flow_age = of("flow_age")
         if spec.flow_age_mode == "immutable":
-            self.immutable = sorted(self.immutable + self.flow_age)
+            # Rate is the connection's packets / its age (CIC's extractor). With the
+            # connection's age and packet counters frozen, Rate is frozen too: a
+            # throttle that changed Rate alone would be traffic no connection can
+            # produce (it made spec A *stronger* than B in the first test run).
+            self.immutable = sorted(self.immutable + self.flow_age + self.decrease)
+            self.decrease = []
             self.flow_age_scaled: list[int] = []
         else:
             self.flow_age_scaled = self.flow_age

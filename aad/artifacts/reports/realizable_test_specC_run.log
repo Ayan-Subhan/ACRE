@@ -1,0 +1,68 @@
+C:\Users\PC\Downloads\base_imp (1)\base_imp\.venv\lib\site-packages\art\estimators\certification\__init__.py:29: UserWarning: PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality
+  warnings.warn("PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality")
+00:46:22  INFO    art_projected bim      x cnn : 100.0% unrealizable; evasion 97.9% -> 10.2% after P
+00:46:22  INFO    art_projected bim      x lstm: 100.0% unrealizable; evasion 39.2% -> 13.3% after P
+00:46:22  INFO    art_projected bim      x mlp : 82.3% unrealizable; evasion 57.8% -> 8.4% after P
+00:46:23  INFO    art_projected deepfool x cnn : 100.0% unrealizable; evasion 100.0% -> 1.4% after P
+00:46:23  INFO    art_projected deepfool x lstm: 100.0% unrealizable; evasion 96.7% -> 10.3% after P
+00:46:24  INFO    art_projected deepfool x mlp : 100.0% unrealizable; evasion 5.4% -> 0.3% after P
+00:46:24  INFO    art_projected fgsm     x cnn : 100.0% unrealizable; evasion 64.2% -> 11.0% after P
+00:46:24  INFO    art_projected fgsm     x lstm: 100.0% unrealizable; evasion 19.1% -> 9.7% after P
+00:46:25  INFO    art_projected fgsm     x mlp : 82.3% unrealizable; evasion 35.9% -> 8.6% after P
+00:46:25  INFO    art_projected pgd      x cnn : 100.0% unrealizable; evasion 99.8% -> 10.8% after P
+00:46:25  INFO    art_projected pgd      x lstm: 100.0% unrealizable; evasion 48.0% -> 13.6% after P
+00:46:25  INFO    art_projected pgd      x mlp : 82.3% unrealizable; evasion 62.6% -> 8.0% after P
+00:46:25  INFO    wrote C:\Users\PC\Downloads\base_imp (1)\base_imp\aad\artifacts\reports\table4c_projection_specC.{csv,md}
+00:46:40  INFO    source rows: 6300 from test (900 per category, detected by mlp, cnn, lstm); populations {'10-pkt': 3412, '100-pkt': 2888}
+00:46:42  INFO    ======================================================================
+00:46:42  INFO    feat_pgd against mlp (6300 rows)
+00:47:28  INFO    feat_pgd_mlp: evasion 54.16% [52.94, 55.37], passes validator 58.56%, pass+evade 49.52% (45s)
+00:47:28  INFO    ======================================================================
+00:47:28  INFO    feat_pgd against cnn (6300 rows)
+00:49:05  INFO    feat_pgd_cnn: evasion 67.54% [66.35, 68.65], passes validator 59.54%, pass+evade 53.94% (96s)
+00:49:05  INFO    ======================================================================
+00:49:05  INFO    feat_pgd against lstm (6300 rows)
+00:52:29  INFO    feat_pgd_lstm: evasion 68.51% [67.35, 69.62], passes validator 62.70%, pass+evade 54.29% (203s)
+00:52:29  INFO    ======================================================================
+00:52:29  INFO    prim_pgd against mlp (6300 rows)
+00:52:56  INFO    prim_pgd_mlp: evasion 34.84% [33.68, 36.02], passes validator 46.03%, pass+evade 31.59% (25s)
+00:52:56  INFO    ======================================================================
+00:52:56  INFO    prim_pgd against cnn (6300 rows)
+00:54:36  INFO    prim_pgd_cnn: evasion 40.30% [39.13, 41.54], passes validator 50.83%, pass+evade 35.59% (99s)
+00:54:36  INFO    ======================================================================
+00:54:36  INFO    prim_pgd against lstm (6300 rows)
+00:59:12  INFO    prim_pgd_lstm: evasion 52.87% [51.59, 54.10], passes validator 57.65%, pass+evade 43.94% (275s)
+00:59:12  INFO    ======================================================================
+00:59:12  INFO    feat_pgd_ens against mlp, cnn, lstm (6300 rows)
+01:04:17  INFO    feat_pgd_ens_ens: evasion 43.32% [42.06, 44.54], passes validator 60.40%, pass+evade 38.95% (304s)
+01:04:17  INFO    ======================================================================
+01:04:17  INFO    prim_pgd_ens against mlp, cnn, lstm (6300 rows)
+01:10:17  INFO    prim_pgd_ens_ens: evasion 23.11% [22.06, 24.14], passes validator 45.89%, pass+evade 21.67% (359s)
+01:10:17  INFO    ======================================================================
+01:10:17  INFO    adaptive_prim against mlp, cnn, lstm (6300 rows)
+01:16:21  INFO        adaptive lambda=0: 1408 of 6300 rows won; 12 fooled the models but not the validator
+01:16:31  INFO        adaptive lambda=0.1: 1 of 12 rows won; 7 fooled the models but not the validator
+01:16:37  INFO        adaptive lambda=1: 0 of 7 rows won; 1 fooled the models but not the validator
+01:16:42  INFO        adaptive lambda=10: 0 of 1 rows won; 1 fooled the models but not the validator
+01:16:47  INFO        adaptive lambda=100: 0 of 1 rows won; 0 fooled the models but not the validator
+01:16:48  INFO    adaptive_prim_ens: evasion 22.37% [21.32, 23.38], passes validator 46.21%, pass+evade 22.37% (390s)
+01:16:48  INFO    ======================================================================
+01:16:48  INFO    adaptive_feat against mlp, cnn, lstm (6300 rows)
+01:22:46  INFO        adaptive lambda=0: 2496 of 6300 rows won; 88 fooled the models but not the validator
+01:23:03  INFO        adaptive lambda=0.1: 50 of 88 rows won; 15 fooled the models but not the validator
+01:23:13  INFO        adaptive lambda=1: 0 of 15 rows won; 8 fooled the models but not the validator
+01:23:25  INFO        adaptive lambda=10: 1 of 8 rows won; 3 fooled the models but not the validator
+01:23:36  INFO        adaptive lambda=100: 1 of 3 rows won; 2 fooled the models but not the validator
+01:23:37  INFO    adaptive_feat_ens: evasion 40.48% [39.27, 41.73], passes validator 61.94%, pass+evade 40.44% (409s)
+01:23:37  INFO    ======================================================================
+01:23:37  INFO    greybox against mlp_surr, cnn_surr (6300 rows)
+01:25:44  INFO        adaptive lambda=0: 1620 of 6271 rows won; 22 fooled the models but not the validator
+01:25:48  INFO        adaptive lambda=0.1: 7 of 22 rows won; 9 fooled the models but not the validator
+01:25:51  INFO        adaptive lambda=1: 0 of 9 rows won; 7 fooled the models but not the validator
+01:25:53  INFO        adaptive lambda=10: 0 of 7 rows won; 5 fooled the models but not the validator
+01:25:56  INFO        adaptive lambda=100: 0 of 5 rows won; 3 fooled the models but not the validator
+01:25:57  INFO    greybox_surr: evasion 9.63% [8.92, 10.37], passes validator 52.02%, pass+evade 9.60% (138s)
+01:25:57  INFO    ======================================================================
+01:25:57  INFO    blackbox against mlp, cnn, lstm (6300 rows)
+01:28:24  INFO    blackbox_ens: evasion 15.06% [14.14, 15.95], passes validator 64.35%, pass+evade 15.06% (147s)
+01:28:24  INFO    wrote C:\Users\PC\Downloads\base_imp (1)\base_imp\aad\artifacts\reports\table4b_realizable_test_specC.{csv,md} and realizable_metrics_test_specC.json

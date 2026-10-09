@@ -100,7 +100,9 @@ size_cap_bytes: 1514.0
 
 # How the flow_age class is handled. Each column may be scaled within
 # [min_factor, max_factor] x its original value (zero stays zero).
-#   A (conservative): immutable - a lower bound on the attacker.
+#   A (conservative): immutable - a lower bound on the attacker. Rate is then
+#                     immutable too (Rate = connection packets / connection age),
+#                     so spec A is packet-level only: padding and TTL.
 #   B (keep-alive):   x1 .. x5 - the attacker only lengthens its connections.
 #   C (keep-alive or churn): x0.2 .. x5 - it may also split traffic over fresh
 #                     connections, which makes every window's flow younger. The

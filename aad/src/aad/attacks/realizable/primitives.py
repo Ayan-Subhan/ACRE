@@ -7,7 +7,7 @@ actions per row (all zero = "send the attack unchanged"):
 | --------- | ----------------------------------------- | ---------------------------------- |
 | `pad`     | bytes added to every packet               | [0, max(0, size_cap - Max)]        |
 | `dttl`    | change of the mean IP TTL                 | [1 - Duration, 255 - Duration]     |
-| `slow`    | throttling: Rate x (1 - slow)             | [0, 1 - max(floor, 1/max_slowdown)]|
+| `slow`    | throttling: Rate x (1 - slow)             | [0, 1 - max(floor, 1/max_slowdown)] in B/C, else 0 |
 | `stretch` | flow-age columns x (1 + stretch)          | [min - 1, max - 1] in specs B/C, else 0 |
 
 ``g`` applies the closed-form effect of each action in raw units and then the
@@ -75,7 +75,8 @@ class Primitives:
             t_lo, t_hi = spec.free_bounds.get("Duration", (1.0, 255.0))
             lo[:, 1] = np.minimum(0.0, t_lo - raw[:, self.i_ttl])
             hi[:, 1] = np.maximum(0.0, t_hi - raw[:, self.i_ttl])
-        if self.i_rate is not None:
+        if self.i_rate is not None and self.flow_scaled:
+            # throttling needs a connection that may get longer (spec A freezes it)
             floor = np.maximum(np.asarray(rate_floor, dtype=np.float64), 1.0 / spec.max_slowdown)
             hi[:, 2] = np.clip(1.0 - floor, 0.0, 1.0)
         if self.flow_scaled:

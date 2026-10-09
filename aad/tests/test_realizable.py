@@ -228,7 +228,7 @@ def test_g_output_is_realizable(world, spec):
 
 def test_g_closed_forms(world):
     X, _, _, out = world
-    P, g, floor = out["A"]
+    P, g, floor = out["B"]
     r0 = raw_of(P, X)
     theta = np.zeros((len(X), g.dim))
     theta[:, 0] = 10.0          # pad 10 bytes
@@ -255,9 +255,11 @@ def test_theta_bounds_respect_floor_and_spec(world):
     _, gA, fA = out["A"]
     lo, hi = gA.bounds(X, fA)
     assert (lo <= hi).all()
-    np.testing.assert_allclose(hi[cats == "DDoS", 2], 0.5)
-    np.testing.assert_allclose(hi[cats == "Web", 2], 1 - 1 / 20)
-    assert (hi[:, 3] == 0).all()                       # no stretching in spec A
+    assert (hi[:, 2] == 0).all() and (hi[:, 3] == 0).all()   # spec A: no throttling, no stretching
+    _, gB0, fB0 = out["B"]
+    hiB = gB0.bounds(X, fB0)[1]
+    np.testing.assert_allclose(hiB[cats == "DDoS", 2], 0.5)
+    np.testing.assert_allclose(hiB[cats == "Web", 2], 1 - 1 / 20)
     _, gB, fB = out["B"]
     assert (gB.bounds(X, fB)[1][:, 3] == 4.0).all()
     assert (gB.bounds(X, fB)[0][:, 3] == 0.0).all()
@@ -327,3 +329,13 @@ def test_captured_quirks_are_fixed_points():
         np.testing.assert_array_equal(P.project_np(X, X, floor), X)
         g = Primitives(P)
         np.testing.assert_array_equal(g.apply_np(X, np.zeros((len(X), g.dim)), floor), X)
+
+
+def test_spec_a_freezes_rate_with_the_connection(world):
+    """Rate = connection packets / connection age (CIC's extractor): with the
+    connection frozen (spec A) the rate cannot move either."""
+    X, _, _, out = world
+    P, _, floor = out["A"]
+    Xp = P.project_np(random_candidates(X), X, floor)
+    for c in ("Rate", "Srate", "flow_duration"):
+        np.testing.assert_array_equal(Xp[:, I[c]], X[:, I[c]])

@@ -71,7 +71,7 @@ class ToySoft:
 def setup():
     raw = make_raw(1500, seed=5)
     sc, X = make_scaling(raw)
-    P = Projector(RealismSpec.load(REALISM, "A"), sc)
+    P = Projector(RealismSpec.load(REALISM, "B"), sc)
     g = Primitives(P)
     model = toy_model(len(FEATURES))
     p = model.predict(X, verbose=0)[:, 1]

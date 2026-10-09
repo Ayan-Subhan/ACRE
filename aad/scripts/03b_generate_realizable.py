@@ -224,14 +224,14 @@ def run_art_projected(args, ctx_base, reports_dir):
         return
     df = pd.DataFrame(rows)
     stem = reports_dir / f"table4c_projection_spec{args.spec}"
-    df.to_csv(stem.with_suffix(".csv"), index=False)
+    df.to_csv(stem.parent / (stem.name + ".csv"), index=False)
     lines = [f"# Table IV-c - phase-3 ART attacks projected onto realizable traffic (spec {args.spec})",
              "", "Rows: the phase-3 test-split source rows each model detected at its calibrated "
              "threshold. `unrealizable` = the ART row is not a fixed point of the realism projection P. "
              "`after projection` = the same rows repaired by P, i.e. the closest traffic an attacker "
              "could actually send.", "",
              df.to_markdown(index=False, floatfmt=".2f")]
-    stem.with_suffix(".md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (stem.parent / (stem.name + ".md")).write_text("\n".join(lines) + "\n", encoding="utf-8")
     log.info("wrote %s.{csv,md}", stem)
 
 
@@ -413,7 +413,7 @@ def main() -> None:
     # ---- reports ----------------------------------------------------------------
     df = pd.DataFrame(summary)
     stem = reports_dir / f"table4b_realizable_{tag}"
-    df.to_csv(stem.with_suffix(".csv"), index=False)
+    df.to_csv(stem.parent / (stem.name + ".csv"), index=False)
     head = df[df["group"].isin(["ALL", "pop:10-pkt", "pop:100-pkt"])]
     cat = df[~df["group"].str.startswith("pop:") & (df["group"] != "ALL")]
     piv = cat.pivot_table(index=["attack", "model"], columns="group", values="pass_and_evade_%")
@@ -425,7 +425,7 @@ def main() -> None:
              "## Overall and by window population", "",
              head.to_markdown(index=False, floatfmt=".2f"), "",
              "## Pass-and-evade % by category", "", piv.to_markdown(floatfmt=".2f")]
-    stem.with_suffix(".md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (stem.parent / (stem.name + ".md")).write_text("\n".join(lines) + "\n", encoding="utf-8")
     prev_path = reports_dir / f"realizable_metrics_{tag}.json"
     prev = json.loads(prev_path.read_text(encoding="utf-8")) if prev_path.exists() else {}
     prev.update(metrics)

@@ -6,6 +6,9 @@ and is wrong in four places (see §1). Written 2026-10-09, after the move to mac
 (CPU only: Ryzen 5 8400F, 6 cores / 12 threads, 15.6 GB RAM; see the README's
 "Environment notes").
 
+> **Done 2026-10-10.** What was built, every result, and every deviation from this plan:
+> [`m4-realizable-attacks.md`](m4-realizable-attacks.md).
+
 **Goal.** Measure how well the M2 detectors and the M3 validator hold up against an
 attacker who is limited to changes that real traffic can make, and who knows about the
 validator. This is the core result of the thesis: the IDS2018 run showed that

@@ -21,8 +21,8 @@ to the IoT dataset **CICIoT2023**, following the approved plan
 | **M1** | **CICIoT2023 data pipeline + leakage probe** | **done — see [`docs/m1-data-pipeline.md`](docs/m1-data-pipeline.md)** |
 | M2 | baseline NIDS (MLP, CNN, LSTM) on CICIoT2023 | done — re-trained 2026-10-09 on 36 features (no `IAT`, `Number`, `Weight`) on CPU: balanced acc. 95.17 / 95.12 / 94.39%, FPR 1.83–2.95% (99% target not met; the Random Forest reference scored 95.40% on 38 features, level with the networks) — see [`docs/m2-baselines.md`](docs/m2-baselines.md) |
 | M3 | validator redesign for window-mean features | done — re-run on 36 features: benign FPR 1.01%; ≤ 0.04% of any unconstrained attack set passes the gate and fools its model; distribution family carries it — see [`docs/m3-validator.md`](docs/m3-validator.md) |
-| **M4** | **realizable, defense-adaptive attack generator** | **in progress — plan: [`docs/m4-plan.md`](docs/m4-plan.md)** |
-| M5 | discriminator changes + arms race | planned |
+| M4 | realizable, defense-adaptive attack generator | done — ART attacks are 82–100% unrealizable and evade ≤ 13.6% once repaired; realizable attackers get 39% (white box) / 15% (black box) of detected attacks past all three models and the validator, mostly by splitting traffic over short connections; floods stay ≤ 5%; results for three flow-age specs — see [`docs/m4-realizable-attacks.md`](docs/m4-realizable-attacks.md) |
+| **M5** | **discriminator changes + arms race** | **next** |
 | M6 | adversarial training (fixed pool + in-loop Madry) | planned |
 | M7 | packet-level (PCAP) realizability spot-check | planned |
 | M8 | end-to-end adaptive evaluation | planned |

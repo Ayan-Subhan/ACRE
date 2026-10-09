@@ -5,7 +5,19 @@ in [`m4-plan.md`](m4-plan.md). This document is meant to be read start to finish
 knows the project but did not write M4: *why* each part exists, *how* it works (with a worked
 example), *what* came out, and what it means for the thesis. Run on machine B (CPU only), 2026-10-09.
 
-<!-- RESULTS-SUMMARY -->
+> **M4 in six sentences.** Published-style gradient attacks are not traffic: 82–100% of every
+> ART set is unrealizable, and once repaired into sendable traffic they evade the CNN on 2–11% of
+> rows instead of 100%. A realizable attacker that controls only its own packets' size, timing,
+> TTL and connections still gets **39% of detected attacks past all three models and the
+> validator** (white box, spec C), **15% with only allow/stop answers** (black box) and 10% with
+> its own surrogate models (grey box). Its main lever is **splitting traffic over many short
+> connections**, because the models lean on per-connection running totals. The rule-based
+> validator stops only 6–14% of rows that fool the models, and a validator-aware attacker wins a
+> third of those back. Floods stay protected (≤ 5%) by their 100-packet-window statistics, not by
+> the validator or throttling limits; the stealthy 10-packet categories (Recon, Spoofing, Web,
+> BruteForce) carry almost all the risk. How large the hole is depends on how much an attacker
+> can change about its connections (spec A 7% → B 21% → C 39%), and packet-level checks (M7) must
+> confirm the connection-churn assumption before the spec C numbers go into the thesis as fact.
 
 ---
 
@@ -172,7 +184,7 @@ columns (so it stays valid whichever columns M1 drops).
 | --- | --- | --- | --- |
 | **immutable** | `Protocol Type`, 7 flag columns, 13 protocol indicators, `Std`, `Radius`, `Covariance`, `Variance`, `Number`, `Weight`, `IAT`, `Drate` | reset to the original | the attack's protocol and flags are what make it the attack; uniform padding leaves the spread (`Std`, …) unchanged |
 | **increase_only** | `Min`, `AVG`, `Max`, `Tot size` | ≥ original, ≤ max(original, 1,514 B) | padding only adds bytes; 1,514 B is a full Ethernet frame |
-| **decrease_only** | `Rate` | ≤ original, ≥ floor × original | throttling only slows down |
+| **decrease_only** | `Rate` | ≤ original, ≥ floor × original (spec A: immutable, §11.1) | throttling only slows down |
 | **free_bounded** | `Duration` (mean TTL) | within [1, 255] (or the original, if it lies outside) | the attacker sets its own TTL |
 | **flow_age** | `flow_duration`, `Header_Length`, `ack/syn/fin/urg/rst_count` | depends on the spec (4.3) | per-connection running totals (§2.2) |
 | **derived** | `Srate`, `Tot sum`, `Magnitue` | recomputed, never perturbed | they are functions of other columns (§5) |
@@ -190,7 +202,7 @@ An evasion only counts if the traffic still does its job:
 
 | spec | flow-age columns may be scaled by | the attacker can | role |
 | --- | --- | --- | --- |
-| **A** | ×1 (immutable) | not touch connection lifetime at all | **lower bound** on the attacker |
+| **A** | ×1 (immutable; `Rate` frozen too) | only pad and change TTL | **lower bound** on the attacker |
 | **B** | ×1 … ×5 | keep connections alive up to 5× longer | keep-alive only |
 | **C** | ×0.2 … ×5 | keep alive *or* split over fresh connections | **closest to the extractor** (§2.2) |
 
@@ -246,7 +258,7 @@ picks 4 physical actions per row. θ = 0 means "send the attack unchanged".
 | --- | --- | --- | --- |
 | `pad` | bytes added to every packet | [0, 1,514 − Max] | `Min, AVG, Max, Tot size` + pad; `Tot sum`, `Magnitue` follow |
 | `dttl` | change of the mean TTL | [1 − TTL, 255 − TTL] | `Duration` + dttl |
-| `slow` | throttling | [0, 1 − max(floor, 1/20)] | `Rate`, `Srate` × (1 − slow); in B/C `flow_duration` ÷ (1 − slow) |
+| `slow` | throttling | spec A: 0; B/C: [0, 1 − max(floor, 1/20)] | `Rate`, `Srate` × (1 − slow); in B/C `flow_duration` ÷ (1 − slow) |
 | `stretch` | connection lifetime | spec A: 0; B: [0, 4]; C: [−0.8, 4] | every flow-age column × (1 + stretch) |
 
 **A worked example** (a real Web attack row from the test set, spec C, θ = pad 40 B, TTL +20,
@@ -294,8 +306,8 @@ listed in the M7 hand-over (§12).
   exactly when every member says "benign" with a small margin.
 - **Signed steps, P every step, stop at first success.** A row is recorded at the first point where
   the *deployed* verdict flips (and, for the adaptive attacks, the *real* validator passes).
-- **Random restarts** (added after validation, §10): rows not won from the clean starting point get
-  further runs from random realizable starting points.
+- **Random restarts** (10, chosen on validation, §10): rows not won from the clean starting point
+  get further runs from random realizable starting points.
 - **The λ ladder spends effort only where it can help.** Higher λ is given only to rows that fooled
   the models but were stopped by the validator. A row that never fooled the models cannot be helped
   by a validator penalty.
@@ -322,8 +334,8 @@ features changed).
 
 ## 9. Bugs found on the way, and the guards they left behind
 
-The first smoke run (2% data, 1-epoch models) found five problems. Each is fixed and pinned by a
-test that fails without the fix.
+The smoke runs (2% data, 1-epoch models) and the checks on real data found five problems. Each
+is fixed and pinned by a test that fails without the fix.
 
 | # | bug | symptom | fix |
 | --- | --- | --- | --- |
@@ -351,19 +363,225 @@ settings.
 **The sweep** (`scripts/03c_tune_realizable.py`, 100 rows per category, OR-ensemble target,
 `artifacts/reports/realizable_tuning_val_specA.md`):
 
-<!-- TUNING-TABLE -->
+| attack       |   steps |   step |   restarts |   evasion_% |   pass_and_evade_% |   pass_and_evade_10pkt_% |   pass_and_evade_100pkt_% |   seconds |
+|:-------------|--------:|-------:|-----------:|------------:|-------------------:|-------------------------:|--------------------------:|----------:|
+| feat_pgd_ens |     100 |   0.01 |          0 |       10.86 |              10.43 |                    16.10 |                      3.49 |      5.20 |
+| feat_pgd_ens |     300 |   0.01 |          0 |       10.86 |              10.43 |                    16.10 |                      3.49 |     13.10 |
+| feat_pgd_ens |     100 |   0.03 |          0 |       10.57 |              10.14 |                    15.84 |                      3.17 |      4.30 |
+| feat_pgd_ens |     100 |   0.01 |          3 |       12.29 |              11.29 |                    17.40 |                      3.81 |     17.70 |
+| feat_pgd_ens |     300 |   0.03 |          3 |       11.86 |              11.00 |                    17.14 |                      3.49 |     53.80 |
+| feat_pgd_ens |     100 |   0.01 |         10 |       13.43 |              12.43 |                    19.22 |                      4.13 |     47.80 |
+| feat_pgd_ens |     100 |   0.01 |         30 |       14.14 |              13.00 |                    20.26 |                      4.13 |    131.70 |
+| prim_pgd_ens |     100 |   0.05 |          0 |        5.29 |               5.00 |                     8.83 |                      0.32 |      5.20 |
+| prim_pgd_ens |     300 |   0.05 |          0 |        5.29 |               5.00 |                     8.83 |                      0.32 |     12.20 |
+| prim_pgd_ens |     100 |   0.20 |          0 |        4.00 |               3.57 |                     6.23 |                      0.32 |      4.30 |
+| prim_pgd_ens |     100 |   0.05 |          3 |        7.86 |               7.29 |                    12.73 |                      0.63 |     17.40 |
+| prim_pgd_ens |     300 |   0.10 |          3 |        6.71 |               6.14 |                    10.91 |                      0.32 |     48.00 |
+| prim_pgd_ens |     100 |   0.05 |         10 |        8.57 |               7.71 |                    13.51 |                      0.63 |     43.80 |
+| prim_pgd_ens |     100 |   0.05 |         30 |        8.71 |               7.86 |                    13.77 |                      0.63 |    123.20 |
+
+**Reading it:**
+
+- **Steps and step size are converged.** 300 steps give *exactly* the 100-step result, and a
+  larger step is no better (feature space) or worse (primitives). More iterations from the same
+  start cannot find anything new.
+- **Random restarts are what helps.** From 0 to 10 restarts, pass-and-evade rises from 10.4% to
+  12.4% (feature space) and from 5.0% to 7.7% (primitives), then flattens (30 restarts: 13.0% /
+  7.9% at 2.8× the time). So the first run was stuck in local optima, not hitting real
+  robustness. With 10 restarts the primitive attacker matches what the black box found on the
+  first val run.
+- **Chosen for the test run: 100 steps, step 0.01 (feature) / 0.05 (primitive), 10 restarts.**
+
+**Two caveats.**
+- The sweep ran on spec A *before* the `Rate` fix of §11.1 (spec A then still allowed
+  throttling). It tunes the optimiser (steps, step size, restarts), and those conclusions do not
+  depend on the spec.
+- The first version of the sweep took 4.6 hours. After the attacks were compiled
+  (`tf.function`, one forward pass per step for both gradient and success check: §13) the same
+  sweep took about 10 minutes and reproduced every number but one. That setting (300 steps, step
+  0.10, 3 restarts) moved by 0.4 points, because borderline rows are now judged in logit space
+  inside the loop, which changes the random restart draws.
 
 ---
 
 ## 11. Results
 
-<!-- RESULTS -->
+All numbers below come from the **test** split with the settings frozen on validation
+(100 steps, 10 restarts), 6,300 source rows, 95% bootstrap intervals. Full tables:
+`artifacts/reports/table4d_tiers.md` (cross-spec, built by `scripts/03d_summarize_realizable.py`),
+`table4b_realizable_test_spec{A,B,C}.md` (every cell, every category), `table4c_projection_spec{A,B,C}.md`.
+
+### 11.1 First, a correction found by the results themselves
+
+The first test run produced an impossible ordering: spec B, which gives the attacker *more*
+freedom than spec A, came out *weaker* for the primitive and black-box attacks (black box
+3.7% vs 8.1%). The cause was in spec A, not in B. In CIC's extractor `Rate` is the connection's
+packets divided by its age (§2.2). Spec A froze the connection's age and packet counters but still
+let the attacker lower `Rate`, which no connection can do. In spec B the primitive attacker pays the
+real price: slowing down makes the connection older. **Fix:** under spec A, `Rate` (and `Srate`) is
+immutable too, so spec A is padding and TTL only, a true subset of B and C. Spec A was re-run; every
+attack now orders A ≤ B ≤ C, as it must.
+
+### 11.2 Published-style attacks do not survive becoming traffic (Table IV-c)
+
+| target | ART PGD evasion | after projection, spec A | spec B | spec C |
+| --- | ---: | ---: | ---: | ---: |
+| MLP | 62.64% | 1.76% | 4.59% | 7.97% |
+| CNN | 99.85% | 2.36% | 6.11% | 10.81% |
+| LSTM | 48.03% | 1.62% | 7.79% | 13.58% |
+
+- **82–100% of every ART set is unrealizable** (100% for CNN and LSTM sets and for DeepFool; 82% for
+  the MLP's FGSM/BIM/PGD sets, whose remaining rows are essentially those the gradient attacks left
+  untouched: the MLP's softmax still saturates on 16% of its rows).
+- After repair, the evasion that remains also passes the validator almost entirely (pass-and-evade
+  0% before → up to 11.8% after, spec C). The validator stopped ART's rows because they were
+  impossible, not because they evaded.
+- DeepFool collapses hardest (CNN: 100% → 0.2–1.4%). It looks for the *nearest* boundary crossing,
+  and once that path must stay realizable, almost nothing of it is left.
+
+### 11.3 The headline: realizable attacks against the full gate (Table IV-d)
+
+Pass-and-evade %: **no model detects the row and the real validator lets it through.**
+
+| attacker | knowledge | spec A | spec B | **spec C** |
+| --- | --- | ---: | ---: | ---: |
+| feature-space PGD | white box | 7.17 | 21.00 | **38.95** [37.7, 40.2] |
+| feature-space PGD, validator-aware | white box | 7.56 | 21.79 | **40.44** [39.2, 41.7] |
+| physical knobs (θ) PGD | white box | 3.10 | 5.11 | **21.67** [20.6, 22.7] |
+| physical knobs, validator-aware | white box | 2.98 | 5.30 | **22.37** [21.3, 23.4] |
+| physical knobs, own surrogate models | grey box | 0.60 | 0.95 | **9.60** [8.9, 10.3] |
+| physical knobs, allow/stop answers only | black box | 3.29 | 3.71 | **15.06** [14.1, 16.0] |
+
+**How to read the two white-box rows.** The feature-space attacker may move every mutable column
+independently within its bounds, so it is an **upper bound** on what the realism spec allows. The
+physical-knob attacker moves 4 actions that each change several columns together, as real traffic
+would, so it is the **realistic** white-box number. The truth for a skilled attacker lies between
+the two (22–39% in spec C).
+
+**Knowledge matters, but not as much as freedom.** A black box with 1,000 allow/stop answers per
+row reaches 70% of the white-box physical attacker (15.1 vs 21.7%). The grey box, which trains its
+own models on half the data and never queries the real ones, still reaches 9.6% in spec C:
+realizable evasions **transfer** from the attacker's models to the defender's.
+
+**Fooling one model is not fooling the ensemble** (spec C, feature space): attacking only the CNN
+gets past the CNN on 54% of rows but past all three on 6%. The OR-ensemble buys real robustness;
+an attacker has to target all members at once (the `_ens` rows above).
+
+### 11.4 Where the hole is: window population and category (spec C)
+
+| attacker | 10-packet population | 100-packet population |
+| --- | ---: | ---: |
+| feature-space PGD | 64.60% | 8.66% |
+| physical knobs PGD | 38.80% | 1.42% |
+| black box | 27.26% | 0.66% |
+| grey box | 17.64% | 0.10% |
+
+| attacker (spec C) | BruteForce | Web | Recon | Spoofing | DDoS | DoS | Mirai |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| feature-space PGD | 62.9 | 84.1 | 53.6 | 62.4 | 4.7 | 4.8 | 0.2 |
+| physical knobs PGD | 49.6 | 47.1 | 23.9 | 30.1 | 0.9 | 0.0 | 0.1 |
+| black box | 40.0 | 27.1 | 14.4 | 23.2 | 0.7 | 0.0 | 0.0 |
+
+- **Floods are safe; the stealthy categories are not.** Every attack category that shares the
+  benign 10-packet window loses a quarter to two thirds of its detections to a realistic
+  attacker; floods lose at most 5%.
+- **The flood floor is not what protects them.** Allowing floods to drop to 25% of their rate
+  instead of 50% changes their evasion by at most 0.4 points (sweep in Table IV-d §8). What
+  separates floods is the 100-packet window's statistics, which the attacker cannot change.
+
+### 11.5 The lever: short connections
+
+Among successful spec C attacks (physical knobs, black box, grey box), **90–98% shorten the
+attacker's connections**, to a median 0.28–0.58× of their original lifetime. The grey box's
+successes use *nothing else*: median padding 0, throttling 0, TTL change 0.
+
+| attack (spec C) | wins | younger connections | padding | throttling | TTL changed | median lifetime |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| physical knobs PGD | 1,365 | 94.1% | 57.3% | 50.8% | 91.5% | ×0.31 |
+| grey box | 605 | 98.3% | 41.7% | 29.8% | 90.1% | ×0.28 |
+| black box | 949 | 90.2% | 70.9% | 90.3% | 100% | ×0.58 |
+
+In traffic terms: **a quiet attack spread over many short-lived connections** (new source port
+every few packets) looks benign to models that read per-connection running totals (`rst_count`,
+`urg_count`, `Header_Length`, `flow_duration`). This is also why spec B (keep-alive only) is so much
+weaker than C: making a connection *longer* rarely helps, and the evidence is that the attacks do not
+use it (5–10% of wins).
+
+**The caveat that matters:** every fresh TCP connection costs a handshake (SYN, SYN-ACK, ACK).
+Spec C does not model the extra handshake packets inside a window, which would change that window's
+flag columns. Until M7 checks this at packet level, spec C is an **upper estimate** of the churn
+attacker, and spec A a **lower bound** of the packet-level attacker.
+
+### 11.6 What the validator adds against realistic attacks
+
+Of the rows that fool all three models, the real validator stops **6–14%**:
+
+| spec | feature-space PGD: fooled models → stopped by validator | physical knobs PGD |
+| --- | --- | --- |
+| A | 511 → 59 (11.5%) | 220 → 25 (11.4%) |
+| B | 1,536 → 213 (13.9%) | 367 → 45 (12.3%) |
+| C | 2,729 → 275 (10.1%) | 1,456 → 91 (6.2%) |
+
+A validator-aware attacker wins about a third of those back (spec C feature space: 38.95% →
+40.44%). **On IDS2018 the validator was the whole defense; here, against realizable attacks, it is
+a minor obstacle.** By construction a realizable row satisfies the integrality and dependency rules
+(§5), so only the range and distribution families can fire, and an attacker who stays close to its
+own original traffic rarely trips them.
+
+### 11.7 What success costs (spec C, medians over successful rows)
+
+| attack | byte overhead | rate loss | TTL change |
+| --- | ---: | ---: | ---: |
+| physical knobs PGD | 16.3% | 4.7% | 0 |
+| black box | 2.7% | 4.7% | 2.8 |
+| grey box | 0% | 0% | 0 |
+
+Cheap. The main cost of the successful attacks is operational (more, shorter connections), not
+bandwidth or speed.
+
 
 ---
 
 ## 12. What this means for the thesis and for M5–M8
 
-<!-- IMPLICATIONS -->
+**For the thesis.**
+
+1. **The paper's evaluation overstates both the threat and the defense.** Unconstrained attacks
+   look devastating (up to 100% evasion) and the validator looks perfect against them (≤ 0.04%
+   pass-and-evade). Both are artefacts of unrealizable rows. Against realizable attacks the models
+   are much harder to fool (Table IV-c), but the validator also stops being the defense (§11.6).
+2. **The real weakness is a feature-design one.** Per-connection running totals are
+   attacker-controlled through connection management. That is a concrete, defensible finding:
+   the models should either not rely on them, or the defense must account for connection churn.
+3. **Report ranges, not points.** Every headline number is reported for specs A/B/C with
+   intervals, because the size of the hole depends on an assumption about connection behaviour
+   that only packet-level work (M7) can settle.
+
+**Hand-over to M5 (discriminator + arms race).**
+- `artifacts/adversarial_real/test_spec{A,B,C}/` hold 12 cells each, readable by
+  `discriminator.load_cells`, tagged with `strategy` (feature / primitive / adaptive / transfer /
+  query) and `tier` for leave-one-strategy-out.
+- The discriminator should be trained on **train/val-split** adversarial rows and scored on these
+  test cells. 03b runs on `--split val` (and a `--split train` option is a one-line change).
+- Key question for M5: can a Random Forest learn "a row whose connection is unusually young for
+  its packet sizes"? The churn attack is the obvious arms-race target.
+
+**Hand-over to M6 (adversarial training).** `Attacker.prim_pgd` / `feat_pgd` with `P` are the
+in-loop attacker. Compiled, a PGD step on 1,024 rows costs milliseconds on CPU, so in-loop
+training is affordable here. Train against **spec C** (the strongest), evaluate on all three.
+
+**Hand-over to M7 (packet level).** The assumptions of `g` to verify by applying θ to real PCAPs
+and re-extracting features:
+1. padding reaches every packet of the window (size statistics shift by `pad`);
+2. `Magnitue² + 2·pad` and `Tot sum ∝ AVG` hold after padding;
+3. the window's mean TTL moves with the attacker's own packets;
+4. throttling stretches `flow_duration` by 1 / (1 − slow) and lowers `Rate` accordingly;
+5. connection lifetime scales `flow_duration`, `Header_Length` and the `*_count` columns together;
+6. **connection churn's handshake packets** — how much they change the flag columns of the
+   windows they fall into (the biggest open question, §11.5).
+
+**For M8.** The OR-ensemble at 2% per member (3.27%) plus the validator (1.01%) already flags
+about 4% of benign traffic (§3.2). The end-to-end evaluation should fix one pipeline-wide FPR budget first.
 
 ---
 
@@ -381,7 +599,8 @@ settings.
 | `scripts/03a_audit_realism.py` | measures every relation the spec assumes → `reports/realism_audit.md` |
 | `scripts/03b_generate_realizable.py` | runs the attacks → `artifacts/adversarial_real/<split>_spec<X>/`, `reports/table4b_*`, `table4c_*` |
 | `scripts/03c_tune_realizable.py` | the validation sweep → `reports/realizable_tuning_val_spec*.md` |
-| `tests/test_realizable.py`, `tests/test_attacks_realizable.py`, `tests/test_evaluate.py` | 50 tests on synthetic data |
+| `scripts/03d_summarize_realizable.py` | cross-spec tables → `reports/table4d_tiers.md`, `realizable_levers.csv` |
+| `tests/test_realizable.py`, `tests/test_attacks_realizable.py`, `tests/test_evaluate.py` | 47 tests on synthetic data |
 
 ### Commands
 
@@ -391,9 +610,26 @@ settings.
 ..\.venv\Scripts\python.exe scripts\03a_audit_realism.py
 ..\.venv\Scripts\python.exe scripts\03c_tune_realizable.py
 ..\.venv\Scripts\python.exe scripts\03b_generate_realizable.py --attacks art_projected
-..\.venv\Scripts\python.exe scripts\03b_generate_realizable.py --split test --spec C --restarts 3
+..\.venv\Scripts\python.exe scripts\03b_generate_realizable.py --split test --spec C        # also --spec A, --spec B
+..\.venv\Scripts\python.exe scripts\03b_generate_realizable.py --split test --spec C --flood-floor 0.25 --attacks feat_pgd_ens prim_pgd_ens blackbox
+..\.venv\Scripts\python.exe scripts\03d_summarize_realizable.py
 ```
 
 ### Deviations from `m4-plan.md`
 
-<!-- DEVIATIONS -->
+| plan (`m4-plan.md`) | what was done | why |
+| --- | --- | --- |
+| flow-age specs A and B | **A, B and C** | CIC's extractor shows the columns are per-connection totals, which fresh connections *reset* (§2.2) |
+| spec A = flow age frozen, throttling allowed | spec A also freezes `Rate` | `Rate` = connection packets / age; the first test run exposed the inconsistency (§11.1) |
+| a numpy twin of P | one TF implementation used from numpy too | one source of truth; the tests pin it to the validator's numpy units instead |
+| λ by per-row binary search | λ **ladder**, higher rungs only for rows the validator stopped | the full ladder cost 27–55 min per cell for 0–2 extra rows |
+| PGD with fixed steps | **10 random restarts** | the black box beat the gradient attack; restarts fixed it (§10) |
+| eager TensorFlow | compiled `tf.function` step, success read from the same forward pass | 69–134× faster on CPU, identical results; made 900 rows/category and three specs affordable |
+| `table4d_tiers` from 03b | a separate summary script, 03d | it compares across specs, which no single 03b run sees |
+| discriminator-aware attacks | moved to M5 (D5) | the M5 forest did not exist yet |
+
+### Bugs fixed during M4 (each pinned by a test)
+
+See §9 for the five found by the first smoke runs. Two more came later: spec A's free throttle
+(§11.1) and a report-naming bug (`Path.with_suffix` treated the ".25" of `floor0.25` as a file
+extension, so two sweep reports overwrote each other; rebuilt from the saved cells).
