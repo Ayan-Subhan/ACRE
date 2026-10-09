@@ -7,7 +7,37 @@ Input: the processed dataset from M1 ([`m1-data-pipeline.md`](m1-data-pipeline.m
 Run date: 2026-10-07. Hardware: i5-12450H CPU only (see section 6 for why the RTX 3050
 is not used).
 
-> ## Update 2026-10-08: retrained on 38 features (no `IAT`), on the GPU (current state)
+> ## Update 2026-10-09: retrained on 36 features (no `Number`, `Weight`), on CPU (current state)
+>
+> After decision D1 ([`m4-plan.md`](m4-plan.md)), the baselines were retrained unchanged
+> (same architectures, schedule, seed, binary class weights) on machine B's CPU (Ryzen 5
+> 8400F; TF 2.13 has no GPU path on its AMD card). Same rows and splits as before.
+>
+> | model | balanced acc. | FPR | epochs | CPU time | before (38 f., GPU) |
+> | --- | ---: | ---: | ---: | ---: | --- |
+> | MLP | **95.17%** | **1.83%** | 30 | 2.4 min | 95.25% / 1.87% |
+> | CNN | 95.12% | 2.74% | 27 | 17.7 min | 95.11% / 2.21% |
+> | LSTM | 94.39% | 2.95% | 30 | 69.1 min | 94.82% / 2.37% |
+>
+> **Per category (%), 36 vs 38 features:**
+>
+> | category | MLP | CNN | LSTM |
+> | --- | --- | --- | --- |
+> | DDoS | 99.89 (100.00) | 99.99 (100.00) | 98.57 (99.98) |
+> | DoS | 99.97 (100.00) | 99.99 (100.00) | 99.48 (99.99) |
+> | Mirai | 99.93 (100.00) | 99.99 (100.00) | 99.39 (99.99) |
+> | Recon | 71.57 (72.40) | 74.34 (72.52) | 71.75 (71.89) |
+> | Spoofing | 69.17 (69.26) | 71.84 (69.82) | 71.33 (67.89) |
+> | Web | 66.69 (66.69) | 71.42 (67.74) | 71.07 (61.83) |
+> | BruteForce | 62.30 (61.68) | 66.12 (61.99) | 66.28 (54.13) |
+>
+> The window-size columns cost nothing overall (MLP −0.08 points, CNN +0.01), as the
+> M2 ablation predicted. **What they did carry shows in the floods:** without them,
+> flood recall is no longer exactly 100% (LSTM DDoS 98.57%). The quiet categories gain
+> 2–12 points for the CNN and LSTM, partly at a higher FPR. Decision thresholds are
+> calibrated per model from M4 on (`artifacts/reports/thresholds.md`).
+
+> ## Update 2026-10-08: retrained on 38 features (no `IAT`), on the GPU (superseded 2026-10-09)
 >
 > Sections 1–7 describe the 39-feature CPU run of 2026-10-07, archived in
 > `artifacts/superseded/39features/`. After `IAT` was dropped

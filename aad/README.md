@@ -19,9 +19,9 @@ to the IoT dataset **CICIoT2023**, following the approved plan
 | --- | --- | --- |
 | M0 | environment + data | done |
 | **M1** | **CICIoT2023 data pipeline + leakage probe** | **done — see [`docs/m1-data-pipeline.md`](docs/m1-data-pipeline.md)** |
-| M2 | baseline NIDS (MLP, CNN, LSTM) on CICIoT2023 | done — re-trained 2026-10-08 on 38 features (no `IAT`) on the GPU: balanced acc. 95.25 / 95.11 / 94.82%, FPR 1.87–2.37% (99% target not met; Random Forest reference 95.40%) — see [`docs/m2-baselines.md`](docs/m2-baselines.md) |
-| M3 | validator redesign for window-mean features | done — re-run on 38 features: benign FPR 1.03%; ≤ 0.02% of any unconstrained attack set passes the gate and fools its model; distribution family carries it — see [`docs/m3-validator.md`](docs/m3-validator.md) |
-| M4 | realizable, defense-adaptive attack generator | next |
+| M2 | baseline NIDS (MLP, CNN, LSTM) on CICIoT2023 | done — re-trained 2026-10-09 on 36 features (no `IAT`, `Number`, `Weight`) on CPU: balanced acc. 95.17 / 95.12 / 94.39%, FPR 1.83–2.95% (99% target not met; the Random Forest reference scored 95.40% on 38 features, level with the networks) — see [`docs/m2-baselines.md`](docs/m2-baselines.md) |
+| M3 | validator redesign for window-mean features | done — re-run on 36 features: benign FPR 1.01%; ≤ 0.04% of any unconstrained attack set passes the gate and fools its model; distribution family carries it — see [`docs/m3-validator.md`](docs/m3-validator.md) |
+| **M4** | **realizable, defense-adaptive attack generator** | **in progress — plan: [`docs/m4-plan.md`](docs/m4-plan.md)** |
 | M5 | discriminator changes + arms race | planned |
 | M6 | adversarial training (fixed pool + in-loop Madry) | planned |
 | M7 | packet-level (PCAP) realizability spot-check | planned |
@@ -113,10 +113,11 @@ The first `01_prepare.py` run streams the 13.75 GB CSV twice (~10 min) and cache
 sampled rows in `data/interim/ciciot_capped.parquet`; every later run, including smoke
 tests, reads the cache and takes about a minute. `--rescan` forces a fresh read.
 
-> **Feature set (2026-10-08):** 38 features. `IAT` is dropped at the scan (`config/data.yaml: drop_columns`)
-> because it is a copy of `Number`, not an inter-arrival time; see
+> **Feature set (2026-10-09):** 36 features. `IAT` (a copy of `Number`, not an inter-arrival
+> time), `Number` and `Weight` (the extractor's packet-window size, chosen per class) are
+> dropped at the scan (`config/data.yaml: drop_columns`); see
 > [`docs/ciciot2023-features.md`](docs/ciciot2023-features.md) for how CICIoT2023's features were
-> produced. The 39-feature results are archived in `artifacts/superseded/39features/`.
+> produced. Earlier results are archived in `artifacts/superseded/{39,38}features/`.
 
 ## Phase 1 (M1) in one paragraph
 
@@ -127,7 +128,7 @@ rows** chosen uniformly at random (seed 42); benign traffic is kept whole. That 
 away any rare class. It is split 70/15/15 stratified on the 34 labels; 7 near-constant
 columns are dropped and 16 heavy-tailed columns get a signed log1p (both decided on
 train only); everything is MinMax scaled to [0,1] with the scaler fitted on train only.
-Result: **38 features** (after dropping `IAT`), 1,783,517 / 382,182 / 382,183 rows. The full walkthrough, every
+Result: **36 features** (after dropping `IAT`, `Number`, `Weight`), 1,783,517 / 382,182 / 382,183 rows. The full walkthrough, every
 number the run produced, and the reasoning behind each choice are in
 [`docs/m1-data-pipeline.md`](docs/m1-data-pipeline.md).
 

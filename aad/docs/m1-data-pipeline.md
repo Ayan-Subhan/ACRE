@@ -6,7 +6,25 @@ that every number in `artifacts/reports/` can be traced back to a decision here.
 
 Run date: 2026-10-07. Machine: i5-12450H (8C/12T), 15.7 GB RAM, CPU-only.
 
-> ## Update 2026-10-08: `IAT` dropped, dataset rebuilt (current state)
+> ## Update 2026-10-09: `Number` and `Weight` dropped too (current state, 36 features)
+>
+> M4 decision D1 ([`m4-plan.md`](m4-plan.md)): `config/data.yaml` now has
+> `drop_columns: [IAT, Number, Weight]`. Both columns encode the extractor's packet window
+> (100 packets for every flood and `VulnerabilityScan`, 10 for everything else), a
+> capture setting CIC chose per class, which no attacker can change. Rebuilt on machine B
+> (CPU; pass 1 251 s).
+>
+> - **Same rows, same splits.** 2,547,882 rows kept; train / val / test 1,783,517 /
+>   382,182 / 382,183, identical to the 38-feature run. Dropping the two columns created
+>   2 more duplicates in the full file (18,846,009) and changed no selected row, so the
+>   36- and 38-feature results compare like for like.
+> - **Same column decisions:** the same 7 near-constant columns dropped, the same 16
+>   log1p columns. **36 features.**
+> - Leakage probe: still no single feature at ≥ 99% (strongest: `rst_count` 88.1%).
+>
+> The 38-feature outputs are archived in `artifacts/superseded/38features/`.
+
+> ## Update 2026-10-08: `IAT` dropped, dataset rebuilt (superseded 2026-10-09)
 >
 > Sections 0–8 below describe the original 39-feature run of 2026-10-07. Its outputs are
 > archived in `artifacts/superseded/39features/`. Since 2026-10-08,

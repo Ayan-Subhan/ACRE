@@ -4,7 +4,23 @@ Milestone M3 of [`ciciot2023-implementation-plan.md`](ciciot2023-implementation-
 Inputs: the M1 dataset (39 features; [`m1-data-pipeline.md`](m1-data-pipeline.md)) and
 the M2 baselines ([`m2-baselines.md`](m2-baselines.md)). Run date: 2026-10-08, CPU.
 
-> ## Update 2026-10-08: re-run on 38 features (no `IAT`) (current state)
+> ## Update 2026-10-09: re-run on 36 features (no `Number`, `Weight`) (current state)
+>
+> The 12 ART sets were regenerated against the CPU-retrained baselines and the rules
+> re-mined. **Same conclusions:**
+> - Same 15 integral columns and 14 kept dependency rules; 1 rule pruned
+>   (`6·TCP+17·UDP+ICMP ≤ Protocol Type`). `Tot sum ≈ Number × AVG` is no longer a
+>   candidate, because `Number` is gone.
+> - **Benign FPR 1.01%.** Distribution thresholds: TCP 4.46, UDP 8.48, ICMP 4.82,
+>   ARP 7.69, other 7.25.
+> - **At most 0.04% of any unconstrained set passes the validator and fools its
+>   model.** Without the gate, PGD fools the CNN on 99.78%, the MLP on 66.0% and the
+>   LSTM on 51.2% of rows.
+> - **The MLP no longer saturates.** Its gradient attacks now move 24–31 of 36
+>   features, and FGSM evades it on 63% of correctly classified rows (13% before), so
+>   §4.3's saturation effect belonged to the 38-feature MLP, not to the architecture.
+
+> ## Update 2026-10-08: re-run on 38 features (no `IAT`) (superseded 2026-10-09)
 >
 > Sections 1–7 below describe the first M3 run on the 39-feature data, archived in
 > `artifacts/superseded/39features/`. After `IAT` was dropped and the baselines retrained on

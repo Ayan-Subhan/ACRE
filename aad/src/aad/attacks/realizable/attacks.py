@@ -141,42 +141,81 @@ class Attacker:
 
     # --- feature-space PGD -----------------------------------------------------
 
+    def _feat_run(self, targets, xo, fl, x0, steps, step_size, lam, need_validator):
+        """One PGD run from ``x0`` (a realizable start) for one batch."""
+        groups = self._groups(xo) if lam > 0 else None
+        x, best = x0.copy(), x0.copy()
+        hit = self.succeeds(targets, x0, need_validator)
+        for _ in range(steps):
+            if hit.all():
+                break
+            xt = tf.constant(x)
+            with tf.GradientTape() as tape:
+                tape.watch(xt)
+                loss = tf.reduce_sum(self._loss(targets, xt, groups, lam))
+            grad = self._finite(tape.gradient(loss, xt).numpy(), "feat_pgd")
+            cand = np.clip(x - step_size * np.sign(grad), 0.0, 1.0)
+            cand = self.P.project_np(cand, xo, fl)
+            ok = self.succeeds(targets, cand, need_validator)
+            new = ok & ~hit
+            best[new], hit = cand[new], hit | ok
+            x = np.where(hit[:, None], x, cand)
+        return np.where(hit[:, None], best, x), hit
+
     def feat_pgd(self, targets, X, floor, steps=100, step_size=0.01, lam=0.0,
-                 need_validator=False) -> tuple[np.ndarray, np.ndarray]:
-        """Returns ``(X_adv, success)``. Successful rows keep their first
-        successful point; the others keep their last iterate."""
+                 need_validator=False, restarts=0, seed=0) -> tuple[np.ndarray, np.ndarray]:
+        """Returns ``(X_adv, success)``. The first run starts at the clean row;
+        each restart starts the rows not yet won at a random realizable point (a
+        uniform draw in [0,1]^d, projected). Successful rows keep their first
+        successful point; the others keep the last run's final iterate."""
+        rng = np.random.default_rng(seed)
         X = np.asarray(X, dtype=np.float64)
         floor = np.asarray(floor, dtype=np.float64)
         X_adv, done = X.copy(), np.zeros(len(X), dtype=bool)
         for sl in self._batches(len(X)):
             xo, fl = X[sl], floor[sl]
-            groups = self._groups(xo) if lam > 0 else None
-            x, best = xo.copy(), xo.copy()
-            hit = self.succeeds(targets, xo, need_validator)
-            for _ in range(steps):
-                if hit.all():
+            xa, hit = self._feat_run(targets, xo, fl, xo, steps, step_size, lam, need_validator)
+            for _ in range(restarts):
+                todo = np.flatnonzero(~hit)
+                if not len(todo):
                     break
-                xt = tf.constant(x)
-                with tf.GradientTape() as tape:
-                    tape.watch(xt)
-                    loss = tf.reduce_sum(self._loss(targets, xt, groups, lam))
-                grad = self._finite(tape.gradient(loss, xt).numpy(), "feat_pgd")
-                cand = np.clip(x - step_size * np.sign(grad), 0.0, 1.0)
-                cand = self.P.project_np(cand, xo, fl)
-                ok = self.succeeds(targets, cand, need_validator)
-                new = ok & ~hit
-                best[new], hit = cand[new], hit | ok
-                x = np.where(hit[:, None], x, cand)
-            X_adv[sl] = np.where(hit[:, None], best, x)
-            done[sl] = hit
+                x0 = self.P.project_np(rng.random((len(todo), xo.shape[1])), xo[todo], fl[todo])
+                xr, ok = self._feat_run(targets, xo[todo], fl[todo], x0, steps, step_size,
+                                        lam, need_validator)
+                xa[todo], hit[todo] = xr, ok
+            X_adv[sl], done[sl] = xa, hit
         return X_adv, done
 
     # --- primitive-space PGD ---------------------------------------------------
 
+    def _prim_run(self, targets, xo, fl, th0, lo, hi, steps, step_frac, lam, need_validator):
+        """One PGD run on theta from ``th0`` for one batch."""
+        step = step_frac * (hi - lo)
+        groups = self._groups(xo) if lam > 0 else None
+        th, best_th = th0.copy(), th0.copy()
+        hit = self.succeeds(targets, self.g.apply_np(xo, th0, fl), need_validator)
+        for _ in range(steps):
+            if hit.all():
+                break
+            tt = tf.Variable(th)
+            with tf.GradientTape() as tape:
+                loss = tf.reduce_sum(self._loss(targets, self.g.apply(xo, tt, fl), groups, lam))
+            grad = self._finite(tape.gradient(loss, tt).numpy(), "prim_pgd")
+            cand = self.g.clip(th - step * np.sign(grad), lo, hi)
+            ok = self.succeeds(targets, self.g.apply_np(xo, cand, fl), need_validator)
+            new = ok & ~hit
+            best_th[new], hit = cand[new], hit | ok
+            th = np.where(hit[:, None], th, cand)
+        return np.where(hit[:, None], best_th, th), hit
+
     def prim_pgd(self, targets, X, floor, steps=100, step_frac=0.05, lam=0.0,
-                 need_validator=False) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-        """Returns ``(X_adv, theta, success)``. Steps are a fraction of each
-        theta dimension's own range, signed, then clipped to the box."""
+                 need_validator=False, restarts=0, seed=0
+                 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Returns ``(X_adv, theta, success)``. Steps are a fraction of each theta
+        dimension's own range, signed, then clipped to the box. The first run
+        starts at theta = 0 (the unchanged attack); each restart starts the rows
+        not yet won at a uniform random theta in the box."""
+        rng = np.random.default_rng(seed)
         X = np.asarray(X, dtype=np.float64)
         floor = np.asarray(floor, dtype=np.float64)
         X_adv, theta_out = X.copy(), np.zeros((len(X), self.g.dim))
@@ -184,25 +223,18 @@ class Attacker:
         for sl in self._batches(len(X)):
             xo, fl = X[sl], floor[sl]
             lo, hi = self.g.bounds(xo, fl)
-            step = step_frac * (hi - lo)
-            groups = self._groups(xo) if lam > 0 else None
-            th, best_th = np.zeros_like(lo), np.zeros_like(lo)
-            hit = self.succeeds(targets, xo, need_validator)
-            for _ in range(steps):
-                if hit.all():
+            th, hit = self._prim_run(targets, xo, fl, np.zeros_like(lo), lo, hi, steps,
+                                     step_frac, lam, need_validator)
+            for _ in range(restarts):
+                todo = np.flatnonzero(~hit)
+                if not len(todo):
                     break
-                tt = tf.Variable(th)
-                with tf.GradientTape() as tape:
-                    loss = tf.reduce_sum(self._loss(targets, self.g.apply(xo, tt, fl), groups, lam))
-                grad = self._finite(tape.gradient(loss, tt).numpy(), "prim_pgd")
-                cand = self.g.clip(th - step * np.sign(grad), lo, hi)
-                ok = self.succeeds(targets, self.g.apply_np(xo, cand, fl), need_validator)
-                new = ok & ~hit
-                best_th[new], hit = cand[new], hit | ok
-                th = np.where(hit[:, None], th, cand)
-            final = np.where(hit[:, None], best_th, th)
-            theta_out[sl] = final
-            X_adv[sl] = self.g.apply_np(xo, final, fl)
+                th0 = lo[todo] + rng.random(lo[todo].shape) * (hi[todo] - lo[todo])
+                tr, ok = self._prim_run(targets, xo[todo], fl[todo], th0, lo[todo], hi[todo],
+                                        steps, step_frac, lam, need_validator)
+                th[todo], hit[todo] = tr, ok
+            theta_out[sl] = th
+            X_adv[sl] = self.g.apply_np(xo, th, fl)
             done[sl] = hit
         return X_adv, theta_out, done
 
@@ -210,8 +242,15 @@ class Attacker:
 
     def adaptive(self, targets, X, floor, space="prim", ladder=(0.0, 0.1, 1.0, 10.0, 100.0),
                  **kw) -> tuple[np.ndarray, np.ndarray | None, np.ndarray, np.ndarray]:
-        """Run the attack at each lambda in turn on the rows not yet won, where
-        winning means fooling every target AND passing the real validator.
+        """Validator-aware attack: the PGD loss plus lambda x the soft validator.
+
+        The first rung attacks every row; a row is won when it fools every
+        target AND passes the real validator. Each later, larger lambda is spent
+        only on the rows the previous rung got past the models but not past the
+        validator: a validator penalty cannot help a row that never fooled the
+        models, so re-attacking those would only cost time (2026-10-09 val run:
+        the old full ladder spent 27-55 min per cell for 0-2 extra rows).
+
         Returns ``(X_adv, theta or None, success, lambda_used)``; lambda_used is
         NaN for rows no rung won."""
         if self.validator is None or self.soft is None:
@@ -222,8 +261,8 @@ class Attacker:
         theta = np.zeros((len(X), self.g.dim)) if space == "prim" else None
         won = self.succeeds(targets, X, need_validator=True)
         lam_used = np.where(won, 0.0, np.nan)
+        todo = np.flatnonzero(~won)
         for lam in ladder:
-            todo = np.flatnonzero(~won)
             if not len(todo):
                 break
             if space == "prim":
@@ -236,7 +275,10 @@ class Attacker:
             X_adv[todo] = xa
             won[todo[ok]] = True
             lam_used[todo[ok]] = lam
-            log.info("    adaptive lambda=%g: %d of %d remaining rows won", lam, int(ok.sum()), len(todo))
+            blocked = ~ok & ~detected_by_any(targets, xa)   # past the models, not the validator
+            log.info("    adaptive lambda=%g: %d of %d rows won; %d fooled the models but not "
+                     "the validator", lam, int(ok.sum()), len(todo), int(blocked.sum()))
+            todo = todo[blocked]
         return X_adv, theta, won, lam_used
 
     # --- decision-based black box ------------------------------------------------

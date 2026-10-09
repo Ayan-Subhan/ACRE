@@ -253,6 +253,8 @@ def main() -> None:
     ap.add_argument("--feat-step", type=float, default=0.01)
     ap.add_argument("--prim-step", type=float, default=0.05)
     ap.add_argument("--queries", type=int, default=1000)
+    ap.add_argument("--restarts", type=int, default=0,
+                    help="random restarts for rows a PGD run did not win (tuned on val)")
     ap.add_argument("--batch-size", type=int, default=1024)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--force", action="store_true", help="regenerate cells that already exist")
@@ -352,23 +354,27 @@ def main() -> None:
         extra = {"theta": np.full((len(idx), g.dim), np.nan, dtype=np.float32)}
         settings = {}
         if name.startswith("feat_pgd"):
-            Xa, _ = attacker.feat_pgd(tgts, X0, floor, steps=args.steps, step_size=args.feat_step)
-            settings = {"steps": args.steps, "step_size": args.feat_step}
+            Xa, _ = attacker.feat_pgd(tgts, X0, floor, steps=args.steps, step_size=args.feat_step,
+                                      restarts=args.restarts, seed=args.seed)
+            settings = {"steps": args.steps, "step_size": args.feat_step, "restarts": args.restarts}
         elif name.startswith("prim_pgd"):
-            Xa, th, _ = attacker.prim_pgd(tgts, X0, floor, steps=args.steps, step_frac=args.prim_step)
+            Xa, th, _ = attacker.prim_pgd(tgts, X0, floor, steps=args.steps, step_frac=args.prim_step,
+                                          restarts=args.restarts, seed=args.seed)
             extra["theta"] = th.astype(np.float32)
-            settings = {"steps": args.steps, "step_frac": args.prim_step}
+            settings = {"steps": args.steps, "step_frac": args.prim_step, "restarts": args.restarts}
         elif name in ("adaptive_prim", "greybox"):
-            Xa, th, _, lam = attacker.adaptive(tgts, X0, floor, space="prim",
-                                               steps=args.steps, step_frac=args.prim_step)
+            Xa, th, _, lam = attacker.adaptive(tgts, X0, floor, space="prim", steps=args.steps,
+                                               step_frac=args.prim_step, restarts=args.restarts,
+                                               seed=args.seed)
             extra["theta"], extra["lambda"] = th.astype(np.float32), lam.astype(np.float32)
-            settings = {"steps": args.steps, "step_frac": args.prim_step,
+            settings = {"steps": args.steps, "step_frac": args.prim_step, "restarts": args.restarts,
                         "ladder": [0.0, 0.1, 1.0, 10.0, 100.0]}
         elif name == "adaptive_feat":
-            Xa, _, _, lam = attacker.adaptive(tgts, X0, floor, space="feat",
-                                              steps=args.steps, step_size=args.feat_step)
+            Xa, _, _, lam = attacker.adaptive(tgts, X0, floor, space="feat", steps=args.steps,
+                                              step_size=args.feat_step, restarts=args.restarts,
+                                              seed=args.seed)
             extra["lambda"] = lam.astype(np.float32)
-            settings = {"steps": args.steps, "step_size": args.feat_step,
+            settings = {"steps": args.steps, "step_size": args.feat_step, "restarts": args.restarts,
                         "ladder": [0.0, 0.1, 1.0, 10.0, 100.0]}
         elif name == "blackbox":
             Xa, th, _, q = attacker.blackbox(tgts, X0, floor, queries=args.queries, seed=args.seed)

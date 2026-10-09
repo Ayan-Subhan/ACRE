@@ -144,3 +144,15 @@ def test_window_population():
     pop = window_population(["DDoS", "Recon", "Recon", "Web"],
                             ["DDoS-SYN_Flood", "VulnerabilityScan", "Recon-PortScan", "XSS"])
     assert pop.tolist() == ["100-pkt", "100-pkt", "10-pkt", "10-pkt"]
+
+
+def test_restarts_only_add_successes(setup):
+    X, floor, target, atk, P = setup
+    _, _, ok0 = atk.prim_pgd([target], X, floor, steps=2, step_frac=0.05)
+    Xr, _, ok3 = atk.prim_pgd([target], X, floor, steps=2, step_frac=0.05, restarts=3, seed=1)
+    assert (ok3 >= ok0).all() and ok3.sum() > ok0.sum()
+    assert not target.detects(Xr[ok3]).any()
+    P.assert_realizable(Xr, X, floor)
+    Xf, okf = atk.feat_pgd([target], X, floor, steps=2, step_size=0.02, restarts=3, seed=1)
+    P.assert_realizable(Xf, X, floor)
+    assert not target.detects(Xf[okf]).any()

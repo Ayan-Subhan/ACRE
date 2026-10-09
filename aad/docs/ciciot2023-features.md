@@ -113,3 +113,15 @@ together, so this cannot recur.
 
 The 39-feature results produced before the drop (M1–M3 on 2026-10-07/08) are archived in
 `artifacts/superseded/39features/`.
+
+### Decision (2026-10-09): drop `Number` and `Weight` too
+
+M4 decision D1 ([`m4-plan.md`](m4-plan.md)): kept as immutable, they would make every
+flood unevadable through an extraction setting rather than through the defense. They
+are dropped at the scan like `IAT` (36 features). Two corrections to §3:
+
+- **`Number = 9.5` is not only floods.** The whole `VulnerabilityScan` class (17% of
+  Recon) uses the 100-packet window too. Its 99.96% detection in M2 coincides exactly with
+  that window. M4 reports results per window population (`10-pkt` vs `100-pkt`).
+- Dropping both changed no selected row; the 38-feature results are archived in
+  `artifacts/superseded/38features/`.

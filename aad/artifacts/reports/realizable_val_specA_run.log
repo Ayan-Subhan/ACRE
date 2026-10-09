@@ -1,0 +1,68 @@
+C:\Users\PC\Downloads\base_imp (1)\base_imp\.venv\lib\site-packages\art\estimators\certification\__init__.py:29: UserWarning: PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality
+  warnings.warn("PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality")
+16:42:46  INFO    art_projected bim      x cnn : 100.0% unrealizable; evasion 97.9% -> 3.4% after P
+16:42:46  INFO    art_projected bim      x lstm: 100.0% unrealizable; evasion 39.2% -> 4.0% after P
+16:42:47  INFO    art_projected bim      x mlp : 82.3% unrealizable; evasion 57.8% -> 2.6% after P
+16:42:47  INFO    art_projected deepfool x cnn : 100.0% unrealizable; evasion 100.0% -> 0.2% after P
+16:42:47  INFO    art_projected deepfool x lstm: 100.0% unrealizable; evasion 96.7% -> 0.5% after P
+16:42:47  INFO    art_projected deepfool x mlp : 100.0% unrealizable; evasion 5.4% -> 0.0% after P
+16:42:48  INFO    art_projected fgsm     x cnn : 100.0% unrealizable; evasion 64.2% -> 5.6% after P
+16:42:48  INFO    art_projected fgsm     x lstm: 100.0% unrealizable; evasion 19.1% -> 4.5% after P
+16:42:48  INFO    art_projected fgsm     x mlp : 82.3% unrealizable; evasion 35.9% -> 4.3% after P
+16:42:49  INFO    art_projected pgd      x cnn : 100.0% unrealizable; evasion 99.8% -> 3.7% after P
+16:42:49  INFO    art_projected pgd      x lstm: 100.0% unrealizable; evasion 48.0% -> 4.0% after P
+16:42:49  INFO    art_projected pgd      x mlp : 82.3% unrealizable; evasion 62.6% -> 2.8% after P
+16:42:49  INFO    wrote C:\Users\PC\Downloads\base_imp (1)\base_imp\aad\artifacts\reports\table4c_projection_specA.{csv,md}
+16:43:03  INFO    source rows: 1400 from val (200 per category, detected by mlp, cnn, lstm); populations {'10-pkt': 769, '100-pkt': 631}
+16:43:04  INFO    ======================================================================
+16:43:04  INFO    feat_pgd against mlp (1400 rows)
+16:43:12  INFO    feat_pgd_mlp: evasion 20.50% [18.50, 22.71], passes validator 54.93%, pass+evade 19.14% (7s)
+16:43:12  INFO    ======================================================================
+16:43:12  INFO    feat_pgd against cnn (1400 rows)
+16:43:25  INFO    feat_pgd_cnn: evasion 30.43% [28.07, 32.86], passes validator 59.00%, pass+evade 28.64% (13s)
+16:43:25  INFO    ======================================================================
+16:43:25  INFO    feat_pgd against lstm (1400 rows)
+16:44:21  INFO    feat_pgd_lstm: evasion 30.36% [27.93, 32.79], passes validator 61.50%, pass+evade 27.79% (55s)
+16:44:21  INFO    ======================================================================
+16:44:21  INFO    prim_pgd against mlp (1400 rows)
+16:44:32  INFO    prim_pgd_mlp: evasion 14.43% [12.64, 16.36], passes validator 48.86%, pass+evade 12.93% (11s)
+16:44:32  INFO    ======================================================================
+16:44:32  INFO    prim_pgd against cnn (1400 rows)
+16:44:56  INFO    prim_pgd_cnn: evasion 14.64% [12.79, 16.50], passes validator 63.00%, pass+evade 14.07% (24s)
+16:44:56  INFO    ======================================================================
+16:44:56  INFO    prim_pgd against lstm (1400 rows)
+16:46:17  INFO    prim_pgd_lstm: evasion 26.64% [24.43, 29.07], passes validator 59.07%, pass+evade 23.64% (80s)
+16:46:17  INFO    ======================================================================
+16:46:17  INFO    feat_pgd_ens against mlp, cnn, lstm (1400 rows)
+16:48:42  INFO    feat_pgd_ens_ens: evasion 11.00% [9.50, 12.71], passes validator 61.43%, pass+evade 10.64% (145s)
+16:48:42  INFO    ======================================================================
+16:48:42  INFO    prim_pgd_ens against mlp, cnn, lstm (1400 rows)
+16:51:52  INFO    prim_pgd_ens_ens: evasion 6.64% [5.36, 8.00], passes validator 58.07%, pass+evade 6.43% (189s)
+16:51:52  INFO    ======================================================================
+16:51:52  INFO    adaptive_prim against mlp, cnn, lstm (1400 rows)
+16:55:32  INFO        adaptive lambda=0: 90 of 1400 remaining rows won
+16:59:49  INFO        adaptive lambda=0.1: 0 of 1310 remaining rows won
+17:04:59  INFO        adaptive lambda=1: 0 of 1310 remaining rows won
+17:11:10  INFO        adaptive lambda=10: 0 of 1310 remaining rows won
+17:18:29  INFO        adaptive lambda=100: 0 of 1310 remaining rows won
+17:18:30  INFO    adaptive_prim_ens: evasion 6.43% [5.14, 7.79], passes validator 62.50%, pass+evade 6.43% (1596s)
+17:18:30  INFO    ======================================================================
+17:18:30  INFO    adaptive_feat against mlp, cnn, lstm (1400 rows)
+17:27:45  INFO        adaptive lambda=0: 149 of 1400 remaining rows won
+17:36:23  INFO        adaptive lambda=0.1: 2 of 1251 remaining rows won
+17:46:50  INFO        adaptive lambda=1: 0 of 1249 remaining rows won
+17:59:11  INFO        adaptive lambda=10: 1 of 1249 remaining rows won
+18:13:13  INFO        adaptive lambda=100: 1 of 1248 remaining rows won
+18:13:16  INFO    adaptive_feat_ens: evasion 10.93% [9.43, 12.64], passes validator 64.00%, pass+evade 10.93% (3283s)
+18:13:16  INFO    ======================================================================
+18:13:16  INFO    greybox against mlp_surr, cnn_surr (1400 rows)
+18:18:02  INFO        adaptive lambda=0: 118 of 1398 remaining rows won
+18:22:48  INFO        adaptive lambda=0.1: 1 of 1280 remaining rows won
+18:27:38  INFO        adaptive lambda=1: 0 of 1279 remaining rows won
+18:32:33  INFO        adaptive lambda=10: 0 of 1279 remaining rows won
+18:37:48  INFO        adaptive lambda=100: 1 of 1279 remaining rows won
+18:37:51  INFO    greybox_surr: evasion 2.29% [1.57, 3.14], passes validator 63.07%, pass+evade 2.21% (1471s)
+18:37:51  INFO    ======================================================================
+18:37:51  INFO    blackbox against mlp, cnn, lstm (1400 rows)
+19:00:57  INFO    blackbox_ens: evasion 8.64% [7.21, 10.21], passes validator 65.00%, pass+evade 8.64% (1382s)
+19:00:57  INFO    wrote C:\Users\PC\Downloads\base_imp (1)\base_imp\aad\artifacts\reports\table4b_realizable_val_specA.{csv,md} and realizable_metrics_val_specA.json
