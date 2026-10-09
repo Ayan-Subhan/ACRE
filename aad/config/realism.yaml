@@ -1,0 +1,118 @@
+# M4 - realism spec: what a traffic-level attacker can change, and how.
+#
+# Read by src/aad/attacks/realizable/constraints.py. Design and reasoning:
+# docs/m4-plan.md section 3.1. Every one of the 46 raw CICIoT2023 columns is
+# classified here exactly once, so the spec stays valid whichever columns phase 1
+# drops; columns absent from data/processed/feature_names.json are ignored.
+#
+# Threat model: the attacker controls ITS OWN packets only - their size (padding),
+# their timing (sending rate; in spec B also how long it keeps a flow alive) and
+# their IP TTL. It cannot change the protocol it uses, the TCP flags its attack
+# needs, the victim's responses, or the extractor's packet window.
+#
+# All bounds are in RAW units (bytes, packets/s, seconds, TTL hops).
+
+classes:
+  # Reset to the original value.
+  immutable:
+    - Protocol Type
+    # 0/1 per row (M3); the attack needs its flags, and toggling them is an extension.
+    - fin_flag_number
+    - syn_flag_number
+    - rst_flag_number
+    - psh_flag_number
+    - ack_flag_number
+    - ece_flag_number
+    - cwr_flag_number
+    # protocol indicators: the attacker keeps its protocol
+    - HTTP
+    - HTTPS
+    - DNS
+    - Telnet
+    - SMTP
+    - SSH
+    - IRC
+    - TCP
+    - UDP
+    - DHCP
+    - ARP
+    - ICMP
+    - IPv
+    - LLC
+    # uniform padding leaves the spread unchanged; variable-size padding (which
+    # would move Std, and Radius / Covariance with it) is an extension
+    - Std
+    - Radius
+    - Covariance
+    - Variance
+    # the extractor's window size (dropped from the model input by D1)
+    - Number
+    - Weight
+    - IAT
+    # inbound rate: the victim's packets, not the attacker's
+    - Drate
+
+  # Padding only adds bytes: >= original, and <= max(original, size_cap_bytes).
+  # Min <= AVG <= Max is restored after the clamps.
+  increase_only:
+    - Min
+    - AVG
+    - Max
+    - Tot size
+
+  # Throttling only slows down: <= original, >= floor * original (see floors).
+  decrease_only:
+    - Rate
+
+  # Set freely within physical bounds.
+  free_bounded:
+    Duration: [1.0, 255.0]          # mean IP TTL of the window
+
+  # Columns that grow with the age of the flow rather than the window (benign
+  # median Header_Length 509,655; median urg_count 76). Their extractor semantics
+  # are open until the CIC extraction code is read (plan step 4.1), so the
+  # class is chosen by the spec in use - see flow_age_specs.
+  flow_age:
+    - flow_duration
+    - Header_Length
+    - ack_count
+    - syn_count
+    - fin_count
+    - urg_count
+    - rst_count
+
+  # Never perturbed directly; recomputed from the projected base columns and the
+  # row's own original values. Relations measured on the raw M1 sample
+  # (2026-10-09, docs/m4-plan.md section 1).
+  derived:
+    Srate:    {kind: equal, base: Rate}                  # identical in every row
+    Tot sum:  {kind: scale_with, base: AVG}              # Tot sum * AVG' / AVG
+    Magnitue: {kind: sqrt_shift, base: AVG, coef: 2.0}   # sqrt(Mag^2 + 2 (AVG' - AVG)); Mag^2 ~ 2 AVG (0.22%)
+
+# Largest packet the attacker may pad up to (bytes, Ethernet frame incl. header).
+# Rows already above it (offloaded captures) keep their original value as the cap.
+size_cap_bytes: 1514.0
+
+# How the flow_age class is handled.
+#   A (conservative): immutable - the attacker cannot move them at all.
+#   B (permissive):   increase_only, up to max_factor x the original value
+#                     ("keep the flow alive longer"); zero stays zero.
+flow_age_specs:
+  A: {mode: immutable}
+  B: {mode: increase_only, max_factor: 5.0}
+
+# Functional floors: what the attack must keep to still be the attack.
+#   rate_floor: Rate >= rate_floor * original Rate.
+# Floods lose their purpose below half their rate (swept 0.25/0.5/0.75 in 4.10);
+# a slow scan or a slow brute-force is still a scan / brute-force.
+#
+# Categories without a floor may still not throttle below 1/max_slowdown of the
+# original rate in the primitive attacks (theta "slow" is bounded by it): a 20x
+# slower scan is already a different attack schedule, and a zero rate is no attack.
+max_slowdown: 20.0
+
+floors:
+  default: {rate_floor: 0.0}
+  DDoS:    {rate_floor: 0.5}
+  DoS:     {rate_floor: 0.5}
+  Mirai:   {rate_floor: 0.5}

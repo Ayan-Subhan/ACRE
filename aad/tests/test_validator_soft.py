@@ -93,3 +93,19 @@ def test_gradients_are_finite_and_point_somewhere(setup):
     assert np.isfinite(grad).all()
     violating = v.check(x.numpy(), families=("range", "dependency")).reject
     assert np.abs(grad[violating]).sum(axis=1).min() > 0
+
+
+def test_to_raw_gradient_is_finite_for_large_linear_columns(setup):
+    """Regression (M4 smoke run): expm1 must not see non-log1p columns."""
+    import copy
+
+    rules, _, _, data_min, data_range = setup
+    r = copy.deepcopy(rules)
+    lin = [i for i in range(len(r["feature_names"])) if i not in r["scaling"]["log1p_indices"]]
+    r["scaling"]["data_min"][lin[0]] = 5000.0        # raw values far above 709
+    soft = SoftValidator(r)
+    xt = tf.constant(_perturbed(data_min, data_range, n=50))
+    with tf.GradientTape() as tape:
+        tape.watch(xt)
+        s = tf.reduce_sum(soft.to_raw(xt))
+    assert np.isfinite(tape.gradient(s, xt).numpy()).all()

@@ -1,0 +1,392 @@
+{
+  "n_rows": 9990,
+  "repeats": 2,
+  "permutation": {
+    "mlp": {
+      "baseline_balanced_acc": 0.9510669585961242,
+      "top10": [
+        {
+          "feature": "rst_count",
+          "n_columns": 1,
+          "drop_mean": 0.2454562350903564,
+          "drop_std": 0.000376008953955731
+        },
+        {
+          "feature": "urg_count",
+          "n_columns": 1,
+          "drop_mean": 0.24348060520897996,
+          "drop_std": 0.0010079327472958255
+        },
+        {
+          "feature": "Number + Weight",
+          "n_columns": 2,
+          "drop_mean": 0.17559342423450208,
+          "drop_std": 0.0024644823698571905
+        },
+        {
+          "feature": "Header_Length",
+          "n_columns": 1,
+          "drop_mean": 0.15533458873893002,
+          "drop_std": 0.0022164308355936413
+        },
+        {
+          "feature": "flow_duration",
+          "n_columns": 1,
+          "drop_mean": 0.1514572644684813,
+          "drop_std": 0.0021222754158360946
+        },
+        {
+          "feature": "syn_flag_number",
+          "n_columns": 1,
+          "drop_mean": 0.03327801787523271,
+          "drop_std": 0.00028011747982087387
+        },
+        {
+          "feature": "Max",
+          "n_columns": 1,
+          "drop_mean": 0.031811562530636106,
+          "drop_std": 5.0141335250497576e-05
+        },
+        {
+          "feature": "Variance",
+          "n_columns": 1,
+          "drop_mean": 0.025226708277507226,
+          "drop_std": 8.598575209967096e-05
+        },
+        {
+          "feature": "Duration",
+          "n_columns": 1,
+          "drop_mean": 0.02198580111761045,
+          "drop_std": 0.0006441782948269359
+        },
+        {
+          "feature": "Tot size",
+          "n_columns": 1,
+          "drop_mean": 0.021329368321296616,
+          "drop_std": 3.206594555738018e-05
+        }
+      ],
+      "suspects": [
+        {
+          "feature": "Number + Weight",
+          "n_columns": 2,
+          "drop_mean": 0.17559342423450208,
+          "drop_std": 0.0024644823698571905
+        }
+      ]
+    },
+    "cnn": {
+      "baseline_balanced_acc": 0.9510232508741545,
+      "top10": [
+        {
+          "feature": "rst_count",
+          "n_columns": 1,
+          "drop_mean": 0.25332209323224736,
+          "drop_std": 1.3990555864207277e-05
+        },
+        {
+          "feature": "urg_count",
+          "n_columns": 1,
+          "drop_mean": 0.2346775840658803,
+          "drop_std": 0.00021016470050000402
+        },
+        {
+          "feature": "Number + Weight",
+          "n_columns": 2,
+          "drop_mean": 0.18924167102382278,
+          "drop_std": 0.0005121360413057885
+        },
+        {
+          "feature": "Header_Length",
+          "n_columns": 1,
+          "drop_mean": 0.18604814793634206,
+          "drop_std": 0.0003162682592072752
+        },
+        {
+          "feature": "flow_duration",
+          "n_columns": 1,
+          "drop_mean": 0.1523278446782786,
+          "drop_std": 0.0011303756413189592
+        },
+        {
+          "feature": "TCP",
+          "n_columns": 1,
+          "drop_mean": 0.04871215401457474,
+          "drop_std": 0.0007141310741478613
+        },
+        {
+          "feature": "Rate + Srate",
+          "n_columns": 2,
+          "drop_mean": 0.04091359351001611,
+          "drop_std": 0.002416077088983948
+        },
+        {
+          "feature": "HTTP",
+          "n_columns": 1,
+          "drop_mean": 0.028431873141400665,
+          "drop_std": 8.190091827059431e-05
+        },
+        {
+          "feature": "Std + Radius + Covariance",
+          "n_columns": 3,
+          "drop_mean": 0.025332199111140263,
+          "drop_std": 0.00018391964314889986
+        },
+        {
+          "feature": "Protocol Type",
+          "n_columns": 1,
+          "drop_mean": 0.022086900754877348,
+          "drop_std": 0.001542229012123808
+        }
+      ],
+      "suspects": [
+        {
+          "feature": "Number + Weight",
+          "n_columns": 2,
+          "drop_mean": 0.18924167102382278,
+          "drop_std": 0.0005121360413057885
+        }
+      ]
+    },
+    "lstm": {
+      "baseline_balanced_acc": 0.945914144962583,
+      "top10": [
+        {
+          "feature": "flow_duration",
+          "n_columns": 1,
+          "drop_mean": 0.2212257156628869,
+          "drop_std": 0.0007741781314336005
+        },
+        {
+          "feature": "urg_count",
+          "n_columns": 1,
+          "drop_mean": 0.18766686546191302,
+          "drop_std": 0.0022723930590503594
+        },
+        {
+          "feature": "rst_count",
+          "n_columns": 1,
+          "drop_mean": 0.1860147544197902,
+          "drop_std": 0.000524084180255513
+        },
+        {
+          "feature": "Header_Length",
+          "n_columns": 1,
+          "drop_mean": 0.139732565929218,
+          "drop_std": 0.0012583330610110854
+        },
+        {
+          "feature": "Number + Weight",
+          "n_columns": 2,
+          "drop_mean": 0.13041158785660606,
+          "drop_std": 0.0025023692036208467
+        },
+        {
+          "feature": "Std + Radius + Covariance",
+          "n_columns": 3,
+          "drop_mean": 0.050091398156922984,
+          "drop_std": 0.00010610355870721566
+        },
+        {
+          "feature": "TCP",
+          "n_columns": 1,
+          "drop_mean": 0.04446944135812558,
+          "drop_std": 0.0016462901539165964
+        },
+        {
+          "feature": "HTTPS",
+          "n_columns": 1,
+          "drop_mean": 0.030843048429789965,
+          "drop_std": 0.0010321353877324468
+        },
+        {
+          "feature": "HTTP",
+          "n_columns": 1,
+          "drop_mean": 0.02688617202052218,
+          "drop_std": 0.00040807489951305564
+        },
+        {
+          "feature": "Protocol Type",
+          "n_columns": 1,
+          "drop_mean": 0.015441795202771169,
+          "drop_std": 9.997630796382273e-05
+        }
+      ],
+      "suspects": [
+        {
+          "feature": "Number + Weight",
+          "n_columns": 2,
+          "drop_mean": 0.13041158785660606,
+          "drop_std": 0.0025023692036208467
+        }
+      ]
+    }
+  },
+  "ablation": {
+    "all 38 features": {
+      "dropped": [],
+      "train_seconds": 546.7,
+      "epochs": 30,
+      "accuracy": 0.9484697121536018,
+      "balanced_accuracy": 0.9524551405400209,
+      "precision": 0.9849249434807982,
+      "recall": 0.9235717997415605,
+      "f1": 0.953262200620829,
+      "f1_weighted": 0.9486589838282582,
+      "tn": 161650,
+      "fp": 3074,
+      "fn": 16620,
+      "tp": 200839,
+      "fpr": 0.01866151866151866,
+      "fnr": 0.07642820025843952,
+      "support_benign": 164724,
+      "support_attack": 217459,
+      "loss": 0.12989468405831084,
+      "per_category": {
+        "Benign": {
+          "support": 164724,
+          "correct_rate": 0.9813384813384813
+        },
+        "DDoS": {
+          "support": 97830,
+          "correct_rate": 0.9999795563733006
+        },
+        "DoS": {
+          "support": 36000,
+          "correct_rate": 1.0
+        },
+        "Mirai": {
+          "support": 27000,
+          "correct_rate": 1.0
+        },
+        "Recon": {
+          "support": 32946,
+          "correct_rate": 0.7239725611606872
+        },
+        "Spoofing": {
+          "support": 18000,
+          "correct_rate": 0.6926111111111111
+        },
+        "Web": {
+          "support": 3723,
+          "correct_rate": 0.666935267257588
+        },
+        "BruteForce": {
+          "support": 1960,
+          "correct_rate": 0.6168367346938776
+        }
+      }
+    },
+    "without Number, Weight": {
+      "dropped": [
+        "Number",
+        "Weight"
+      ],
+      "train_seconds": 467.7,
+      "epochs": 30,
+      "accuracy": 0.9481138616840623,
+      "balanced_accuracy": 0.9523102678927455,
+      "precision": 0.9860024296555693,
+      "recall": 0.9218979209874045,
+      "f1": 0.9528732354199344,
+      "f1_weighted": 0.9483097021021172,
+      "tn": 161878,
+      "fp": 2846,
+      "fn": 16984,
+      "tp": 200475,
+      "fpr": 0.017277385201913503,
+      "fnr": 0.07810207901259547,
+      "support_benign": 164724,
+      "support_attack": 217459,
+      "loss": 0.13099778808437426,
+      "per_category": {
+        "Benign": {
+          "support": 164724,
+          "correct_rate": 0.9827226147980865
+        },
+        "DDoS": {
+          "support": 97830,
+          "correct_rate": 0.9991720331186753
+        },
+        "DoS": {
+          "support": 36000,
+          "correct_rate": 0.9996666666666667
+        },
+        "Mirai": {
+          "support": 27000,
+          "correct_rate": 0.9995185185185185
+        },
+        "Recon": {
+          "support": 32946,
+          "correct_rate": 0.7168093243489346
+        },
+        "Spoofing": {
+          "support": 18000,
+          "correct_rate": 0.6922777777777778
+        },
+        "Web": {
+          "support": 3723,
+          "correct_rate": 0.6578028471662638
+        },
+        "BruteForce": {
+          "support": 1960,
+          "correct_rate": 0.625
+        }
+      }
+    }
+  },
+  "reference_forest": {
+    "train_rows": 599993,
+    "fit_seconds": 105.4,
+    "accuracy": 0.951672366379457,
+    "balanced_accuracy": 0.9540350305120906,
+    "precision": 0.977212445621154,
+    "recall": 0.936912245526743,
+    "f1": 0.95663810306374,
+    "f1_weighted": 0.9518039580494273,
+    "tn": 159973,
+    "fp": 4751,
+    "fn": 13719,
+    "tp": 203740,
+    "fpr": 0.02884218450256186,
+    "fnr": 0.06308775447325703,
+    "support_benign": 164724,
+    "support_attack": 217459,
+    "loss": 0.1316311028383029,
+    "per_category": {
+      "Benign": {
+        "support": 164724,
+        "correct_rate": 0.9711578154974382
+      },
+      "DDoS": {
+        "support": 97830,
+        "correct_rate": 0.9996933455995094
+      },
+      "DoS": {
+        "support": 36000,
+        "correct_rate": 0.9999722222222223
+      },
+      "Mirai": {
+        "support": 27000,
+        "correct_rate": 0.9999259259259259
+      },
+      "Recon": {
+        "support": 32946,
+        "correct_rate": 0.7699265464699812
+      },
+      "Spoofing": {
+        "support": 18000,
+        "correct_rate": 0.7341666666666666
+      },
+      "Web": {
+        "support": 3723,
+        "correct_rate": 0.7982809562181037
+      },
+      "BruteForce": {
+        "support": 1960,
+        "correct_rate": 0.7091836734693877
+      }
+    }
+  },
+  "elapsed_seconds": 598.6
+}

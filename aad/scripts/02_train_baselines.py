@@ -114,12 +114,20 @@ def main() -> int:
     ap.add_argument("--smoke", action="store_true",
                     help="wiring check: data/smoke in, 1 epoch, models and reports written under "
                          "data/smoke/ so the real artefacts are never touched")
+    ap.add_argument("--train-frac", type=float, default=1.0,
+                    help="train on a random fraction of the training split (M4 grey-box "
+                         "surrogates: --train-frac 0.5 --seed 7 --tag surr)")
+    ap.add_argument("--seed", type=int, default=None,
+                    help="override the config seed (weights and the --train-frac draw)")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
     tcfg = cfg["training"]
-    seed = int(cfg["seed"])
+    seed = int(args.seed if args.seed is not None else cfg["seed"])
     tag = f"_{args.tag}" if args.tag else ""
+    if (args.train_frac < 1.0 or args.seed is not None) and not args.tag and not args.smoke:
+        raise SystemExit("--train-frac / --seed change the model: pass --tag so the "
+                         "baselines in artifacts/models/ are not overwritten")
 
     if args.smoke:
         args.data_dir = "data/smoke"
@@ -134,6 +142,12 @@ def main() -> int:
     reports_dir.mkdir(parents=True, exist_ok=True)
 
     X_train, y_train, _, y_train_cat = load_split(data_dir, "train")
+    if args.train_frac < 1.0:
+        keep = np.sort(np.random.default_rng(seed).permutation(len(y_train))
+                       [: int(round(args.train_frac * len(y_train)))])
+        X_train, y_train, y_train_cat = X_train[keep], y_train[keep], y_train_cat[keep]
+        log.info("training on a %.0f%% subsample of train (seed %d): %d rows",
+                 100 * args.train_frac, seed, len(keep))
     X_val, y_val, _, _ = load_split(data_dir, "val")
     X_test, y_test, y_test_multi, y_test_cat = load_split(data_dir, "test")
     n_features = X_train.shape[1]

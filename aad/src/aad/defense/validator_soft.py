@@ -67,7 +67,11 @@ class SoftValidator:
 
     def to_raw(self, x_scaled: tf.Tensor) -> tf.Tensor:
         y = tf.cast(x_scaled, _F64) * self._range + self._min
-        inv = tf.sign(y) * tf.math.expm1(tf.abs(y))
+        # expm1 only sees the log1p columns: on any other column a raw value above
+        # ~709 overflows to inf in the unused branch, and tf.where's gradient then
+        # turns inf * 0 into NaN (the attack's theta becomes NaN).
+        safe = tf.where(self._log_mask, tf.abs(y), tf.zeros_like(y))
+        inv = tf.sign(y) * tf.math.expm1(safe)
         return tf.where(self._log_mask, inv, y)
 
     # --- residuals (mirrors of validator.py, same formulas) --------------------

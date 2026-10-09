@@ -1,0 +1,104 @@
+# Leakage probe (phase 1b)
+
+Read this before trusting any accuracy figure. Method and interpretation: `docs/m1-data-pipeline.md`, section 'Leakage probe'.
+
+## 1. Duplicates in the full file
+
+18,846,007 of 46,686,579 rows (40.37%) are exact repeats of an earlier row with the same label, and were removed before sampling. 48,574 distinct feature vectors occur under more than one label; they were kept, and they put a ceiling on achievable accuracy.
+
+| class                   |   rows_in_file |   exact_duplicate_% |   conflicting_rows |   sampled |
+|:------------------------|---------------:|--------------------:|-------------------:|----------:|
+| DDoS-ICMP_Flood         |        7200504 |               75.66 |                  0 |     60000 |
+| DDoS-RSTFINFlood        |        4045285 |               73.95 |                  0 |     60000 |
+| DDoS-TCP_Flood          |        4497667 |               66.06 |              14802 |     60000 |
+| DDoS-PSHACK_Flood       |        4094755 |               60.4  |                  3 |     60000 |
+| DDoS-SYN_Flood          |        4059190 |               53.52 |              29861 |     60000 |
+| DoS-TCP_Flood           |        2671445 |               34.04 |              14802 |     60000 |
+| Mirai-greeth_flood      |         991866 |               33.8  |                  0 |     60000 |
+| Mirai-greip_flood       |         751682 |               27.95 |                  0 |     60000 |
+| DoS-SYN_Flood           |        2028834 |               20.05 |              20325 |     60000 |
+| DDoS-SynonymousIP_Flood |        3598138 |               15.07 |              19829 |     60000 |
+| DoS-UDP_Flood           |        3318595 |               10.91 |                  0 |     60000 |
+| DDoS-ACK_Fragmentation  |         285104 |                4.16 |                  0 |     60000 |
+| DDoS-ICMP_Fragmentation |         452489 |                2.27 |                  0 |     60000 |
+| Recon-PortScan          |          82284 |                0.45 |                  2 |     60000 |
+| Recon-PingSweep         |           2262 |                0.35 |                  0 |      2254 |
+| Recon-OSScan            |          98259 |                0.35 |                  2 |     60000 |
+| DoS-HTTP_Flood          |          71864 |                0.11 |                  1 |     60000 |
+| Recon-HostDiscovery     |         134378 |                0.07 |                  0 |     60000 |
+| DDoS-HTTP_Flood         |          28790 |                0.06 |                  0 |     28772 |
+| DNS_Spoofing            |         178911 |                0.06 |                  0 |     60000 |
+| Backdoor_Malware        |           3218 |                0    |                  0 |      3218 |
+| SqlInjection            |           5245 |                0    |                  0 |      5245 |
+| CommandInjection        |           5409 |                0    |                  0 |      5409 |
+| Uploading_Attack        |           1252 |                0    |                  0 |      1252 |
+| XSS                     |           3846 |                0    |                  0 |      3846 |
+| BrowserHijacking        |           5859 |                0    |                  0 |      5859 |
+| BenignTraffic           |        1098195 |                0    |                  0 |   1098155 |
+| MITM-ArpSpoofing        |         307593 |                0    |                  0 |     60000 |
+| VulnerabilityScan       |          37382 |                0    |                  0 |     37382 |
+| Mirai-udpplain          |         890576 |                0    |                  0 |     60000 |
+| DDoS-UDP_Fragmentation  |         286925 |                0    |                  0 |     60000 |
+| DDoS-UDP_Flood          |        5412287 |                0    |                  0 |     60000 |
+| DDoS-SlowLoris          |          23426 |                0    |                  0 |     23426 |
+| DictionaryBruteForce    |          13064 |                0    |                  0 |     13064 |
+
+## 2. What one feature alone can do (depth-3 tree, 300,007 train rows, full test)
+
+Flagged (binary balanced accuracy >= 99%): none.
+
+| feature         |   binary_balanced_acc |   category_balanced_acc |   n_distinct_train | suspect   |
+|:----------------|----------------------:|------------------------:|-------------------:|:----------|
+| Number          |                0.8826 |                  0.2513 |                 96 | False     |
+| Weight          |                0.8825 |                  0.2514 |                102 | False     |
+| rst_count       |                0.8811 |                  0.3409 |              40604 | False     |
+| urg_count       |                0.8762 |                  0.3101 |              13706 | False     |
+| Variance        |                0.8382 |                  0.2957 |                243 | False     |
+| flow_duration   |                0.8173 |                  0.3136 |             260884 | False     |
+| Header_Length   |                0.8052 |                  0.3658 |             213437 | False     |
+| HTTPS           |                0.7995 |                  0.2132 |                  2 | False     |
+| Duration        |                0.7935 |                  0.2768 |               7243 | False     |
+| ack_flag_number |                0.7882 |                  0.2303 |                  2 | False     |
+| Tot size        |                0.7786 |                  0.3901 |              42380 | False     |
+| Magnitue        |                0.7778 |                  0.3885 |             210097 | False     |
+| AVG             |                0.7776 |                  0.3894 |             211347 | False     |
+| Std             |                0.7741 |                  0.2991 |             204744 | False     |
+| Radius          |                0.7737 |                  0.299  |             202207 | False     |
+| Max             |                0.771  |                  0.3816 |              41037 | False     |
+| Min             |                0.755  |                  0.339  |              27091 | False     |
+| Covariance      |                0.7506 |                  0.2726 |             202164 | False     |
+| Tot sum         |                0.7249 |                  0.39   |             118908 | False     |
+| Rate            |                0.7094 |                  0.2636 |             295512 | False     |
+| Srate           |                0.7094 |                  0.2636 |             295512 | False     |
+| Protocol Type   |                0.6844 |                  0.3041 |               2444 | False     |
+| syn_count       |                0.6507 |                  0.2769 |                668 | False     |
+| TCP             |                0.6429 |                  0.2317 |                  2 | False     |
+| fin_count       |                0.595  |                  0.1808 |                540 | False     |
+| syn_flag_number |                0.577  |                  0.1608 |                  2 | False     |
+| ack_count       |                0.5568 |                  0.1899 |                264 | False     |
+| UDP             |                0.5513 |                  0.1583 |                  2 | False     |
+| ICMP            |                0.5409 |                  0.1477 |                  2 | False     |
+| rst_flag_number |                0.5338 |                  0.1375 |                  2 | False     |
+| HTTP            |                0.524  |                  0.1481 |                  2 | False     |
+| fin_flag_number |                0.5208 |                  0.1365 |                  2 | False     |
+| psh_flag_number |                0.518  |                  0.1366 |                  2 | False     |
+| DNS             |                0.5006 |                  0.1258 |                  2 | False     |
+| SSH             |                0.5006 |                  0.1423 |                  2 | False     |
+| ARP             |                0.5002 |                  0.1254 |                  2 | False     |
+| LLC             |                0.5002 |                  0.1256 |                  2 | False     |
+| IPv             |                0.5002 |                  0.1256 |                  2 | False     |
+
+## 3. Train/test overlap after scaling
+
+- test rows: 382,183
+- identical to some training row: 24
+  - with the same binary label: 24
+  - only with a different label (conflicts): 0
+
+| class                   |   test_rows |   in_train |   in_train_same_binary_label |
+|:------------------------|------------:|-----------:|-----------------------------:|
+| DDoS-SYN_Flood          |        9000 |          4 |                            4 |
+| DDoS-SynonymousIP_Flood |        9000 |          1 |                            1 |
+| DDoS-TCP_Flood          |        9000 |          2 |                            2 |
+| DoS-SYN_Flood           |        9000 |          6 |                            6 |
+| DoS-TCP_Flood           |        9000 |         11 |                           11 |
