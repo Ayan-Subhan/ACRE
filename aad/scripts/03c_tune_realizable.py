@@ -46,9 +46,9 @@ log = logging.getLogger("03c")
 # (attack, steps, step, restarts)
 GRID = [
     ("feat", 100, 0.01, 0), ("feat", 300, 0.01, 0), ("feat", 100, 0.03, 0),
-    ("feat", 100, 0.01, 3), ("feat", 300, 0.03, 3),
+    ("feat", 100, 0.01, 3), ("feat", 300, 0.03, 3), ("feat", 100, 0.01, 10), ("feat", 100, 0.01, 30),
     ("prim", 100, 0.05, 0), ("prim", 300, 0.05, 0), ("prim", 100, 0.20, 0),
-    ("prim", 100, 0.05, 3), ("prim", 300, 0.10, 3),
+    ("prim", 100, 0.05, 3), ("prim", 300, 0.10, 3), ("prim", 100, 0.05, 10), ("prim", 100, 0.05, 30),
 ]
 
 
@@ -56,7 +56,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--data-dir", default="data/processed")
     ap.add_argument("--models-dir", default="artifacts/models")
-    ap.add_argument("--spec", default="A", choices=["A", "B"])
+    ap.add_argument("--spec", default="A", choices=["A", "B", "C"])
     ap.add_argument("--n-per-category", type=int, default=100)
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()

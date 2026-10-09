@@ -123,12 +123,12 @@ class SoftValidator:
         return self.hard.groups(self.hard.to_raw(np.asarray(x_scaled)))
 
     def distribution_score(self, raw: tf.Tensor, groups: np.ndarray) -> tf.Tensor:
-        g = tf.constant(np.asarray(groups, dtype=np.int64))
+        g = tf.cast(groups, tf.int64)   # numpy array or tensor (compiled attacks)
         z = tf.abs(raw - tf.gather(self._median, g)) / tf.gather(self._mad, g)
         return tf.reduce_mean(tf.minimum(z, Z_CLIP), axis=1)
 
     def distribution_penalty(self, raw: tf.Tensor, groups: np.ndarray) -> tf.Tensor:
-        thr = tf.gather(self._thr, tf.constant(np.asarray(groups, dtype=np.int64)))
+        thr = tf.gather(self._thr, tf.cast(groups, tf.int64))
         return tf.nn.relu(self.distribution_score(raw, groups) - thr)
 
     def penalties(self, x_scaled: tf.Tensor, groups: np.ndarray | None = None) -> dict:

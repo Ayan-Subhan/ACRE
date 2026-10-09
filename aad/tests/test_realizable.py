@@ -45,7 +45,7 @@ def world():
     sc, X = make_scaling(raw)
     cats = CATS[np.random.default_rng(1).integers(0, len(CATS), len(X))]
     out = {}
-    for spec in ("A", "B"):
+    for spec in ("A", "B", "C"):
         rs = RealismSpec.load(REALISM, spec)
         P = Projector(rs, sc)
         out[spec] = (P, Primitives(P), rs.rate_floor(cats))
@@ -104,14 +104,14 @@ def test_raw_conversion_matches_the_validator(world):
 # --- P -----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("spec", ["A", "B"])
+@pytest.mark.parametrize("spec", ["A", "B", "C"])
 def test_clean_rows_are_fixed_points(world, spec):
     X, _, _, out = world
     P, _, floor = out[spec]
     np.testing.assert_array_equal(P.project_np(X, X, floor), X)
 
 
-@pytest.mark.parametrize("spec", ["A", "B"])
+@pytest.mark.parametrize("spec", ["A", "B", "C"])
 def test_projection_is_idempotent(world, spec):
     X, _, _, out = world
     P, _, floor = out[spec]
@@ -121,7 +121,7 @@ def test_projection_is_idempotent(world, spec):
     assert P.violation(once, X, floor).max() < PROJECTION_TOL
 
 
-@pytest.mark.parametrize("spec", ["A", "B"])
+@pytest.mark.parametrize("spec", ["A", "B", "C"])
 def test_immutable_columns_never_change(world, spec):
     X, _, _, out = world
     P, _, floor = out[spec]
@@ -144,8 +144,14 @@ def test_flow_age_is_immutable_in_spec_a_and_bounded_in_spec_b(world):
     assert (rp <= 5.0 * r0 * (1 + 1e-9) + 1e-9).all()
     assert (rp[r0 == 0] == 0).all()          # zero stays zero
 
+    PC, _, fC = out["C"]
+    r0, rp = raw_of(PC, X)[:, flow], raw_of(PC, PC.project_np(cand, X, fC))[:, flow]
+    assert (rp >= 0.2 * r0 * (1 - 1e-9) - 1e-9).all()
+    assert (rp <= 5.0 * r0 * (1 + 1e-9) + 1e-9).all()
+    assert (rp < r0 * (1 - 1e-6)).any()      # spec C can make flows younger
 
-@pytest.mark.parametrize("spec", ["A", "B"])
+
+@pytest.mark.parametrize("spec", ["A", "B", "C"])
 def test_monotone_clamps_and_floors_hold(world, spec):
     X, _, cats, out = world
     P, _, floor = out[spec]
@@ -164,7 +170,7 @@ def test_monotone_clamps_and_floors_hold(world, spec):
     assert ((rp[:, I["Duration"]] >= 1 - 1e-9) & (rp[:, I["Duration"]] <= 255 + 1e-9)).all()
 
 
-@pytest.mark.parametrize("spec", ["A", "B"])
+@pytest.mark.parametrize("spec", ["A", "B", "C"])
 def test_projected_rows_keep_the_extractor_invariants(world, spec):
     """What the validator's integrality and dependency families check comes for free."""
     X, _, _, out = world
@@ -202,14 +208,14 @@ def test_assert_realizable_refuses_an_unprojected_row(world):
 # --- g -----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("spec", ["A", "B"])
+@pytest.mark.parametrize("spec", ["A", "B", "C"])
 def test_zero_theta_is_the_identity(world, spec):
     X, _, _, out = world
     _, g, floor = out[spec]
     np.testing.assert_array_equal(g.apply_np(X, np.zeros((len(X), g.dim)), floor), X)
 
 
-@pytest.mark.parametrize("spec", ["A", "B"])
+@pytest.mark.parametrize("spec", ["A", "B", "C"])
 def test_g_output_is_realizable(world, spec):
     X, _, _, out = world
     P, g, floor = out[spec]
@@ -254,6 +260,9 @@ def test_theta_bounds_respect_floor_and_spec(world):
     assert (hi[:, 3] == 0).all()                       # no stretching in spec A
     _, gB, fB = out["B"]
     assert (gB.bounds(X, fB)[1][:, 3] == 4.0).all()
+    assert (gB.bounds(X, fB)[0][:, 3] == 0.0).all()
+    _, gC, fC = out["C"]
+    np.testing.assert_allclose(gC.bounds(X, fC)[0][:, 3], -0.8)
 
 
 def test_g_is_differentiable_in_theta(world):
@@ -312,7 +321,7 @@ def test_captured_quirks_are_fixed_points():
     raw[:10, I["AVG"]] = raw[:10, I["Max"]]
     raw[10:20, I["Duration"]] = 0.0                            # TTL 0
     sc, X = make_scaling(raw)
-    for spec in ("A", "B"):
+    for spec in ("A", "B", "C"):
         P = Projector(RealismSpec.load(REALISM, spec), sc)
         floor = np.zeros(len(X))
         np.testing.assert_array_equal(P.project_np(X, X, floor), X)

@@ -68,10 +68,15 @@ classes:
   free_bounded:
     Duration: [1.0, 255.0]          # mean IP TTL of the window
 
-  # Columns that grow with the age of the flow rather than the window (benign
-  # median Header_Length 509,655; median urg_count 76). Their extractor semantics
-  # are open until the CIC extraction code is read (plan step 4.1), so the
-  # class is chosen by the spec in use - see flow_age_specs.
+  # Per-CONNECTION running totals, not window statistics. CIC's extractor
+  # (supplementary-CIC/pcap2csv, read 2026-10-09; docs/m4-realizable-attacks.md
+  # section 2) keys flows by the sorted 5-tuple and computes, for every packet:
+  # flow_duration = last - first timestamp of the flow so far; Rate = packets of
+  # the flow so far / flow_duration; the *_count columns from per-flow flag
+  # counters; Header_Length from the flow's byte total. So they measure how long
+  # and how much a connection has been talking (benign median Header_Length
+  # 509,655, urg_count 76). The attacker controls that: keeping a connection
+  # alive raises them, opening fresh connections resets them - see flow_age_specs.
   flow_age:
     - flow_duration
     - Header_Length
@@ -93,13 +98,18 @@ classes:
 # Rows already above it (offloaded captures) keep their original value as the cap.
 size_cap_bytes: 1514.0
 
-# How the flow_age class is handled.
-#   A (conservative): immutable - the attacker cannot move them at all.
-#   B (permissive):   increase_only, up to max_factor x the original value
-#                     ("keep the flow alive longer"); zero stays zero.
+# How the flow_age class is handled. Each column may be scaled within
+# [min_factor, max_factor] x its original value (zero stays zero).
+#   A (conservative): immutable - a lower bound on the attacker.
+#   B (keep-alive):   x1 .. x5 - the attacker only lengthens its connections.
+#   C (keep-alive or churn): x0.2 .. x5 - it may also split traffic over fresh
+#                     connections, which makes every window's flow younger. The
+#                     extractor code supports both directions (section 2 of
+#                     docs/m4-realizable-attacks.md); C is the closest to it.
 flow_age_specs:
   A: {mode: immutable}
-  B: {mode: increase_only, max_factor: 5.0}
+  B: {mode: scaled, min_factor: 1.0, max_factor: 5.0}
+  C: {mode: scaled, min_factor: 0.2, max_factor: 5.0}
 
 # Functional floors: what the attack must keep to still be the attack.
 #   rate_floor: Rate >= rate_floor * original Rate.

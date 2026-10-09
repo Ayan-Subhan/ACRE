@@ -14,8 +14,10 @@ the original row it started from:
    floor (a flood must keep half its rate);
 4. **free_bounded** columns (``Duration``, the mean TTL) are clipped to their
    physical range;
-5. **flow_age** columns are immutable (spec A) or increase-only up to a factor
-   (spec B), because their extractor semantics are still open (plan step 4.1);
+5. **flow_age** columns (per-connection running totals in CIC's extractor) are
+   immutable (spec A) or scaled within ``[min_factor, max_factor]`` x the
+   original (spec B: keep-alive only, x1..x5; spec C: keep-alive or connection
+   churn, x0.2..x5);
 6. every base column is clipped to what the deployed scaler can represent;
 7. **derived** columns (``Srate``, ``Tot sum``, ``Magnitue``) are recomputed from
    the projected base columns and the row's own original values, never perturbed.
@@ -48,7 +50,7 @@ _F64 = tf.float64
 
 CLASSES = ("immutable", "increase_only", "decrease_only", "free_bounded", "flow_age", "derived")
 DERIVED_KINDS = ("equal", "scale_with", "sqrt_shift")
-FLOW_AGE_MODES = ("immutable", "increase_only")
+FLOW_AGE_MODES = ("immutable", "scaled")
 
 # Projection is idempotent up to float noise; a saved row further than this (in
 # scaled units) from its own projection was not produced by P.
@@ -92,7 +94,7 @@ class Scaling:
 
 @dataclass(frozen=True)
 class RealismSpec:
-    """``config/realism.yaml`` resolved for one flow-age spec ("A" or "B")."""
+    """``config/realism.yaml`` resolved for one flow-age spec ("A", "B" or "C")."""
 
     name: str
     classes: dict            # column -> class
@@ -100,7 +102,8 @@ class RealismSpec:
     derived: dict            # column -> {kind, base, coef}
     size_cap: float
     flow_age_mode: str
-    flow_age_factor: float
+    flow_age_min: float      # flow-age columns scaled within [min, max] x original
+    flow_age_factor: float   # (the max)
     floors: dict             # category name -> rate floor ("default" required)
     max_slowdown: float
 
@@ -142,6 +145,7 @@ class RealismSpec:
             derived=derived,
             size_cap=float(cfg["size_cap_bytes"]),
             flow_age_mode=mode,
+            flow_age_min=float(specs[spec].get("min_factor", 1.0)),
             flow_age_factor=float(specs[spec].get("max_factor", 1.0)),
             floors=floors,
             max_slowdown=float(cfg.get("max_slowdown", 20.0)),
@@ -183,9 +187,9 @@ class Projector:
         self.flow_age = of("flow_age")
         if spec.flow_age_mode == "immutable":
             self.immutable = sorted(self.immutable + self.flow_age)
-            self.flow_age_increase: list[int] = []
+            self.flow_age_scaled: list[int] = []
         else:
-            self.flow_age_increase = self.flow_age
+            self.flow_age_scaled = self.flow_age
 
         self.derived = []
         for col, d in spec.derived.items():
@@ -256,9 +260,10 @@ class Projector:
             # Widened to include the original: a captured row outside the physical
             # range (a few windows have mean TTL 0) is not moved unless attacked.
             out[j] = tf.clip_by_value(a[j], tf.minimum(o[j], lo), tf.maximum(o[j], hi))
-        factor = tf.constant(self.spec.flow_age_factor, dtype=_F64)
-        for j in self.flow_age_increase:
-            out[j] = tf.minimum(tf.maximum(a[j], o[j]), factor * o[j])
+        f_lo = tf.constant(self.spec.flow_age_min, dtype=_F64)
+        f_hi = tf.constant(self.spec.flow_age_factor, dtype=_F64)
+        for j in self.flow_age_scaled:
+            out[j] = tf.minimum(tf.maximum(a[j], f_lo * o[j]), f_hi * o[j])
 
         for j in self.base:
             out[j] = tf.clip_by_value(out[j], self.raw_lo[j], self.raw_hi[j])

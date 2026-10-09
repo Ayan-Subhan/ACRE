@@ -100,6 +100,11 @@ It is the 169 part files of the official release (CIC, University of New Brunswi
 distributed on Kaggle. Phase 1 refuses to run if the row count differs from the
 published 46,686,579, so a truncated download fails immediately.
 
+**2b. Optional: CIC's supplementary material** (feature-extraction code, read in M4). Download the
+`Supplementary material` folder from CIC's dataset page and place it at the repository root as
+`supplementary-CIC/` (git-ignored: CIC grants no redistribution licence). Nothing runs it; M4
+only documents what it computes ([`docs/m4-realizable-attacks.md`](docs/m4-realizable-attacks.md) §2).
+
 **3. Build the processed dataset.**
 
 ```powershell

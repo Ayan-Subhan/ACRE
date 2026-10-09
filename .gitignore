@@ -13,6 +13,9 @@ backups/
 # aad/README.md instead. The FYP proposal stays private.
 A_Secure_Adversarial_Attack_Detector_Framework_for_Monitoring_Network_Intrusion_in_IoT_Environment.pdf
 Proposal.pdf
+# CIC's CICIoT2023 supplementary material (feature-extraction code, READMEs), obtained
+# through CIC's registration form; no redistribution licence. Read in M4 (docs/m4-realizable-attacks.md §2).
+supplementary-CIC/
 
 # --- downloaded data (CICIoT2023 merged CSV, 13.75 GB; see aad/README.md "Setup") ---
 aad/data/raw/*.csv

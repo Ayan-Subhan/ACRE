@@ -39,6 +39,7 @@ import logging
 import os
 import sys
 import time
+from dataclasses import replace
 from pathlib import Path
 
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
@@ -55,7 +56,7 @@ import aad.models.base  # noqa: E402,F401  (portable .keras loading)
 from aad.attacks.realizable.attacks import (  # noqa: E402
     Attacker, make_target, select_rows_per_category, window_population,
 )
-from aad.attacks.realizable.constraints import load_projector  # noqa: E402
+from aad.attacks.realizable.constraints import Projector, load_projector  # noqa: E402
 from aad.attacks.realizable.primitives import Primitives  # noqa: E402
 from aad.defense.validator import Validator  # noqa: E402
 from aad.defense.validator_soft import SoftValidator  # noqa: E402
@@ -245,7 +246,7 @@ def main() -> None:
     ap.add_argument("--rules", default="artifacts/rules.json")
     ap.add_argument("--realism", default="config/realism.yaml")
     ap.add_argument("--split", default="test", choices=["val", "test"])
-    ap.add_argument("--spec", default="A", choices=["A", "B"])
+    ap.add_argument("--spec", default="A", choices=["A", "B", "C"])
     ap.add_argument("--models", nargs="+", default=["mlp", "cnn", "lstm"])
     ap.add_argument("--attacks", nargs="+", default=[a for a in ALL_ATTACKS], choices=ALL_ATTACKS)
     ap.add_argument("--n-per-category", type=int, default=900)
@@ -253,10 +254,14 @@ def main() -> None:
     ap.add_argument("--feat-step", type=float, default=0.01)
     ap.add_argument("--prim-step", type=float, default=0.05)
     ap.add_argument("--queries", type=int, default=1000)
-    ap.add_argument("--restarts", type=int, default=0,
-                    help="random restarts for rows a PGD run did not win (tuned on val)")
+    ap.add_argument("--restarts", type=int, default=10,
+                    help="random restarts for rows a PGD run did not win (10: chosen on val, "
+                         "artifacts/reports/realizable_tuning_val_specA.md)")
     ap.add_argument("--batch-size", type=int, default=1024)
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--flood-floor", type=float, default=None,
+                    help="override the DDoS/DoS/Mirai rate floor (realism.yaml: 0.5) for the "
+                         "floor sweep; results go to their own *_floor<rho> tag")
     ap.add_argument("--force", action="store_true", help="regenerate cells that already exist")
     ap.add_argument("--smoke", action="store_true",
                     help="10 rows/category, 10 steps, 50 queries; writes under data/smoke/")
@@ -267,6 +272,8 @@ def main() -> None:
     if args.smoke:
         args.n_per_category, args.steps, args.queries = 10, 10, 50
     tag = f"{args.split}_spec{args.spec}"
+    if args.flood_floor is not None:
+        tag += f"_floor{args.flood_floor:g}"
     out_dir = (ROOT / "data/smoke/adversarial_real" if args.smoke
                else ROOT / "artifacts/adversarial_real") / tag
     reports_dir = ROOT / ("data/smoke/reports" if args.smoke else "artifacts/reports")
@@ -284,6 +291,9 @@ def main() -> None:
     thresholds = {k: v["threshold"] for k, v in thr["models"].items()}
 
     P = load_projector(ROOT / args.realism, data_dir / "transform.json", args.spec)
+    if args.flood_floor is not None:
+        floors = {**P.spec.floors, **{c: args.flood_floor for c in ("DDoS", "DoS", "Mirai")}}
+        P = Projector(replace(P.spec, floors=floors), P.scaling)
     g = Primitives(P)
     rules = json.loads((ROOT / args.rules).read_text(encoding="utf-8"))
     if rules["feature_names"] != feature_names:

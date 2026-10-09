@@ -8,7 +8,7 @@ actions per row (all zero = "send the attack unchanged"):
 | `pad`     | bytes added to every packet               | [0, max(0, size_cap - Max)]        |
 | `dttl`    | change of the mean IP TTL                 | [1 - Duration, 255 - Duration]     |
 | `slow`    | throttling: Rate x (1 - slow)             | [0, 1 - max(floor, 1/max_slowdown)]|
-| `stretch` | keep the flow alive (1 + stretch) x longer| [0, factor - 1] in spec B, else 0  |
+| `stretch` | flow-age columns x (1 + stretch)          | [min - 1, max - 1] in specs B/C, else 0 |
 
 ``g`` applies the closed-form effect of each action in raw units and then the
 projection P, which recomputes the derived columns (``Tot sum``, ``Magnitue``,
@@ -19,9 +19,12 @@ one to be checked at packet level in M7):
   ``pad`` and ``Std`` does not move;
 * the window's TTL mean moves by ``dttl`` (the window is dominated by the
   attacker's own packets);
-* throttling scales ``Rate`` by ``1 - slow``; in spec B it also stretches
+* throttling scales ``Rate`` by ``1 - slow``; in specs B/C it also stretches
   ``flow_duration`` by ``1 / (1 - slow)``;
-* in spec B, stretching scales every flow-age column by ``1 + stretch``.
+* in specs B/C, ``stretch`` scales every flow-age column by ``1 + stretch``:
+  longer connections (> 0, keep-alive) or, in spec C, younger ones (< 0,
+  traffic split over fresh connections). Rate = packets / duration is unchanged
+  by it, as both scale together.
 
 Everything is TensorFlow float64, so attacks can differentiate through g with
 respect to theta.
@@ -54,7 +57,7 @@ class Primitives:
         self.i_rate = idx.get("Rate")
         self.i_dur = idx.get("flow_duration")
         self.flow_idx = [idx[c] for c in FLOW_AGE_COLUMNS if c in idx]
-        self.spec_b = projector.spec.flow_age_mode == "increase_only"
+        self.flow_scaled = projector.spec.flow_age_mode == "scaled"
 
     @property
     def dim(self) -> int:
@@ -75,7 +78,8 @@ class Primitives:
         if self.i_rate is not None:
             floor = np.maximum(np.asarray(rate_floor, dtype=np.float64), 1.0 / spec.max_slowdown)
             hi[:, 2] = np.clip(1.0 - floor, 0.0, 1.0)
-        if self.spec_b:
+        if self.flow_scaled:
+            lo[:, 3] = spec.flow_age_min - 1.0
             hi[:, 3] = spec.flow_age_factor - 1.0
         return lo, hi
 
@@ -96,7 +100,7 @@ class Primitives:
             cols[self.i_ttl] = cols[self.i_ttl] + dttl
         if self.i_rate is not None:
             cols[self.i_rate] = cols[self.i_rate] * (1.0 - slow)
-        if self.spec_b:
+        if self.flow_scaled:
             for j in self.flow_idx:
                 cols[j] = cols[j] * (1.0 + stretch)
             if self.i_dur is not None:

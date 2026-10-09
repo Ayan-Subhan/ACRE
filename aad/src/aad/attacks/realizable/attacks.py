@@ -99,21 +99,66 @@ class Attacker:
         # Margin in logit units: aim slightly past the threshold, so float noise
         # between the logit view and the softmax view cannot flip the verdict.
         self.kappa = kappa
+        self._fns: dict = {}
 
     # --- shared pieces -------------------------------------------------------
 
-    def _loss(self, targets, x, groups, lam):
-        """Per-row loss: worst member's margin above its threshold, plus the
-        soft validator's penalty times lambda."""
+    # In-loop success: the worst member's logit margin is below -SUCCESS_MARGIN,
+    # i.e. every member says benign with a hair to spare. Every saved row is
+    # re-judged by the deployed softmax models in 03b, so this only decides when a
+    # row stops being optimised.
+    SUCCESS_MARGIN = 1e-3
+
+    def _margins(self, targets, x):
+        """(n, members) logit margin above each member's threshold; >= 0 = detected."""
         x32 = tf.cast(x, tf.float32)
-        margins = []
+        out = []
         for t in targets:
             z = t.logits(x32, training=False)
-            margins.append(tf.cast(z[:, 1] - z[:, 0], _F64) - t.tau + self.kappa)
-        loss = tf.reduce_max(tf.nn.relu(tf.stack(margins, axis=1)), axis=1)
-        if lam > 0:
-            loss = loss + lam * self.soft.total(x, groups)
-        return loss
+            out.append(tf.cast(z[:, 1] - z[:, 0], _F64) - t.tau)
+        return tf.stack(out, axis=1)
+
+    def _step_fn(self, targets, lam: float, kind: str):
+        """Compiled step: the loss gradient at the current point and the worst
+        member's margin there (one forward pass serves both). Loss per row:
+        relu(worst margin + kappa) + lambda x soft-validator penalty."""
+        key = (kind, tuple(id(t) for t in targets), float(lam))
+        if key in self._fns:
+            return self._fns[key]
+
+        def loss_of(x, groups):
+            m = self._margins(targets, x)
+            loss = tf.reduce_max(tf.nn.relu(m + self.kappa), axis=1)
+            if lam > 0:
+                loss = loss + lam * self.soft.total(x, groups)
+            return tf.reduce_sum(loss), tf.reduce_max(m, axis=1)
+
+        if kind == "feat":
+            def f(x, groups):
+                with tf.GradientTape() as tape:
+                    tape.watch(x)
+                    loss, worst = loss_of(x, groups)
+                return tape.gradient(loss, x), worst
+        else:
+            def f(th, xo, fl, groups):
+                with tf.GradientTape() as tape:
+                    tape.watch(th)
+                    x = self.g.apply(xo, th, fl)
+                    loss, worst = loss_of(x, groups)
+                return tape.gradient(loss, th), worst, x
+
+        fn = tf.function(f, reduce_retracing=True)
+        self._fns[key] = fn
+        return fn
+
+    def _won(self, worst, X, need_validator: bool) -> np.ndarray:
+        """Rows whose worst member says benign; with the real validator checked
+        only on those (it is the slow part)."""
+        ok = np.asarray(worst) < -self.SUCCESS_MARGIN
+        if need_validator and ok.any():
+            idx = np.flatnonzero(ok)
+            ok[idx] = ~self.validator.check(np.asarray(X[idx], dtype=np.float32)).reject
+        return ok
 
     def succeeds(self, targets, X, need_validator: bool) -> np.ndarray:
         """The deployed verdict: no target detects the row (and, if asked, the
@@ -127,8 +172,10 @@ class Attacker:
         for s in range(0, n, self.batch_size):
             yield slice(s, min(s + self.batch_size, n))
 
-    def _groups(self, X):
-        return self.soft.groups(X) if self.soft is not None else None
+    def _groups(self, X, lam: float) -> np.ndarray:
+        if lam > 0:
+            return np.asarray(self.soft.groups(X), dtype=np.int64)
+        return np.zeros(len(X), dtype=np.int64)        # unused when lambda = 0
 
     @staticmethod
     def _finite(grad: np.ndarray, where: str) -> np.ndarray:
@@ -143,22 +190,20 @@ class Attacker:
 
     def _feat_run(self, targets, xo, fl, x0, steps, step_size, lam, need_validator):
         """One PGD run from ``x0`` (a realizable start) for one batch."""
-        groups = self._groups(xo) if lam > 0 else None
+        fn = self._step_fn(targets, lam, "feat")
+        groups = tf.constant(self._groups(xo, lam))
         x, best = x0.copy(), x0.copy()
-        hit = self.succeeds(targets, x0, need_validator)
-        for _ in range(steps):
-            if hit.all():
+        hit = np.zeros(len(xo), dtype=bool)
+        for k in range(steps + 1):
+            grad, worst = fn(tf.constant(x), groups)
+            ok = self._won(worst.numpy(), x, need_validator)
+            new = ok & ~hit
+            best[new], hit = x[new], hit | ok
+            if hit.all() or k == steps:
                 break
-            xt = tf.constant(x)
-            with tf.GradientTape() as tape:
-                tape.watch(xt)
-                loss = tf.reduce_sum(self._loss(targets, xt, groups, lam))
-            grad = self._finite(tape.gradient(loss, xt).numpy(), "feat_pgd")
+            grad = self._finite(grad.numpy(), "feat_pgd")
             cand = np.clip(x - step_size * np.sign(grad), 0.0, 1.0)
             cand = self.P.project_np(cand, xo, fl)
-            ok = self.succeeds(targets, cand, need_validator)
-            new = ok & ~hit
-            best[new], hit = cand[new], hit | ok
             x = np.where(hit[:, None], x, cand)
         return np.where(hit[:, None], best, x), hit
 
@@ -190,21 +235,21 @@ class Attacker:
 
     def _prim_run(self, targets, xo, fl, th0, lo, hi, steps, step_frac, lam, need_validator):
         """One PGD run on theta from ``th0`` for one batch."""
+        fn = self._step_fn(targets, lam, "prim")
         step = step_frac * (hi - lo)
-        groups = self._groups(xo) if lam > 0 else None
+        groups = tf.constant(self._groups(xo, lam))
+        xo_t, fl_t = tf.constant(xo), tf.constant(np.asarray(fl, dtype=np.float64))
         th, best_th = th0.copy(), th0.copy()
-        hit = self.succeeds(targets, self.g.apply_np(xo, th0, fl), need_validator)
-        for _ in range(steps):
-            if hit.all():
-                break
-            tt = tf.Variable(th)
-            with tf.GradientTape() as tape:
-                loss = tf.reduce_sum(self._loss(targets, self.g.apply(xo, tt, fl), groups, lam))
-            grad = self._finite(tape.gradient(loss, tt).numpy(), "prim_pgd")
-            cand = self.g.clip(th - step * np.sign(grad), lo, hi)
-            ok = self.succeeds(targets, self.g.apply_np(xo, cand, fl), need_validator)
+        hit = np.zeros(len(xo), dtype=bool)
+        for k in range(steps + 1):
+            grad, worst, x = fn(tf.constant(th), xo_t, fl_t, groups)
+            ok = self._won(worst.numpy(), x.numpy(), need_validator)
             new = ok & ~hit
-            best_th[new], hit = cand[new], hit | ok
+            best_th[new], hit = th[new], hit | ok
+            if hit.all() or k == steps:
+                break
+            grad = self._finite(grad.numpy(), "prim_pgd")
+            cand = self.g.clip(th - step * np.sign(grad), lo, hi)
             th = np.where(hit[:, None], th, cand)
         return np.where(hit[:, None], best_th, th), hit
 
@@ -297,8 +342,20 @@ class Attacker:
         X = np.asarray(X, dtype=np.float64)
         floor = np.asarray(floor, dtype=np.float64)
         lo, hi = self.g.bounds(X, floor)
-        allowed = lambda th, rows: self.succeeds(  # noqa: E731
-            targets, self.g.apply_np(X[rows], th, floor[rows]), need_validator=self.validator is not None)
+        # The attacker only ever learns allow/stop. It is computed with one compiled
+        # forward pass (worst logit margin, then the real validator on the rows the
+        # models let through); 03b re-judges every saved row with the deployed models.
+        key = ("fwd", tuple(id(t) for t in targets))
+        if key not in self._fns:
+            self._fns[key] = tf.function(
+                lambda th, xo, fl: (lambda x: (tf.reduce_max(self._margins(targets, x), axis=1), x))(
+                    self.g.apply(xo, th, fl)),
+                reduce_retracing=True)
+        fwd = self._fns[key]
+
+        def allowed(th, rows):
+            worst, x = fwd(tf.constant(th), tf.constant(X[rows]), tf.constant(floor[rows]))
+            return self._won(worst.numpy(), x.numpy(), self.validator is not None)
 
         theta = np.zeros_like(lo)
         found = allowed(theta, np.arange(len(X)))
