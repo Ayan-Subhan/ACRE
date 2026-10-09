@@ -79,6 +79,13 @@ This plan moves the project to CICIoT2023 and builds:
 > rows) is genuine timing worth recovering as a properly scaled feature, or a capture
 > fingerprint. This needs a diagnostic: re-extract `IAT` for the current sample and test it
 > per `Number` level, and against capture order.
+>
+> **M4 re-planned (2026-10-09).** The M4 section below is superseded by
+> [`m4-plan.md`](m4-plan.md): flags are binary, `IAT` is gone, `Tot sum ≠ AVG × Number`,
+> `VulnerabilityScan` uses the 100-packet window, and discriminator-aware attacks move
+> to M5. Capture order cannot be tested: the merged CSV is fully shuffled (label change
+> rate 0.912 on the first 2M rows, against 0.913 for a random order). The work moved
+> to machine B (CPU only); see the README's "Environment notes".
 
 ---
 

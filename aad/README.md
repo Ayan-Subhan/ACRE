@@ -33,28 +33,41 @@ treat their output on CICIoT2023 as final until the matching milestone is marked
 
 ## Setup
 
-**1. Environment.** Python 3.10 (TensorFlow 2.13 has no wheels for 3.12+). On the
-development machine Python lives at `D:\Python310` — see "Environment notes" below
-for why it is not in `%LOCALAPPDATA%`.
+**1. Environment.** Python 3.10 (TensorFlow 2.13 has no wheels for 3.12+). The venv
+lives at the repository root (`..\.venv` from `aad/`); create it with whichever
+Python 3.10 the machine has (see "Environment notes" for where it is on each
+development machine):
 
 ```powershell
-D:\Python310\python.exe -m venv ..\.venv
+<path to Python 3.10>\python.exe -m venv ..\.venv
 ..\.venv\Scripts\python.exe -m pip install -r ..\requirements.txt
 ```
 
 TensorFlow 2.13 is CPU-only on native Windows.
 
-**1b. Optional: GPU training through WSL2** (set up 2026-10-08). The same TF 2.13.1
-stack runs on the NVIDIA RTX 3050 (4 GB) inside WSL2 Ubuntu-22.04. The venv lives on
-the Linux filesystem at `~/aad-venv`, because a venv on `/mnt/d` is slow. CUDA 11.8 and
-cuDNN 8.6 come from NVIDIA's pip wheels, so there is no system CUDA install. The only
-driver needed is the normal Windows NVIDIA driver.
+**Moving the project to another folder or machine** (e.g. sharing it as a zip): a
+copied `.venv` still points at the old locations. Either rebuild it with the two
+commands above, or repoint it in place: `<python 3.10> -m venv --upgrade ..\.venv`
+fixes `pyvenv.cfg`, but `Scripts\activate`, `Scripts\activate.bat` and the
+`Scripts\*.exe` launchers (`pip.exe`, `pytest.exe`, …) keep the old path and must be
+regenerated too. `python -m pip` / `python -m pytest` work either way. The data and
+model files are location-independent: every script resolves paths from `aad/`.
+
+**1b. Optional: GPU training through WSL2, NVIDIA only** (set up 2026-10-08 on the
+machine with the RTX 3050). The same TF 2.13.1 stack runs on the NVIDIA RTX 3050 (4 GB)
+inside WSL2 Ubuntu-22.04. The venv lives on the Linux filesystem at `~/aad-venv`,
+because a venv under `/mnt/` is slow. CUDA 11.8 and cuDNN 8.6 come from NVIDIA's pip
+wheels, so there is no system CUDA install. The only driver needed is the normal
+Windows NVIDIA driver. This route does not work on an AMD GPU.
+
+Below, `<repo>` is the repository root as WSL sees it, e.g. `/mnt/d/base_imp`. Quote it
+if the path contains spaces.
 
 ```bash
 # one-time, inside Ubuntu-22.04
 apt-get install -y python3.10-venv python3-pip
 python3 -m venv ~/aad-venv
-grep -vE "^(tensorflow|keras)" /mnt/d/base_imp/requirements.txt > /tmp/req.txt
+grep -vE "^(tensorflow|keras)" "<repo>/requirements.txt" > /tmp/req.txt
 ~/aad-venv/bin/pip install -r /tmp/req.txt tensorflow==2.13.1 \
   nvidia-cudnn-cu11==8.6.0.163 nvidia-cublas-cu11==11.11.3.6 nvidia-cuda-runtime-cu11==11.8.89 \
   nvidia-cufft-cu11==10.9.0.58 nvidia-curand-cu11==10.3.0.86 nvidia-cusolver-cu11==11.4.1.48 \
@@ -66,7 +79,7 @@ path (including `/usr/lib/wsl/lib` for `libcuda.so`), turns on memory growth for
 4 GB card, and runs from `aad/`:
 
 ```powershell
-wsl -d Ubuntu-22.04 -- /mnt/d/base_imp/aad/scripts/gpu.sh scripts/02_train_baselines.py --models mlp
+wsl -d Ubuntu-22.04 -- "<repo>/aad/scripts/gpu.sh" scripts/02_train_baselines.py --models mlp
 ```
 
 `.keras` files move freely between the two environments. Keras 2.13 names weight groups
@@ -153,10 +166,24 @@ apply; their numbers and file paths refer to the archive.
 
 ## Environment notes
 
-- **Python is at `D:\Python310`**, installed from the official NuGet package
+The project has been worked on from two Windows machines; paths differ between them.
+
+| | machine A (M0–M3, until 2026-10-08) | machine B (from 2026-10-09) |
+| --- | --- | --- |
+| repository root | `D:\base_imp` | `C:\Users\PC\Downloads\base_imp (1)\base_imp` |
+| Python 3.10.11 | `D:\Python310` | `%LOCALAPPDATA%\Programs\Python\Python310` |
+| GPU | NVIDIA RTX 3050 Laptop (4 GB): WSL2 route above | AMD Radeon RX 9060 XT: no CUDA, so TF 2.13 trains on CPU |
+
+- **Machine A's Python is at `D:\Python310`**, installed from the official NuGet package
   (`python.3.10.11.nupkg`, PSF-signed). The python.org MSI installer fails when run
   from the Claude desktop app's shell (error 0x80070003): writes to `%LOCALAPPDATA%`
   are redirected, so the Windows Installer service cannot find the cached `core.msi`.
-- **There is no git on the development machine.** Before M1 changed any code, a full
-  snapshot of code, configs, docs and reports was zipped to
-  `../backups/pre_m1_code_and_reports_2026-10-07.zip`.
+- **Machine B received the project as a zip of machine A's folder** (2026-10-09). The
+  venv was repointed in place (see "Moving the project" under Setup). The cache
+  fingerprint in `01_prepare.py` no longer includes the CSV's modification time, which
+  unzipping resets. The three baselines were re-scored on machine B's CPU and reproduce
+  the recorded test metrics (balanced
+  accuracy and FPR identical to two decimals).
+- **Before M1, machine A had no git.** A full snapshot of code, configs, docs and
+  reports was zipped to `../backups/pre_m1_code_and_reports_2026-10-07.zip`. The
+  project has been under git since.

@@ -73,7 +73,13 @@ LABEL_COLS = ["label_name", "label_multiclass", "label_binary", "label_category"
 # --------------------------------------------------------------------------- #
 
 def _fingerprint(csv: Path, cfg: dict) -> dict:
-    """Everything that, if changed, makes the cached sample stale."""
+    """Everything that, if changed, makes the cached sample stale.
+
+    The CSV is identified by name and byte size, not modification time: the
+    mtime changes whenever the project is copied or unzipped onto another
+    machine, which would force a needless ~15-min rescan of an unchanged file.
+    (A rescan still enforces the published row count, raw.expected_rows.)
+    """
     st = csv.stat()
     label_map_hash = hashlib.sha1(
         json.dumps(cfg["label_map"], sort_keys=True).encode("utf-8")
@@ -81,7 +87,6 @@ def _fingerprint(csv: Path, cfg: dict) -> dict:
     return {
         "csv": csv.name,
         "csv_bytes": st.st_size,
-        "csv_mtime_ns": st.st_mtime_ns,
         "cap_per_class": int(cfg["sampling"]["cap_per_class"]),
         "keep_all": sorted(cfg["sampling"]["keep_all"]),
         "seed": int(cfg["seed"]),
@@ -114,7 +119,9 @@ def ingest(cfg: dict, rescan: bool) -> tuple[pd.DataFrame, dict]:
 
     if not rescan and cache.exists() and sidecar.exists():
         meta = json.loads(sidecar.read_text(encoding="utf-8"))
-        if meta.get("fingerprint") == fp:
+        cached_fp = dict(meta.get("fingerprint") or {})
+        cached_fp.pop("csv_mtime_ns", None)  # recorded by sidecars written before 2026-10-09
+        if cached_fp == fp:
             log.info("step 1 ingest: cache hit %s (use --rescan to rebuild)", cache.name)
             df = pd.read_parquet(cache)
             df[cfg["label_column"]] = df[cfg["label_column"]].astype("category")
