@@ -1,9 +1,9 @@
 # Table I - CICIoT2023 as processed for this project
 
 Source: `ciciot23.csv` (13.75 GB, 46,686,579 rows).
-Distinct rows at float32 (model) precision: 27,840,572; duplicates removed: 18,846,007 (of which exact float64 copies: 18,804,593; the rest differ only below float32 precision, almost always in `IAT`). Feature vectors that occur under more than one label: 48,574.
+Distinct rows at float32 (model) precision: 27,840,570; duplicates removed: 18,846,009 (of which exact float64 copies: 18,804,595; the rest differ only below float32 precision, almost always in `IAT`). Feature vectors that occur under more than one label: 48,574.
 Sampling: every class deduplicated, then capped at 60,000 rows (seed 42); kept whole: ['benigntraffic'].
-Kept: 2,547,882 rows, 38 of 45 features. Split 0.7/0.15/0.15, stratified on the 34-way label.
+Kept: 2,547,882 rows, 36 of 43 features. Split 0.7/0.15/0.15, stratified on the 34-way label.
 
 `rows_in_file`, `exact_duplicates` and `conflicting` describe the full file; `kept` onward describe this project's sample.
 
@@ -12,7 +12,7 @@ Kept: 2,547,882 rows, 38 of 45 features. Split 0.7/0.15/0.15, stratified on the 
 | 0      | BenignTraffic           | Benign     |        1098195 |                 40 |             0 | 1098155 |  768708 | 164723 | 164724 |
 | 1      | DDoS-ACK_Fragmentation  | DDoS       |         285104 |              11852 |             0 |   60000 |   42000 |   9000 |   9000 |
 | 2      | DDoS-HTTP_Flood         | DDoS       |          28790 |                 18 |             0 |   28772 |   20140 |   4316 |   4316 |
-| 3      | DDoS-ICMP_Flood         | DDoS       |        7200504 |            5448156 |             0 |   60000 |   42000 |   9000 |   9000 |
+| 3      | DDoS-ICMP_Flood         | DDoS       |        7200504 |            5448157 |             0 |   60000 |   42000 |   9000 |   9000 |
 | 4      | DDoS-ICMP_Fragmentation | DDoS       |         452489 |              10293 |             0 |   60000 |   42000 |   9000 |   9000 |
 | 5      | DDoS-PSHACK_Flood       | DDoS       |        4094755 |            2473436 |             3 |   60000 |   42000 |   9000 |   9000 |
 | 6      | DDoS-RSTFINFlood        | DDoS       |        4045285 |            2991663 |             0 |   60000 |   42000 |   9000 |   9000 |
@@ -26,7 +26,7 @@ Kept: 2,547,882 rows, 38 of 45 features. Split 0.7/0.15/0.15, stratified on the 
 | 14     | DoS-SYN_Flood           | DoS        |        2028834 |             406863 |         20325 |   60000 |   42000 |   9000 |   9000 |
 | 15     | DoS-TCP_Flood           | DoS        |        2671445 |             909384 |         14802 |   60000 |   42000 |   9000 |   9000 |
 | 16     | DoS-UDP_Flood           | DoS        |        3318595 |             361970 |             0 |   60000 |   42000 |   9000 |   9000 |
-| 17     | Mirai-greeth_flood      | Mirai      |         991866 |             335255 |             0 |   60000 |   42000 |   9000 |   9000 |
+| 17     | Mirai-greeth_flood      | Mirai      |         991866 |             335256 |             0 |   60000 |   42000 |   9000 |   9000 |
 | 18     | Mirai-greip_flood       | Mirai      |         751682 |             210068 |             0 |   60000 |   42000 |   9000 |   9000 |
 | 19     | Mirai-udpplain          | Mirai      |         890576 |                  0 |             0 |   60000 |   42000 |   9000 |   9000 |
 | 20     | Recon-HostDiscovery     | Recon      |         134378 |                 96 |             0 |   60000 |   42000 |   9000 |   9000 |
@@ -43,13 +43,13 @@ Kept: 2,547,882 rows, 38 of 45 features. Split 0.7/0.15/0.15, stratified on the 
 | 31     | Uploading_Attack        | Web        |           1252 |                  0 |             0 |    1252 |     877 |    188 |    187 |
 | 32     | XSS                     | Web        |           3846 |                  0 |             0 |    3846 |    2692 |    577 |    577 |
 | 33     | DictionaryBruteForce    | BruteForce |          13064 |                  0 |             0 |   13064 |    9145 |   1959 |   1960 |
-|        | ALL                     |            |       46686579 |           18846007 |         99627 | 2547882 | 1783517 | 382182 | 382183 |
+|        | ALL                     |            |       46686579 |           18846009 |         99627 | 2547882 | 1783517 | 382182 | 382183 |
 
 ## Cleaning ledger
 
 - NaN cells in the file: 0 
 - Infinite cells in the file: 0 
 - Rows dropped by the post-sample clean pass (must be 0): NaN 0, duplicate 0
-- Columns dropped at the scan, before deduplication (`drop_columns`): ['IAT']
+- Columns dropped at the scan, before deduplication (`drop_columns`): ['IAT', 'Number', 'Weight']
 - Constant / near-constant columns dropped (fewer than 100 train rows differ from the column's mode; train only): {'Drate': 46, 'ece_flag_number': 8, 'cwr_flag_number': 6, 'Telnet': 0, 'SMTP': 1, 'IRC': 3, 'DHCP': 1}
 - Signed-log1p columns: ['flow_duration', 'Header_Length', 'Rate', 'Srate', 'syn_count', 'fin_count', 'urg_count', 'rst_count', 'Tot sum', 'Min', 'Max', 'AVG', 'Std', 'Tot size', 'Radius', 'Covariance']

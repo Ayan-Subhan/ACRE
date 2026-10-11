@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # Run any project script on the NVIDIA GPU through WSL2 (Ubuntu-22.04).
 #
-#   wsl -d Ubuntu-22.04 -- /mnt/d/base_imp/aad/scripts/gpu.sh scripts/02_train_baselines.py --models mlp
-#   wsl -d Ubuntu-22.04 -- /mnt/d/base_imp/aad/scripts/gpu.sh -m pytest tests -q
+#   wsl -d Ubuntu-22.04 -- "<repo>/aad/scripts/gpu.sh" scripts/02_train_baselines.py --models mlp
+#   wsl -d Ubuntu-22.04 -- "<repo>/aad/scripts/gpu.sh" -m pytest tests -q
+#
+# <repo> is the repository root as WSL sees it (e.g. /mnt/d/base_imp); quote it if it
+# contains spaces. NVIDIA GPUs only: the CUDA wheels below do nothing on an AMD card.
 #
 # TF 2.13.1 on Linux needs CUDA 11.8 + cuDNN 8.6. They come from NVIDIA's pip wheels
 # inside ~/aad-venv (no system CUDA install), so the loader path is set here.

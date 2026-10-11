@@ -67,7 +67,11 @@ class SoftValidator:
 
     def to_raw(self, x_scaled: tf.Tensor) -> tf.Tensor:
         y = tf.cast(x_scaled, _F64) * self._range + self._min
-        inv = tf.sign(y) * tf.math.expm1(tf.abs(y))
+        # expm1 only sees the log1p columns: on any other column a raw value above
+        # ~709 overflows to inf in the unused branch, and tf.where's gradient then
+        # turns inf * 0 into NaN (the attack's theta becomes NaN).
+        safe = tf.where(self._log_mask, tf.abs(y), tf.zeros_like(y))
+        inv = tf.sign(y) * tf.math.expm1(safe)
         return tf.where(self._log_mask, inv, y)
 
     # --- residuals (mirrors of validator.py, same formulas) --------------------
@@ -119,12 +123,12 @@ class SoftValidator:
         return self.hard.groups(self.hard.to_raw(np.asarray(x_scaled)))
 
     def distribution_score(self, raw: tf.Tensor, groups: np.ndarray) -> tf.Tensor:
-        g = tf.constant(np.asarray(groups, dtype=np.int64))
+        g = tf.cast(groups, tf.int64)   # numpy array or tensor (compiled attacks)
         z = tf.abs(raw - tf.gather(self._median, g)) / tf.gather(self._mad, g)
         return tf.reduce_mean(tf.minimum(z, Z_CLIP), axis=1)
 
     def distribution_penalty(self, raw: tf.Tensor, groups: np.ndarray) -> tf.Tensor:
-        thr = tf.gather(self._thr, tf.constant(np.asarray(groups, dtype=np.int64)))
+        thr = tf.gather(self._thr, tf.cast(groups, tf.int64))
         return tf.nn.relu(self.distribution_score(raw, groups) - thr)
 
     def penalties(self, x_scaled: tf.Tensor, groups: np.ndarray | None = None) -> dict:

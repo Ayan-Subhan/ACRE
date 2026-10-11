@@ -113,3 +113,38 @@ together, so this cannot recur.
 
 The 39-feature results produced before the drop (M1–M3 on 2026-10-07/08) are archived in
 `artifacts/superseded/39features/`.
+
+### Decision (2026-10-09): drop `Number` and `Weight` too
+
+M4 decision D1 ([`m4-plan.md`](m4-plan.md)): kept as immutable, they would make every
+flood unevadable through an extraction setting rather than through the defense. They
+are dropped at the scan like `IAT` (36 features). Two corrections to §3:
+
+- **`Number = 9.5` is not only floods.** The whole `VulnerabilityScan` class (17% of
+  Recon) uses the 100-packet window too. Its 99.96% detection in M2 coincides exactly with
+  that window. M4 reports results per window population (`10-pkt` vs `100-pkt`).
+- Dropping both changed no selected row; the 38-feature results are archived in
+  `artifacts/superseded/38features/`.
+
+## 4. What CIC's extractor code shows (read 2026-10-09)
+
+CIC's supplementary material (`supplementary-CIC/pcap2csv/`, 7 Python modules, read but not run)
+is **not the exact version that produced the CSV**. It lacks 9 of the CSV's columns, would give
+`Number` = 10 always, and would average the flags into fractions. But its per-packet and per-flow
+logic explains every quirk measured above:
+
+- **`flow_duration`** is the age of the packet's *connection* (sorted 5-tuple) so far within the
+  10 MB pcap chunk, not the window's length.
+- **`Rate`** is the connection's packets so far ÷ its age. Because the flow key is sorted, the
+  "source→destination" count is every packet, so **`Srate == Rate` in every row**. The reverse
+  lookup never matches, so **`Drate` ≈ 0**.
+- **`ack/syn/fin/urg/rst_count`** come from per-connection flag counters, and **`Header_Length`**
+  most likely from the connection's running byte total. That is why benign rows show hundreds of
+  them.
+- **`Magnitue`, `Radius`, `Covariance`, `Variance`, `Weight`** come from "incoming" and
+  "outgoing" lists that the code fills with the same packets, which is why `Magnitue² ≈ 2·AVG`
+  and `Radius² ≈ 2·Std²` hold so tightly.
+
+So the four features the models use most describe **how long and how much a connection has been
+talking**. An attacker controls that by keeping connections alive or opening fresh ones. Full
+table and consequences: [`m4-realizable-attacks.md`](m4-realizable-attacks.md) §2.

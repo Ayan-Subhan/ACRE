@@ -19,10 +19,10 @@ to the IoT dataset **CICIoT2023**, following the approved plan
 | --- | --- | --- |
 | M0 | environment + data | done |
 | **M1** | **CICIoT2023 data pipeline + leakage probe** | **done — see [`docs/m1-data-pipeline.md`](docs/m1-data-pipeline.md)** |
-| M2 | baseline NIDS (MLP, CNN, LSTM) on CICIoT2023 | done — re-trained 2026-10-08 on 38 features (no `IAT`) on the GPU: balanced acc. 95.25 / 95.11 / 94.82%, FPR 1.87–2.37% (99% target not met; Random Forest reference 95.40%) — see [`docs/m2-baselines.md`](docs/m2-baselines.md) |
-| M3 | validator redesign for window-mean features | done — re-run on 38 features: benign FPR 1.03%; ≤ 0.02% of any unconstrained attack set passes the gate and fools its model; distribution family carries it — see [`docs/m3-validator.md`](docs/m3-validator.md) |
-| M4 | realizable, defense-adaptive attack generator | next |
-| M5 | discriminator changes + arms race | planned |
+| M2 | baseline NIDS (MLP, CNN, LSTM) on CICIoT2023 | done — re-trained 2026-10-09 on 36 features (no `IAT`, `Number`, `Weight`) on CPU: balanced acc. 95.17 / 95.12 / 94.39%, FPR 1.83–2.95% (99% target not met; the Random Forest reference scored 95.40% on 38 features, level with the networks) — see [`docs/m2-baselines.md`](docs/m2-baselines.md) |
+| M3 | validator redesign for window-mean features | done — re-run on 36 features: benign FPR 1.01%; ≤ 0.04% of any unconstrained attack set passes the gate and fools its model; distribution family carries it — see [`docs/m3-validator.md`](docs/m3-validator.md) |
+| M4 | realizable, defense-adaptive attack generator | done — ART attacks are 82–100% unrealizable and evade ≤ 13.6% once repaired; realizable attackers get 39% (white box) / 15% (black box) of detected attacks past all three models and the validator, mostly by splitting traffic over short connections; floods stay ≤ 5%; results for three flow-age specs — see [`docs/m4-realizable-attacks.md`](docs/m4-realizable-attacks.md) |
+| **M5** | **discriminator changes + arms race** | **next** |
 | M6 | adversarial training (fixed pool + in-loop Madry) | planned |
 | M7 | packet-level (PCAP) realizability spot-check | planned |
 | M8 | end-to-end adaptive evaluation | planned |
@@ -33,28 +33,41 @@ treat their output on CICIoT2023 as final until the matching milestone is marked
 
 ## Setup
 
-**1. Environment.** Python 3.10 (TensorFlow 2.13 has no wheels for 3.12+). On the
-development machine Python lives at `D:\Python310` — see "Environment notes" below
-for why it is not in `%LOCALAPPDATA%`.
+**1. Environment.** Python 3.10 (TensorFlow 2.13 has no wheels for 3.12+). The venv
+lives at the repository root (`..\.venv` from `aad/`); create it with whichever
+Python 3.10 the machine has (see "Environment notes" for where it is on each
+development machine):
 
 ```powershell
-D:\Python310\python.exe -m venv ..\.venv
+<path to Python 3.10>\python.exe -m venv ..\.venv
 ..\.venv\Scripts\python.exe -m pip install -r ..\requirements.txt
 ```
 
 TensorFlow 2.13 is CPU-only on native Windows.
 
-**1b. Optional: GPU training through WSL2** (set up 2026-10-08). The same TF 2.13.1
-stack runs on the NVIDIA RTX 3050 (4 GB) inside WSL2 Ubuntu-22.04. The venv lives on
-the Linux filesystem at `~/aad-venv`, because a venv on `/mnt/d` is slow. CUDA 11.8 and
-cuDNN 8.6 come from NVIDIA's pip wheels, so there is no system CUDA install. The only
-driver needed is the normal Windows NVIDIA driver.
+**Moving the project to another folder or machine** (e.g. sharing it as a zip): a
+copied `.venv` still points at the old locations. Either rebuild it with the two
+commands above, or repoint it in place: `<python 3.10> -m venv --upgrade ..\.venv`
+fixes `pyvenv.cfg`, but `Scripts\activate`, `Scripts\activate.bat` and the
+`Scripts\*.exe` launchers (`pip.exe`, `pytest.exe`, …) keep the old path and must be
+regenerated too. `python -m pip` / `python -m pytest` work either way. The data and
+model files are location-independent: every script resolves paths from `aad/`.
+
+**1b. Optional: GPU training through WSL2, NVIDIA only** (set up 2026-10-08 on the
+machine with the RTX 3050). The same TF 2.13.1 stack runs on the NVIDIA RTX 3050 (4 GB)
+inside WSL2 Ubuntu-22.04. The venv lives on the Linux filesystem at `~/aad-venv`,
+because a venv under `/mnt/` is slow. CUDA 11.8 and cuDNN 8.6 come from NVIDIA's pip
+wheels, so there is no system CUDA install. The only driver needed is the normal
+Windows NVIDIA driver. This route does not work on an AMD GPU.
+
+Below, `<repo>` is the repository root as WSL sees it, e.g. `/mnt/d/base_imp`. Quote it
+if the path contains spaces.
 
 ```bash
 # one-time, inside Ubuntu-22.04
 apt-get install -y python3.10-venv python3-pip
 python3 -m venv ~/aad-venv
-grep -vE "^(tensorflow|keras)" /mnt/d/base_imp/requirements.txt > /tmp/req.txt
+grep -vE "^(tensorflow|keras)" "<repo>/requirements.txt" > /tmp/req.txt
 ~/aad-venv/bin/pip install -r /tmp/req.txt tensorflow==2.13.1 \
   nvidia-cudnn-cu11==8.6.0.163 nvidia-cublas-cu11==11.11.3.6 nvidia-cuda-runtime-cu11==11.8.89 \
   nvidia-cufft-cu11==10.9.0.58 nvidia-curand-cu11==10.3.0.86 nvidia-cusolver-cu11==11.4.1.48 \
@@ -66,7 +79,7 @@ path (including `/usr/lib/wsl/lib` for `libcuda.so`), turns on memory growth for
 4 GB card, and runs from `aad/`:
 
 ```powershell
-wsl -d Ubuntu-22.04 -- /mnt/d/base_imp/aad/scripts/gpu.sh scripts/02_train_baselines.py --models mlp
+wsl -d Ubuntu-22.04 -- "<repo>/aad/scripts/gpu.sh" scripts/02_train_baselines.py --models mlp
 ```
 
 `.keras` files move freely between the two environments. Keras 2.13 names weight groups
@@ -87,6 +100,11 @@ It is the 169 part files of the official release (CIC, University of New Brunswi
 distributed on Kaggle. Phase 1 refuses to run if the row count differs from the
 published 46,686,579, so a truncated download fails immediately.
 
+**2b. Optional: CIC's supplementary material** (feature-extraction code, read in M4). Download the
+`Supplementary material` folder from CIC's dataset page and place it at the repository root as
+`supplementary-CIC/` (git-ignored: CIC grants no redistribution licence). Nothing runs it; M4
+only documents what it computes ([`docs/m4-realizable-attacks.md`](docs/m4-realizable-attacks.md) §2).
+
 **3. Build the processed dataset.**
 
 ```powershell
@@ -100,10 +118,11 @@ The first `01_prepare.py` run streams the 13.75 GB CSV twice (~10 min) and cache
 sampled rows in `data/interim/ciciot_capped.parquet`; every later run, including smoke
 tests, reads the cache and takes about a minute. `--rescan` forces a fresh read.
 
-> **Feature set (2026-10-08):** 38 features. `IAT` is dropped at the scan (`config/data.yaml: drop_columns`)
-> because it is a copy of `Number`, not an inter-arrival time; see
+> **Feature set (2026-10-09):** 36 features. `IAT` (a copy of `Number`, not an inter-arrival
+> time), `Number` and `Weight` (the extractor's packet-window size, chosen per class) are
+> dropped at the scan (`config/data.yaml: drop_columns`); see
 > [`docs/ciciot2023-features.md`](docs/ciciot2023-features.md) for how CICIoT2023's features were
-> produced. The 39-feature results are archived in `artifacts/superseded/39features/`.
+> produced. Earlier results are archived in `artifacts/superseded/{39,38}features/`.
 
 ## Phase 1 (M1) in one paragraph
 
@@ -114,7 +133,7 @@ rows** chosen uniformly at random (seed 42); benign traffic is kept whole. That 
 away any rare class. It is split 70/15/15 stratified on the 34 labels; 7 near-constant
 columns are dropped and 16 heavy-tailed columns get a signed log1p (both decided on
 train only); everything is MinMax scaled to [0,1] with the scaler fitted on train only.
-Result: **38 features** (after dropping `IAT`), 1,783,517 / 382,182 / 382,183 rows. The full walkthrough, every
+Result: **36 features** (after dropping `IAT`, `Number`, `Weight`), 1,783,517 / 382,182 / 382,183 rows. The full walkthrough, every
 number the run produced, and the reasoning behind each choice are in
 [`docs/m1-data-pipeline.md`](docs/m1-data-pipeline.md).
 
@@ -153,10 +172,24 @@ apply; their numbers and file paths refer to the archive.
 
 ## Environment notes
 
-- **Python is at `D:\Python310`**, installed from the official NuGet package
+The project has been worked on from two Windows machines; paths differ between them.
+
+| | machine A (M0–M3, until 2026-10-08) | machine B (from 2026-10-09) |
+| --- | --- | --- |
+| repository root | `D:\base_imp` | `C:\Users\PC\Downloads\base_imp (1)\base_imp` |
+| Python 3.10.11 | `D:\Python310` | `%LOCALAPPDATA%\Programs\Python\Python310` |
+| GPU | NVIDIA RTX 3050 Laptop (4 GB): WSL2 route above | AMD Radeon RX 9060 XT: no CUDA, so TF 2.13 trains on CPU |
+
+- **Machine A's Python is at `D:\Python310`**, installed from the official NuGet package
   (`python.3.10.11.nupkg`, PSF-signed). The python.org MSI installer fails when run
   from the Claude desktop app's shell (error 0x80070003): writes to `%LOCALAPPDATA%`
   are redirected, so the Windows Installer service cannot find the cached `core.msi`.
-- **There is no git on the development machine.** Before M1 changed any code, a full
-  snapshot of code, configs, docs and reports was zipped to
-  `../backups/pre_m1_code_and_reports_2026-10-07.zip`.
+- **Machine B received the project as a zip of machine A's folder** (2026-10-09). The
+  venv was repointed in place (see "Moving the project" under Setup). The cache
+  fingerprint in `01_prepare.py` no longer includes the CSV's modification time, which
+  unzipping resets. The three baselines were re-scored on machine B's CPU and reproduce
+  the recorded test metrics (balanced
+  accuracy and FPR identical to two decimals).
+- **Before M1, machine A had no git.** A full snapshot of code, configs, docs and
+  reports was zipped to `../backups/pre_m1_code_and_reports_2026-10-07.zip`. The
+  project has been under git since.

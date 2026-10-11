@@ -1,0 +1,5 @@
+16:31:09  INFO    mlp  threshold 0.487006 | val FPR 2.000% | test FPR 1.964% bal.acc 95.189% (argmax: FPR 1.832% bal.acc 95.167%)
+16:31:15  INFO    cnn  threshold 0.575074 | val FPR 2.000% | test FPR 1.927% bal.acc 95.073% (argmax: FPR 2.743% bal.acc 95.117%)
+16:31:40  INFO    lstm threshold 0.587073 | val FPR 2.000% | test FPR 1.955% bal.acc 94.217% (argmax: FPR 2.955% bal.acc 94.393%)
+16:31:41  INFO    OR-ensemble at member thresholds: test FPR 3.267%, bal.acc 95.246%
+16:31:41  INFO    wrote C:\Users\PC\Downloads\base_imp (1)\base_imp\aad\artifacts\models\thresholds.json and C:\Users\PC\Downloads\base_imp (1)\base_imp\aad\artifacts\reports\thresholds.md

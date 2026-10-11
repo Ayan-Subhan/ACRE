@@ -1,0 +1,13 @@
+C:\Users\PC\Downloads\base_imp (1)\base_imp\.venv\lib\site-packages\art\estimators\certification\__init__.py:29: UserWarning: PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality
+  warnings.warn("PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality")
+03:25:42  INFO    source rows: 6300 from test (900 per category, detected by mlp, cnn, lstm); populations {'10-pkt': 3412, '100-pkt': 2888}
+03:25:42  INFO    ======================================================================
+03:25:42  INFO    feat_pgd_ens against mlp, cnn, lstm (6300 rows)
+03:30:58  INFO    feat_pgd_ens_ens: evasion 43.27% [42.05, 44.49], passes validator 60.40%, pass+evade 38.95% (315s)
+03:30:58  INFO    ======================================================================
+03:30:58  INFO    prim_pgd_ens against mlp, cnn, lstm (6300 rows)
+03:36:42  INFO    prim_pgd_ens_ens: evasion 23.02% [21.98, 24.03], passes validator 45.21%, pass+evade 21.67% (343s)
+03:36:42  INFO    ======================================================================
+03:36:42  INFO    blackbox against mlp, cnn, lstm (6300 rows)
+03:39:01  INFO    blackbox_ens: evasion 14.79% [13.90, 15.67], passes validator 64.30%, pass+evade 14.79% (138s)
+03:39:01  INFO    wrote C:\Users\PC\Downloads\base_imp (1)\base_imp\aad\artifacts\reports\table4b_realizable_test_specC_floor0.75.{csv,md} and realizable_metrics_test_specC_floor0.75.json

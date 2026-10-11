@@ -1,0 +1,15 @@
+C:\Users\PC\Downloads\base_imp (1)\base_imp\.venv\lib\site-packages\art\estimators\certification\__init__.py:29: UserWarning: PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality
+  warnings.warn("PyTorch not found. Not importing DeepZ or Interval Bound Propagation functionality")
+00:46:05  INFO    art_projected bim      x cnn : 100.0% unrealizable; evasion 97.9% -> 6.1% after P
+00:46:06  INFO    art_projected bim      x lstm: 100.0% unrealizable; evasion 39.2% -> 7.7% after P
+00:46:06  INFO    art_projected bim      x mlp : 82.3% unrealizable; evasion 57.8% -> 4.7% after P
+00:46:06  INFO    art_projected deepfool x cnn : 100.0% unrealizable; evasion 100.0% -> 0.4% after P
+00:46:07  INFO    art_projected deepfool x lstm: 100.0% unrealizable; evasion 96.7% -> 2.0% after P
+00:46:07  INFO    art_projected deepfool x mlp : 100.0% unrealizable; evasion 5.4% -> 0.0% after P
+00:46:07  INFO    art_projected fgsm     x cnn : 100.0% unrealizable; evasion 64.2% -> 7.9% after P
+00:46:08  INFO    art_projected fgsm     x lstm: 100.0% unrealizable; evasion 19.1% -> 6.3% after P
+00:46:08  INFO    art_projected fgsm     x mlp : 82.3% unrealizable; evasion 35.9% -> 5.7% after P
+00:46:08  INFO    art_projected pgd      x cnn : 100.0% unrealizable; evasion 99.8% -> 6.1% after P
+00:46:09  INFO    art_projected pgd      x lstm: 100.0% unrealizable; evasion 48.0% -> 7.8% after P
+00:46:09  INFO    art_projected pgd      x mlp : 82.3% unrealizable; evasion 62.6% -> 4.6% after P
+00:46:09  INFO    wrote C:\Users\PC\Downloads\base_imp (1)\base_imp\aad\artifacts\reports\table4c_projection_specB.{csv,md}

@@ -33,7 +33,14 @@ label_column: label
 # inter-arrival time exists only at the lowest level. Dropping it cost nothing in the
 # M2 ablation (95.27% vs 95.29% balanced accuracy). Full analysis:
 # docs/ciciot2023-features.md.
-drop_columns: [IAT]
+#
+# Number, Weight (dropped 2026-10-09, M4 decision D1 in docs/m4-plan.md): the
+# extractor's packet-window size, which CIC chose per class (100 packets for every
+# flood and VulnerabilityScan, 10 for everything else). Number takes three values
+# (5.5 / 9.5 / 13.5) and Weight is one-to-one with it (r = 0.9999). A capture
+# setting, not behaviour, and no attacker can change it; dropping both cost 0.01
+# points in the M2 ablation (MLP 95.23% vs 95.25%).
+drop_columns: [IAT, Number, Weight]
 
 # The full dataset is 97.6% DDoS/DoS flood traffic, and the flood classes are
 # millions of near-identical windows. Training on all of it costs ~22 h of CPU

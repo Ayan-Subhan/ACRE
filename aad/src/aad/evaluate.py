@@ -105,6 +105,39 @@ def attack_success_rate(y_pred_on_adversarial: np.ndarray) -> float:
     return float((y_pred_on_adversarial == 0).mean())
 
 
+def threshold_for_fpr(p_attack_benign: np.ndarray, fpr: float) -> float:
+    """Smallest threshold t on P(attack) whose false-positive rate on these benign
+    scores is at most ``fpr``, for the rule "attack iff p >= t".
+
+    Calibrate on validation rows only; the test split then measures the FPR the
+    threshold actually delivers.
+    """
+    s = np.sort(np.asarray(p_attack_benign, dtype=np.float64))[::-1]
+    k = int(np.floor(fpr * len(s)))          # benign rows we may flag
+    if k >= len(s):
+        return 0.0
+    # Just above the (k+1)-th highest benign score: at most k rows are >= t.
+    return float(np.nextafter(s[k], np.inf))
+
+
+def bootstrap_ci(
+    hits: np.ndarray, n_boot: int = 2000, alpha: float = 0.05, seed: int = 0
+) -> tuple[float, float, float]:
+    """Rate of a boolean outcome with a percentile-bootstrap (1 - alpha) interval.
+
+    Returns ``(rate, lo, hi)``. Used for every evasion rate in M4 onwards, where
+    a category has ~900 rows and the interval is about +/-3 points at 50%.
+    """
+    hits = np.asarray(hits, dtype=bool)
+    n = len(hits)
+    if n == 0:
+        return float("nan"), float("nan"), float("nan")
+    rng = np.random.default_rng(seed)
+    means = hits[rng.integers(0, n, size=(n_boot, n))].mean(axis=1)
+    lo, hi = np.quantile(means, [alpha / 2, 1 - alpha / 2])
+    return float(hits.mean()), float(lo), float(hi)
+
+
 def format_row(name: str, m: dict) -> str:
     return (
         f"{name:<10s} {m['accuracy']*100:>8.4f} {m['precision']*100:>10.4f} "
