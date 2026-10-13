@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120.58 -66.58 253.17 253.17" width="512" height="512">
+<defs><filter id="ppr-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="ppr-soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter><linearGradient id="ppr-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1a14"/><stop offset="1" stop-color="#13120e"/></linearGradient><linearGradient id="ppr-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#15130f"/><stop offset="1" stop-color="#0e0d0a"/></linearGradient><linearGradient id="ppr-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6d6c68"/><stop offset="1" stop-color="#54534e"/></linearGradient></defs>
+<polygon points="6.00,0.00 118.58,65.00 6.00,130.00 -106.58,65.00" fill="#000" opacity="0.25" filter="url(#ppr-soft)"/>
+<polygon points="-95.26,55.00 0.00,110.00 0.00,100.00 -95.26,45.00" fill="url(#ppr-g1)" />
+<polygon points="95.26,55.00 0.00,110.00 0.00,100.00 95.26,45.00" fill="url(#ppr-g2)" />
+<polygon points="0.00,-10.00 95.26,45.00 0.00,100.00 -95.26,45.00" fill="url(#ppr-g3)" />
+<polyline points="0.00,-10.00 95.26,45.00 0.00,100.00 -95.26,45.00 0.00,-10.00" fill="none" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#ppr-glow)"/>
+<polygon points="-57.16,49.00 -8.66,77.00 -8.66,73.00 -57.16,45.00" fill="#e5e7eb" />
+<polygon points="53.69,41.00 -8.66,77.00 -8.66,73.00 53.69,37.00" fill="#a0a1a4" />
+<polygon points="5.20,9.00 53.69,37.00 -8.66,73.00 -57.16,45.00" fill="#ffffff" />
+<polygon points="-62.35,45.00 -13.86,73.00 -13.86,69.00 -62.35,41.00" fill="#e5e7eb" />
+<polygon points="48.50,37.00 -13.86,73.00 -13.86,69.00 48.50,33.00" fill="#a0a1a4" />
+<polygon points="0.00,5.00 48.50,33.00 -13.86,69.00 -62.35,41.00" fill="#ffffff" />
+<polygon points="-67.55,41.00 -19.05,69.00 -19.05,65.00 -67.55,37.00" fill="#e5e7eb" />
+<polygon points="43.30,33.00 -19.05,69.00 -19.05,65.00 43.30,29.00" fill="#a0a1a4" />
+<polygon points="-5.20,1.00 43.30,29.00 -19.05,65.00 -67.55,37.00" fill="#ffffff" />
+<polyline points="-8.66,10.99 24.25,29.99" fill="none" stroke="#9ca3af" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-15.59,14.99 6.93,27.99" fill="none" stroke="#9ca3af" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-22.52,18.99 10.39,37.99" fill="none" stroke="#9ca3af" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-29.44,22.99 -6.93,35.99" fill="none" stroke="#9ca3af" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-36.37,26.99 -3.46,45.99" fill="none" stroke="#9ca3af" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-43.30,30.99 -20.78,43.99" fill="none" stroke="#9ca3af" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="-17.32,45.99 -6.93,51.99 -22.52,60.99 -22.52,54.99 -32.91,54.99" fill="#f59e0b" />
+</svg>

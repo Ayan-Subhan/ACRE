@@ -1,0 +1,48 @@
+.nav {
+  position: fixed; inset: 0 0 auto 0; z-index: 50; height: var(--nav-h);
+  transition: background .3s, border-color .3s, backdrop-filter .3s;
+  border-bottom: 1px solid transparent;
+}
+.nav-scrolled { background: rgba(0, 0, 0, 0.72); backdrop-filter: blur(14px); border-bottom-color: var(--border); }
+.nav-inner {
+  height: 100%; max-width: 1240px; margin: 0 auto; padding: 0 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+@media (min-width: 768px) { .nav-inner { padding: 0 32px; } }
+.nav-brand { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.nav-brand-text { font-weight: 700; letter-spacing: 0.08em; font-size: 16px; }
+.nav-phase { color: var(--defense); border-color: rgba(34, 211, 238, 0.35); }
+
+.nav-links { display: none; align-items: center; gap: 2px; }
+.nav-link {
+  position: relative; padding: 10px 12px; font-size: 14px; color: var(--muted);
+  border-radius: 8px; transition: color .2s; min-height: 44px; display: inline-flex; align-items: center;
+}
+.nav-link:hover { color: var(--fg); }
+.nav-link.active { color: var(--fg); }
+.nav-underline {
+  position: absolute; left: 12px; right: 12px; bottom: 6px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--defense), var(--attack));
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+}
+
+.nav-burger {
+  width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border-strong);
+  background: rgba(0,0,0,.4); display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+}
+.nav-burger span { width: 18px; height: 1.6px; background: var(--fg); border-radius: 2px; transition: transform .25s var(--ease-out); }
+.nav-burger[aria-expanded='true'] span:first-child { transform: translateY(3.8px) rotate(45deg); }
+.nav-burger[aria-expanded='true'] span:last-child { transform: translateY(-3.8px) rotate(-45deg); }
+
+.nav-sheet {
+  position: absolute; top: var(--nav-h); left: 12px; right: 12px; padding: 10px;
+  background: rgba(8, 11, 15, 0.97); border: 1px solid var(--border); border-radius: 16px;
+  backdrop-filter: blur(16px); display: grid; gap: 2px;
+}
+.nav-sheet-link { display: flex; align-items: center; min-height: 48px; padding: 0 14px; border-radius: 10px; color: var(--fg-2); }
+.nav-sheet-link.active { background: rgba(34, 211, 238, 0.1); color: var(--fg); }
+
+@media (min-width: 1100px) {
+  .nav-links { display: flex; }
+  .nav-burger, .nav-sheet { display: none; }
+}

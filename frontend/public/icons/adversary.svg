@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-129.24 -94.84 282.67 282.67" width="512" height="512">
+<defs><filter id="adv-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="adv-soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter><linearGradient id="adv-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1f2a"/><stop offset="1" stop-color="#12151d"/></linearGradient><linearGradient id="adv-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14171f"/><stop offset="1" stop-color="#0d0f15"/></linearGradient><linearGradient id="adv-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6d7077"/><stop offset="1" stop-color="#54575f"/></linearGradient><linearGradient id="adv-g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2f3c"/><stop offset="1" stop-color="#1d202a"/></linearGradient><linearGradient id="adv-g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f232d"/><stop offset="1" stop-color="#15171e"/></linearGradient><linearGradient id="adv-g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#585e6b"/><stop offset="1" stop-color="#3b4252"/></linearGradient><linearGradient id="adv-g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20242f"/><stop offset="1" stop-color="#161920"/></linearGradient><linearGradient id="adv-g8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#181b23"/><stop offset="1" stop-color="#101217"/></linearGradient><linearGradient id="adv-g9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#585e6b"/><stop offset="1" stop-color="#3b4252"/></linearGradient><linearGradient id="adv-g10" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8a4c"/><stop offset="1" stop-color="#a8240f"/></linearGradient><linearGradient id="adv-g11" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a1f"/><stop offset="1" stop-color="#b23e15"/></linearGradient><linearGradient id="adv-g12" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bf4317"/><stop offset="1" stop-color="#7f2d0f"/></linearGradient><linearGradient id="adv-g13" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffbb9b"/><stop offset="1" stop-color="#ffb08a"/></linearGradient><linearGradient id="adv-g14" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a1f"/><stop offset="1" stop-color="#b23e15"/></linearGradient><linearGradient id="adv-g15" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bf4317"/><stop offset="1" stop-color="#7f2d0f"/></linearGradient><linearGradient id="adv-g16" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffbb9b"/><stop offset="1" stop-color="#ffb08a"/></linearGradient><linearGradient id="adv-g17" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a1f"/><stop offset="1" stop-color="#b23e15"/></linearGradient><linearGradient id="adv-g18" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bf4317"/><stop offset="1" stop-color="#7f2d0f"/></linearGradient><linearGradient id="adv-g19" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffbb9b"/><stop offset="1" stop-color="#ffb08a"/></linearGradient></defs>
+<polygon points="6.00,0.00 127.24,70.00 6.00,140.00 -115.24,70.00" fill="#000" opacity="0.25" filter="url(#adv-soft)"/>
+<polygon points="-103.92,60.00 0.00,120.00 0.00,110.00 -103.92,50.00" fill="url(#adv-g1)" />
+<polygon points="103.92,60.00 0.00,120.00 0.00,110.00 103.92,50.00" fill="url(#adv-g2)" />
+<polygon points="0.00,-10.00 103.92,50.00 0.00,110.00 -103.92,50.00" fill="url(#adv-g3)" />
+<polyline points="0.00,-10.00 103.92,50.00 0.00,110.00 -103.92,50.00 0.00,-10.00" fill="none" stroke="#ff6a2b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#adv-glow)"/>
+<polygon points="-57.16,45.00 8.66,83.00 8.66,78.00 -57.16,40.00" fill="url(#adv-g4)" />
+<polygon points="58.89,54.00 8.66,83.00 8.66,78.00 58.89,49.00" fill="url(#adv-g5)" />
+<polygon points="-6.93,11.00 58.89,49.00 8.66,78.00 -57.16,40.00" fill="url(#adv-g6)" />
+<polygon points="-12.12,14.00 53.69,52.00 53.69,0.00 -12.12,-38.00" fill="url(#adv-g7)" />
+<polygon points="58.89,49.00 53.69,52.00 53.69,0.00 58.89,-3.00" fill="url(#adv-g8)" />
+<polygon points="-6.93,-41.00 58.89,-3.00 53.69,0.00 -12.12,-38.00" fill="url(#adv-g9)" />
+<polygon points="-7.80,11.50 49.35,44.50 49.35,1.50 -7.80,-31.50" fill="url(#adv-g10)" />
+<polyline points="32.03,13.01 31.81,10.35 31.17,7.54 30.13,4.69 28.73,1.91 27.02,-0.69 25.08,-3.01 22.96,-4.97 20.77,-6.49 18.57,-7.51 16.46,-7.99 14.51,-7.91 12.81,-7.28 11.41,-6.12 10.37,-4.47 9.73,-2.40 9.51,0.01 9.73,2.67 10.37,5.48 11.41,8.33 12.81,11.11 14.51,13.71 16.46,16.03 18.57,17.99 20.77,19.51 22.96,20.53 25.08,21.01 27.02,20.93 28.73,20.30 30.13,19.14 31.17,17.49 31.81,15.42 32.03,13.01" fill="none" stroke="#fff4ea" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" filter="url(#adv-glow)"/>
+<polyline points="20.77,24.01 20.77,-10.99 21.37,-10.39" fill="none" stroke="#fff4ea" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#adv-glow)"/>
+<polyline points="5.18,-2.49 36.36,15.51" fill="none" stroke="#fff4ea" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#adv-glow)"/>
+<circle cx="20.77" cy="6.51" r="2.6" fill="#ffffff" filter="url(#adv-glow)"/>
+<polygon points="-15.59,23.99 -8.66,27.99 -15.59,31.99 -22.52,27.99" fill="#4a5163" />
+<polygon points="-25.11,29.49 -18.19,33.49 -25.11,37.49 -32.04,33.49" fill="#4a5163" />
+<polygon points="-34.64,34.99 -27.71,38.99 -34.64,42.99 -41.57,38.99" fill="#4a5163" />
+<polygon points="-6.06,29.49 0.87,33.49 -6.06,37.49 -12.99,33.49" fill="#4a5163" />
+<polygon points="-15.59,34.99 -8.66,38.99 -15.59,42.99 -22.52,38.99" fill="#4a5163" />
+<polygon points="-25.11,40.49 -18.19,44.49 -25.11,48.49 -32.04,44.49" fill="#4a5163" />
+<polygon points="3.46,34.99 10.39,38.99 3.46,42.99 -3.46,38.99" fill="#4a5163" />
+<polygon points="-6.06,40.49 0.87,44.49 -6.06,48.49 -12.99,44.49" fill="#4a5163" />
+<polygon points="-15.59,45.99 -8.66,49.99 -15.59,53.99 -22.52,49.99" fill="#4a5163" />
+<polygon points="12.99,40.49 19.92,44.49 12.99,48.49 6.06,44.49" fill="#4a5163" />
+<polygon points="3.46,45.99 10.39,49.99 3.46,53.99 -3.46,49.99" fill="#4a5163" />
+<polygon points="-6.06,51.49 0.87,55.49 -6.06,59.49 -12.99,55.49" fill="#4a5163" />
+<polygon points="22.52,45.99 29.44,49.99 22.52,53.99 15.59,49.99" fill="#4a5163" />
+<polygon points="12.99,51.49 19.92,55.49 12.99,59.49 6.06,55.49" fill="#4a5163" />
+<polygon points="3.46,56.99 10.39,60.99 3.46,64.99 -3.46,60.99" fill="#4a5163" />
+<polygon points="32.04,51.49 38.97,55.49 32.04,59.49 25.11,55.49" fill="#4a5163" />
+<polygon points="22.52,56.99 29.44,60.99 22.52,64.99 15.59,60.99" fill="#4a5163" />
+<polygon points="12.99,62.49 19.92,66.49 12.99,70.49 6.06,66.49" fill="#4a5163" />
+<polyline points="57.16,3.00 83.14,-10.00 107.39,-24.00 131.64,-40.00" fill="none" stroke="#ff6a2b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4" filter="url(#adv-glow)"/>
+<polygon points="75.34,-3.50 83.14,1.00 83.14,-8.00 75.34,-12.50" fill="url(#adv-g11)" />
+<polygon points="90.93,-3.50 83.14,1.00 83.14,-8.00 90.93,-12.50" fill="url(#adv-g12)" />
+<polygon points="83.14,-17.00 90.93,-12.50 83.14,-8.00 75.34,-12.50" fill="url(#adv-g13)" />
+<polygon points="99.59,-17.50 107.39,-13.00 107.39,-22.00 99.59,-26.50" fill="url(#adv-g14)" />
+<polygon points="115.18,-17.50 107.39,-13.00 107.39,-22.00 115.18,-26.50" fill="url(#adv-g15)" />
+<polygon points="107.39,-31.00 115.18,-26.50 107.39,-22.00 99.59,-26.50" fill="url(#adv-g16)" />
+<polygon points="123.84,-33.50 131.64,-29.00 131.64,-38.00 123.84,-42.50" fill="url(#adv-g17)" />
+<polygon points="139.43,-33.50 131.64,-29.00 131.64,-38.00 139.43,-42.50" fill="url(#adv-g18)" />
+<polygon points="131.64,-47.00 139.43,-42.50 131.64,-38.00 123.84,-42.50" fill="url(#adv-g19)" />
+</svg>
