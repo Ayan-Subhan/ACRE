@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-129.24 -94.07 279.15 279.15" width="512" height="512">
+<defs><filter id="lan-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="lan-soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter><linearGradient id="lan-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14231c"/><stop offset="1" stop-color="#0e1813"/></linearGradient><linearGradient id="lan-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f1a15"/><stop offset="1" stop-color="#0a110e"/></linearGradient><linearGradient id="lan-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#68726d"/><stop offset="1" stop-color="#4e5a54"/></linearGradient><linearGradient id="lan-g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2937"/><stop offset="1" stop-color="#151c26"/></linearGradient><linearGradient id="lan-g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#171e29"/><stop offset="1" stop-color="#0f141b"/></linearGradient><linearGradient id="lan-g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#555d6b"/><stop offset="1" stop-color="#374151"/></linearGradient><linearGradient id="lan-g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2937"/><stop offset="1" stop-color="#151c26"/></linearGradient><linearGradient id="lan-g8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#171e29"/><stop offset="1" stop-color="#0f141b"/></linearGradient><linearGradient id="lan-g9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#555d6b"/><stop offset="1" stop-color="#374151"/></linearGradient><linearGradient id="lan-g10" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2937"/><stop offset="1" stop-color="#151c26"/></linearGradient><linearGradient id="lan-g11" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#171e29"/><stop offset="1" stop-color="#0f141b"/></linearGradient><linearGradient id="lan-g12" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#555d6b"/><stop offset="1" stop-color="#374151"/></linearGradient></defs>
+<polygon points="6.00,0.00 135.90,75.00 14.66,145.00 -115.24,70.00" fill="#000" opacity="0.25" filter="url(#lan-soft)"/>
+<polygon points="-103.92,60.00 8.66,125.00 8.66,115.00 -103.92,50.00" fill="url(#lan-g1)" />
+<polygon points="112.58,65.00 8.66,125.00 8.66,115.00 112.58,55.00" fill="url(#lan-g2)" />
+<polygon points="0.00,-10.00 112.58,55.00 8.66,115.00 -103.92,50.00" fill="url(#lan-g3)" />
+<polyline points="0.00,-10.00 112.58,55.00 8.66,115.00 -103.92,50.00 0.00,-10.00" fill="none" stroke="#34d399" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#lan-glow)"/>
+<polygon points="-43.30,33.00 -19.05,47.00 -19.05,-23.00 -43.30,-37.00" fill="url(#lan-g4)" />
+<polygon points="10.39,30.00 -19.05,47.00 -19.05,-23.00 10.39,-40.00" fill="url(#lan-g5)" />
+<polygon points="-13.86,-54.00 10.39,-40.00 -19.05,-23.00 -43.30,-37.00" fill="url(#lan-g6)" />
+<polygon points="-40.71,26.51 -21.66,37.51 -21.66,29.51 -40.71,18.51" fill="#111827" />
+<circle cx="-24.27" cy="32.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="-27.73" cy="30.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<polygon points="-40.71,14.51 -21.66,25.51 -21.66,17.51 -40.71,6.51" fill="#111827" />
+<circle cx="-24.27" cy="20.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="-27.73" cy="18.01" r="1.4" fill="#22d3ee" filter="url(#lan-glow)"/>
+<polygon points="-40.71,2.51 -21.66,13.51 -21.66,5.51 -40.71,-5.49" fill="#111827" />
+<circle cx="-24.27" cy="8.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="-27.73" cy="6.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<polygon points="-40.71,-9.49 -21.66,1.51 -21.66,-6.49 -40.71,-17.49" fill="#111827" />
+<circle cx="-24.27" cy="-3.99" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="-27.73" cy="-5.99" r="1.4" fill="#22d3ee" filter="url(#lan-glow)"/>
+<polygon points="-40.71,-21.49 -21.66,-10.49 -21.66,-18.49 -40.71,-29.49" fill="#111827" />
+<circle cx="-24.27" cy="-15.99" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="-27.73" cy="-17.99" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<polygon points="-13.86,50.00 10.39,64.00 10.39,0.00 -13.86,-14.00" fill="url(#lan-g7)" />
+<polygon points="39.84,47.00 10.39,64.00 10.39,0.00 39.84,-17.00" fill="url(#lan-g8)" />
+<polygon points="15.59,-31.00 39.84,-17.00 10.39,0.00 -13.86,-14.00" fill="url(#lan-g9)" />
+<polygon points="-11.27,43.51 7.79,54.50 7.79,46.50 -11.27,35.51" fill="#111827" />
+<circle cx="5.18" cy="49.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="1.71" cy="47.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<polygon points="-11.27,31.51 7.79,42.50 7.79,34.50 -11.27,23.51" fill="#111827" />
+<circle cx="5.18" cy="37.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="1.71" cy="35.01" r="1.4" fill="#22d3ee" filter="url(#lan-glow)"/>
+<polygon points="-11.27,19.51 7.79,30.50 7.79,22.50 -11.27,11.51" fill="#111827" />
+<circle cx="5.18" cy="25.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="1.71" cy="23.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<polygon points="-11.27,7.51 7.79,18.50 7.79,10.50 -11.27,-0.49" fill="#111827" />
+<circle cx="5.18" cy="13.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="1.71" cy="11.01" r="1.4" fill="#22d3ee" filter="url(#lan-glow)"/>
+<polygon points="15.59,67.00 39.84,81.00 39.84,23.00 15.59,9.00" fill="url(#lan-g10)" />
+<polygon points="69.28,64.00 39.84,81.00 39.84,23.00 69.28,6.00" fill="url(#lan-g11)" />
+<polygon points="45.03,-8.00 69.28,6.00 39.84,23.00 15.59,9.00" fill="url(#lan-g12)" />
+<polygon points="18.18,60.50 37.23,71.50 37.23,63.50 18.18,52.50" fill="#111827" />
+<circle cx="34.62" cy="66.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="31.16" cy="64.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<polygon points="18.18,48.50 37.23,59.50 37.23,51.50 18.18,40.50" fill="#111827" />
+<circle cx="34.62" cy="54.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="31.16" cy="52.01" r="1.4" fill="#22d3ee" filter="url(#lan-glow)"/>
+<polygon points="18.18,36.50 37.23,47.50 37.23,39.50 18.18,28.50" fill="#111827" />
+<circle cx="34.62" cy="42.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<circle cx="31.16" cy="40.01" r="1.4" fill="#34d399" filter="url(#lan-glow)"/>
+<polyline points="-50.23,51.00 -29.44,73.00 8.66,85.00" fill="none" stroke="#34d399" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#lan-glow)"/>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120.58 -66.58 253.17 253.17" width="512" height="512">
+<defs><filter id="rul-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="rul-soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter><linearGradient id="rul-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#10202a"/><stop offset="1" stop-color="#0b161d"/></linearGradient><linearGradient id="rul-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c181f"/><stop offset="1" stop-color="#081015"/></linearGradient><linearGradient id="rul-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#667077"/><stop offset="1" stop-color="#4b575f"/></linearGradient><linearGradient id="rul-g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f3a4a"/><stop offset="1" stop-color="#0a2833"/></linearGradient><linearGradient id="rul-g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b2b37"/><stop offset="1" stop-color="#071d25"/></linearGradient><linearGradient id="rul-g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#387689"/><stop offset="1" stop-color="#155e75"/></linearGradient></defs>
+<polygon points="6.00,0.00 118.58,65.00 6.00,130.00 -106.58,65.00" fill="#000" opacity="0.25" filter="url(#rul-soft)"/>
+<polygon points="-95.26,55.00 0.00,110.00 0.00,100.00 -95.26,45.00" fill="url(#rul-g1)" />
+<polygon points="95.26,55.00 0.00,110.00 0.00,100.00 95.26,45.00" fill="url(#rul-g2)" />
+<polygon points="0.00,-10.00 95.26,45.00 0.00,100.00 -95.26,45.00" fill="url(#rul-g3)" />
+<polyline points="0.00,-10.00 95.26,45.00 0.00,100.00 -95.26,45.00 0.00,-10.00" fill="none" stroke="#22d3ee" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#rul-glow)"/>
+<polygon points="-57.16,49.00 -6.93,78.00 -6.93,70.00 -57.16,41.00" fill="url(#rul-g4)" />
+<polygon points="53.69,43.00 -6.93,78.00 -6.93,70.00 53.69,35.00" fill="url(#rul-g5)" />
+<polygon points="3.46,6.00 53.69,35.00 -6.93,70.00 -57.16,41.00" fill="url(#rul-g6)" />
+<polygon points="1.73,14.99 6.93,17.99 1.73,20.99 -3.46,17.99" fill="#22d3ee" />
+<polyline points="0.00,16.99 0.00,18.99 6.93,17.99" fill="none" stroke="#ecfeff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="9.53,22.49 35.51,37.49" fill="none" stroke="#a5f3fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="-8.66,20.99 -3.46,23.99 -8.66,26.99 -13.86,23.99" fill="#22d3ee" />
+<polyline points="-10.39,22.99 -10.39,24.99 -3.46,23.99" fill="none" stroke="#ecfeff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-0.87,28.49 18.19,39.49" fill="none" stroke="#a5f3fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="-19.05,26.99 -13.86,29.99 -19.05,32.99 -24.25,29.99" fill="#22d3ee" />
+<polyline points="-20.78,28.99 -20.78,30.99 -13.86,29.99" fill="none" stroke="#ecfeff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-11.26,34.49 0.87,41.49" fill="none" stroke="#a5f3fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="-29.44,32.99 -24.25,35.99 -29.44,38.99 -34.64,35.99" fill="#22d3ee" />
+<polyline points="-31.18,34.99 -31.18,36.99 -24.25,35.99" fill="none" stroke="#ecfeff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-21.65,40.49 4.33,55.49" fill="none" stroke="#a5f3fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="-39.84,38.99 -34.64,41.99 -39.84,44.99 -45.03,41.99" fill="#22d3ee" />
+<polyline points="-41.57,40.99 -41.57,42.99 -34.64,41.99" fill="none" stroke="#ecfeff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="-32.04,46.49 -12.99,57.49" fill="none" stroke="#a5f3fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
